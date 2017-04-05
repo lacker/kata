@@ -4,7 +4,7 @@
   "description": "If you want to get better at something, repeating practice alone is not enough. You must practice with increased difficulty and challenge.",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/lacker/kata/issues"
   },
-  "homepage": "https://github.com/lacker/kata#readme"
+  "homepage": "https://github.com/lacker/kata#readme",
+  "devDependencies": {
+    "jest": "^19.0.2"
+  }
 }

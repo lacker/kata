@@ -16,4 +16,4 @@ function reverse(linkedList) {
   return answer;
 }
 
-// TODO: test
+module.exports = reverse;
