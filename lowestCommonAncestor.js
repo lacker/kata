@@ -9,11 +9,11 @@ function helper(tree, value1, value2) {
       num: 0,
     };
   }
-  let left = helper(tree.left);
+  let left = helper(tree.left, value1, value2);
   if (left.lca) {
     return left;
   }
-  let right = helper(tree.right);
+  let right = helper(tree.right, value1, value2);
   if (right.lca) {
     return right;
   }
