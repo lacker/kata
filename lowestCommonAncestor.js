@@ -37,5 +37,3 @@ function lca(tree, value1, value2) {
 }
 
 module.exports = lca;
-
-// TODO: test
