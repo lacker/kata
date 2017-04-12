@@ -3,20 +3,20 @@
 // left and right and tree can all be null
 function helper(tree, left, right) {
   // Base case
-  if (tree === null) {
-    if (left !== null) {
+  if (!tree) {
+    if (left) {
       left.right = right;
     }
-    if (right !== null) {
+    if (right) {
       right.left = left;
     }
     return;
   }
 
   // Handle the left side
-  if (tree.left === null) {
+  if (!tree.left) {
     tree.left = left;
-    if (left !== null) {
+    if (left) {
       left.right = tree;
     }
   } else {
@@ -24,9 +24,9 @@ function helper(tree, left, right) {
   }
 
   // Handle the right side
-  if (tree.right === null) {
+  if (!tree.right) {
     tree.right = right;
-    if (right !== null) {
+    if (right) {
       right.left = tree;
     }
   } else {
