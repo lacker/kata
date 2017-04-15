@@ -15,4 +15,4 @@ function evaluate(expression) {
 }
 
 
-// TODO: test
+module.exports = evaluate;
