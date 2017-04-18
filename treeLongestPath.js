@@ -23,11 +23,11 @@ function helper(tree, node1, node2) {
     };
   }
 
-  let leftData = helper(tree.left);
+  let leftData = helper(tree.left, node1, node2);
   if (leftData.longestPath != null) {
     return leftData;
   }
-  let rightData = helper(tree.right);
+  let rightData = helper(tree.right, node1, node2);
   if (rightData.longestPath != null) {
     return rightData;
   }
@@ -49,4 +49,13 @@ function helper(tree, node1, node2) {
   return answer;
 }
 
-// TODO: test
+
+function longestPath(tree, node1, node2) {
+  let data = helper(tree, node1, node2);
+  if (data.longestPath != null) {
+    return data.longestPath;
+  }
+  return -1;
+}
+
+module.exports = longestPath;
