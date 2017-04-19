@@ -26,3 +26,11 @@ test('uncle', () => {
 
   expect(longestPath(tree, x, y)).toBe(3);
 });
+
+test('impossible', () => {
+  let tree = {
+    left: x,
+    right: x,
+  };
+  expect(longestPath(tree, x, y)).toBe(-1);
+});
