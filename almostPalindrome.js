@@ -21,7 +21,7 @@ function almostPalindromeHelper(s, i, j) {
 
   // If s[i] and s[j] are different, either s[i] has to be removed, or
   // s[j] has to be removed.
-  return isPalindrome(s, i + 1, j) || isPalindrom(s, i, j - 1);
+  return isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1);
 }
 
 function almostPalindrome(s) {
@@ -30,4 +30,3 @@ function almostPalindrome(s) {
 
 module.exports = almostPalindrome;
 
-// TODO: test
