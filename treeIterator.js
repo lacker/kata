@@ -1,4 +1,4 @@
-class treeIterator {
+class TreeIterator {
   constructor(root) {
     this.stack = [];
     while (root) {
@@ -15,6 +15,9 @@ class treeIterator {
   // same error as popping from an empty list
   nextValue() {
     let current = this.stack.pop();
+    if (!current) {
+      throw new Error('end of iteration');
+    }
     let returnValue = current.value;
     if (current.right) {
       let node = current.right;
@@ -27,6 +30,5 @@ class treeIterator {
   }
 }
 
-module.exports = treeIterator;
+module.exports = TreeIterator;
 
-// TODO: test
