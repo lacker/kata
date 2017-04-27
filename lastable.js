@@ -69,3 +69,6 @@ class Lastable {
     return this.dataById.iterator().next().value.key;
   }
 }
+
+module.exports = Lastable;
+// TODO: test
