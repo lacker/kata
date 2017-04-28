@@ -43,7 +43,7 @@ class Lastable {
     this.nextId--;
     let data = { key: key, value: value, id: this.nextId };
     this.dataByKey.set(key, data);
-    this.dataById.set(id, data);
+    this.dataById.set(this.nextId, data);
   }
   
   put(key, value) {
@@ -66,9 +66,9 @@ class Lastable {
   
   // Returns a key
   last() {
-    return this.dataById.iterator().next().value.key;
+    return this.dataById.iterator().next().value.value.key;
   }
 }
 
 module.exports = Lastable;
-// TODO: test
+
