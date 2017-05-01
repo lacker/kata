@@ -37,3 +37,12 @@ test('lasting the empty thing', () => {
   };
   expect(lasting).toThrow();
 });
+
+test('get bumps', () => {
+  let data = new Lastable();
+  data.put('a', 1);
+  data.put('b', 1);
+  expect(data.last()).toBe('b');
+  data.get('a');
+  expect(data.last()).toBe('a');
+});
