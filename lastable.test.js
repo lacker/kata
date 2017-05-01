@@ -29,3 +29,11 @@ test('puts on deleted keys', () => {
   data.del('a');
   expect(data.last()).toBe('b');
 });
+
+test('lasting the empty thing', () => {
+  let data = new Lastable();
+  let lasting = () => {
+    data.last();
+  };
+  expect(lasting).toThrow();
+});
