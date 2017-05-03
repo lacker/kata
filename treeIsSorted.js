@@ -22,4 +22,9 @@ function helper(tree) {
   };
 }
 
+function isSorted(tree) {
+  let data = helper(tree);
+  return data.sorted;
+}
+
 module.exports = isSorted;
