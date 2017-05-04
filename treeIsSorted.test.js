@@ -15,4 +15,7 @@ test('normal tree', () => {
     },
   };
   expect(isSorted(tree)).toBe(true);
+
+  tree.left.right.value = 'Z';
+  expect(isSorted(tree)).toBe(false);
 });
