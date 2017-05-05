@@ -16,9 +16,9 @@ function helper(tree) {
     return { sorted: false };
   }
   return {
-    min: left.min,
+    min: left.min || tree.value,
     sorted: true,
-    max: right.max,
+    max: right.max || tree.value,
   };
 }
 
