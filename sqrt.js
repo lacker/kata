@@ -9,6 +9,7 @@ function sqrt(x) {
     a = b;
     b = (b + x/b) / 2;
   }
+  return b;
 }
 
 module.exports = sqrt;
