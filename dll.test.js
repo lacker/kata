@@ -5,3 +5,7 @@ test('basic DLL ops', () => {
   expect(node.prev).toBe(null);
   expect(node.next).toBe(null);
 });
+
+test('remove', () => {
+  // TODO
+});
