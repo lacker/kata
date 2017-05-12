@@ -20,6 +20,17 @@ class DLL {
     }
   }
 
+  // Call this on the first node in a list
+  toArray() {
+    let answer = [];
+    let node = this;
+    while (node) {
+      answer.push(node.value);
+      node = node.next;
+    }
+    return answer;
+  }
+
   // Returns a new DLL with this value inserted at the beginning
   // Can only be called on the head
   prepend(value) {
