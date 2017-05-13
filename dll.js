@@ -31,14 +31,31 @@ class DLL {
     return answer;
   }
 
+  join(connector) {
+    return this.toArray().join(connector);
+  }
+
   // Returns a new DLL with this value inserted at the beginning
   // Can only be called on the head
+  // Returns the new head
   prepend(value) {
     if (this.prev) {
       throw new Error('prepend should only be called on the head');
     }
     let newNode = new DLL(value, null, this);
     this.prev = newNode;
+    return newNode;
+  }
+
+  // Returns a new DLL with this value appended at the end
+  // Can only be called on the tail
+  // Returns the new tail
+  append(value) {
+    if (this.next) {
+      throw new Error('append should only be called on the tail');
+    }
+    let newNode = new DLL(value, this, null);
+    this.next = newNode;
     return newNode;
   }
 }
