@@ -7,5 +7,9 @@ test('basic DLL ops', () => {
 });
 
 test('remove', () => {
-  // TODO
+  let head = new DLL('A');
+  head.append('B').append('C').append('D');
+  expect(head.join(',')).toBe('A,B,C,D');
+  head.next.remove();
+  expect(head.join(',')).toBe('A,C,D');
 });
