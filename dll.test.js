@@ -18,4 +18,4 @@ test('prepend', () => {
   let tail = new DLL('Z');
   let head = tail.prepend('Y').prepend('X');
   expect(head.join(',')).toBe('X,Y,Z');
-})
+});
