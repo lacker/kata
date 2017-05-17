@@ -19,12 +19,20 @@ class Lastable {
     this.list = null;
   }
 
+  prependHelper(key) {
+    if (this.list) {
+      this.list = this.list.prepend(key);
+    } else {
+      this.list = new DLL(key);
+    }
+  }
+
   put(key, value) {
     let blob = this.data.get(key);
     if (blob) {
       blob.node.remove();
     }
-    this.list = this.list.prepend(key);
+    this.prependHelper(key);
     this.data.set(key, { value: value, node: this.list });
   }
 
@@ -34,7 +42,7 @@ class Lastable {
       throw new Error('nothing there for key: ' + key);
     }
     blob.node.remove();
-    this.list = this.list.prepend(key);
+    this.prependHelper(key);
     blob.node = this.list;
     return blob.value;
   }
