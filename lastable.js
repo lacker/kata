@@ -27,10 +27,17 @@ class Lastable {
     }
   }
 
+  removeHelper(node) {
+    if (this.list === node) {
+      this.list = node.next;
+    }
+    node.remove();
+  }
+
   put(key, value) {
     let blob = this.data.get(key);
     if (blob) {
-      blob.node.remove();
+      this.removeHelper(blob.node);
     }
     this.prependHelper(key);
     this.data.set(key, { value: value, node: this.list });
@@ -41,7 +48,7 @@ class Lastable {
     if (!blob) {
       throw new Error('nothing there for key: ' + key);
     }
-    blob.node.remove();
+    this.removeHelper(blob.node);
     this.prependHelper(key);
     blob.node = this.list;
     return blob.value;
@@ -50,8 +57,8 @@ class Lastable {
   del(key) {
     let blob = this.data.get(key);
     if (blob) {
-      blob.node.remove();
-      this.data.remove(key);
+      this.removeHelper(blob.node);
+      this.data.delete(key);
     }
   }
 
