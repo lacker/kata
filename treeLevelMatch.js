@@ -29,4 +29,5 @@ function levelMatch(tree1, tree2) {
   return true;
 }
 
+// TODO: test
 module.exports = levelMatch;
