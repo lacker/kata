@@ -25,6 +25,8 @@ function levelMatch(tree1, tree2) {
         return false;
       }
     }
+    level1 = nextLevel(level1);
+    level2 = nextLevel(level2);
   }
   return true;
 }
