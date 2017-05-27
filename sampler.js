@@ -12,6 +12,9 @@ class Sampler {
     // Used recursively if we have more than one item
     this.left = null;
     this.right = null;
+
+    // Useful for injection
+    this.random = () => Math.random();
   }
 
   add(item, weight) {
@@ -56,7 +59,7 @@ class Sampler {
     if (this.numItems === 1) {
       return this.item;
     }
-    if (Math.random() * this.totalWeight < this.left.totalWeight) {
+    if (this.random() * this.totalWeight < this.left.totalWeight) {
       return this.left.sample();
     } else {
       return this.right.sample();
