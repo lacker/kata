@@ -50,7 +50,17 @@ class Sampler {
   }
 
   sample() {
-    // TODO: implement
+    if (this.numItems === 0) {
+      throw new Error('cannot randomly sample from an empty thing');
+    }
+    if (this.numItems === 1) {
+      return this.item;
+    }
+    if (Math.random() * this.totalWeight < this.left.totalWeight) {
+      return this.left.sample();
+    } else {
+      return this.right.sample();
+    }
   }
 }
 
