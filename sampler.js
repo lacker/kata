@@ -12,9 +12,6 @@ class Sampler {
     // Used recursively if we have more than one item
     this.left = null;
     this.right = null;
-
-    // Useful for injection
-    this.random = () => Math.random();
   }
 
   add(item, weight) {
@@ -52,20 +49,24 @@ class Sampler {
     }
   }
 
-  sample() {
+  sample(randomIndex) {
+    if (randomIndex == null) {
+      randomIndex = Math.random();
+    }
     if (this.numItems === 0) {
       throw new Error('cannot randomly sample from an empty thing');
     }
     if (this.numItems === 1) {
       return this.item;
     }
-    if (this.random() * this.totalWeight < this.left.totalWeight) {
-      return this.left.sample();
+    let val = this.random() * this.totalWeight;
+    if (val < this.left.totalWeight) {
+      return this.left.sample(val / this.left.totalWeight);
     } else {
-      return this.right.sample();
+      return this.right.sample(
+        (val - this.left.totalWeight) / this.right.totalWeight);
     }
   }
 }
 
-// TODO: test
 module.exports = Sampler;
