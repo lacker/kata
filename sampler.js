@@ -59,7 +59,7 @@ class Sampler {
     if (this.numItems === 1) {
       return this.item;
     }
-    let val = this.random() * this.totalWeight;
+    let val = randomIndex * this.totalWeight;
     if (val < this.left.totalWeight) {
       return this.left.sample(val / this.left.totalWeight);
     } else {

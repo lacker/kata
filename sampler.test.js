@@ -28,6 +28,6 @@ test('five things', () => {
     s.sample(0.7),
     s.sample(0.9),
   ];
-  s.sort();
-  expect(s.join('')).toBe('ABCDE');
+  samples.sort();
+  expect(samples.join('')).toBe('ABCDE');
 });
