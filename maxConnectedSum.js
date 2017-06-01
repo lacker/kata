@@ -1,3 +1,4 @@
+// Code to find the maximum sum of any connected subgraph of a tree.
 
 // Returns an object with:
 // root: the max connected sum including the root node
