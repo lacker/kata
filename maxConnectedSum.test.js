@@ -22,4 +22,7 @@ let tree = {
   },
 };
 
-// TODO: test
+test('max connected sums', () => {
+  expect(maxConnectedSum(tree)).toBe(21);
+  // TODO: more
+});
