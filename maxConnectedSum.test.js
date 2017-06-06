@@ -26,4 +26,5 @@ test('max connected sums', () => {
   expect(maxConnectedSum(tree)).toBe(21);
   expect(maxConnectedSum(tree.left)).toBe(10);
   expect(maxConnectedSum(tree.right)).toBe(11);
+  expect(maxConnectedSum(tree.right.left)).toBe(0);
 });
