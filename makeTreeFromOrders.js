@@ -21,5 +21,4 @@ function makeTree(inorder, preorder) {
   };
 }
 
-// TODO: test
 module.exports = makeTree;
