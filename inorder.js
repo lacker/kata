@@ -3,9 +3,9 @@ function inorderHelper(tree, output) {
   if (!tree) {
     return;
   }
-  inorderHelper(tree.left);
+  inorderHelper(tree.left, output);
   output.push(tree.value);
-  inorderHelper(tree.right);
+  inorderHelper(tree.right, output);
 }
 
 function inorder(tree) {
