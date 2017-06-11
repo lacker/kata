@@ -4,8 +4,8 @@ function preorderHelper(tree, output) {
     return;
   }
   output.push(tree.value);
-  preorderHelper(tree.left);
-  preorderHelper(tree.right);
+  preorderHelper(tree.left, output);
+  preorderHelper(tree.right, output);
 }
 
 function preorder(tree) {
