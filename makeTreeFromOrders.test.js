@@ -20,6 +20,6 @@ let tree = {
 test('making the tree', () => {
   let inorderList = inorder(tree);
   let preorderList = preorder(tree);
-  let tree2 = makeTree(inorder, preorder);
+  let tree2 = makeTree(inorderList, preorderList);
   expect(treeEqual(tree, tree2)).toBe(true);
 });
