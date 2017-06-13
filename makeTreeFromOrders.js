@@ -13,7 +13,7 @@ function makeTree(inorder, preorder) {
   let leftInorder = inorder.slice(0, index);
   let rightInorder = inorder.slice(index + 1);
   let leftPreorder = preorder.slice(1, index + 1);
-  let rightPreorder = preorder.slice(index + 2);
+  let rightPreorder = preorder.slice(index + 1);
   return {
     value: rootValue,
     left: makeTree(leftInorder, leftPreorder),
