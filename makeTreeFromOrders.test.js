@@ -17,9 +17,16 @@ let tree = {
   },
 };
 
-test('making the tree', () => {
+function testTree(tree) {
   let inorderList = inorder(tree);
   let preorderList = preorder(tree);
   let tree2 = makeTree(inorderList, preorderList);
   expect(treeEqual(tree, tree2)).toBe(true);
+}
+
+test('making trees', () => {
+  testTree(tree);
+  testTree(null);
+  testTree(tree.left);
+  testTree(tree.right);
 });
