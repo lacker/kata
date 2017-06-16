@@ -6,6 +6,9 @@ function football(n) {
   if (MEMO.has(n)) {
     return MEMO.get(n);
   }
+  if (n === 0) {
+    return 1;
+  }
   if (n < 2) {
     return 0;
   }
@@ -14,4 +17,4 @@ function football(n) {
   return answer;
 }
 
-// TODO: test
+module.exports = football;
