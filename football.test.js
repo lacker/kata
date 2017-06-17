@@ -1,6 +1,8 @@
 const football = require('./football');
 
 test('basic operation', () => {
+  expect(football(6)).toBe(2);
+
   // 6 ways to get it from 7 3 2
   // All 3's
   // All 2's
