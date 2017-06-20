@@ -19,4 +19,4 @@ function sequenceSum(seq, sum) {
   return false;
 }
 
-// TODO: test
+module.exports = sequenceSum;
