@@ -28,4 +28,4 @@ function countIslands(matrix) {
   return answer;
 }
 
-// TODO: more
+module.exports = countIslands;
