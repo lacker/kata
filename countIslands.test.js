@@ -8,5 +8,6 @@ test('two islands', () => {
   ];
   expect(countIslands(matrix)).toBe(2);
 
-  // TODO: Make sure it works twice
+  // Make sure it works twice
+  expect(countIslands(matrix)).toBe(2);
 });
