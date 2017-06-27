@@ -11,3 +11,11 @@ test('two islands', () => {
   // Make sure it works twice
   expect(countIslands(matrix)).toBe(2);
 });
+
+test('no islands', () => {
+  let matrix = [
+    [0, 0],
+    [0, 0],
+  ];
+  expect(countIslands(matrix)).toBe(0);
+});
