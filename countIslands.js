@@ -20,7 +20,7 @@ function countIslands(matrix) {
   let answer = 0;
   for (let i = 0; i < copy.length; i++) {
     for (let j = 0; j < copy[i].length; j++) {
-      if (flood(matrix, i, j)) {
+      if (flood(copy, i, j)) {
         answer++;
       }
     }
