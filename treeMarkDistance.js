@@ -36,6 +36,18 @@ function helper(tree) {
   // right subtrees
   let treeWithMark = left.empty ? right : left;
   if (tree.marked) {
-    // TODO: more
+    return { answer: treeWithMark.depth };
+  } else {
+    return { depth: treeWithMark.depth + 1 };
   }
 }
+
+function treeMarkDistance(tree) {
+  let data = helper(tree);
+  if (tree.answer === undefined) {
+    return -1;
+  }
+  return tree.answer;
+}
+
+module.exports = treeMarkDistance;
