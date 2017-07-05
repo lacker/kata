@@ -21,7 +21,7 @@ function helper(tree) {
   }
 
   if (left.empty && right.empty) {
-    if (tree.marked) {
+    if (tree.mark) {
       return { depth: 0 };
     } else {
       return { empty: true };
@@ -35,7 +35,7 @@ function helper(tree) {
   // The last case: there is precisely one marked node between left and
   // right subtrees
   let treeWithMark = left.empty ? right : left;
-  if (tree.marked) {
+  if (tree.mark) {
     return { answer: treeWithMark.depth };
   } else {
     return { depth: treeWithMark.depth + 1 };
@@ -44,10 +44,11 @@ function helper(tree) {
 
 function treeMarkDistance(tree) {
   let data = helper(tree);
-  if (tree.answer === undefined) {
+  console.log(data);
+  if (data.answer === undefined) {
     return -1;
   }
-  return tree.answer;
+  return data.answer;
 }
 
 module.exports = treeMarkDistance;
