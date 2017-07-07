@@ -36,7 +36,7 @@ function helper(tree) {
   // right subtrees
   let treeWithMark = left.empty ? right : left;
   if (tree.mark) {
-    return { answer: treeWithMark.depth };
+    return { answer: treeWithMark.depth + 1 };
   } else {
     return { depth: treeWithMark.depth + 1 };
   }
