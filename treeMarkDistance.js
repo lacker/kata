@@ -44,7 +44,6 @@ function helper(tree) {
 
 function treeMarkDistance(tree) {
   let data = helper(tree);
-  console.log(data);
   if (data.answer === undefined) {
     return -1;
   }
