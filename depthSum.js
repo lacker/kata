@@ -2,7 +2,7 @@
 // calculate and return the depth sum.
 // For example:
 // Input: [8, 4, [5, 3, [9]], 6]
-// Output: 8+4+2*(5+3+3*(9)))+6 ==> 88
+// Output: 8+4+2*(5+3)+3*9+6 ==> 61
 
 // Returns the depth sum, where 'depth' is the deepness we already are at.
 function helper(array, depth) {
