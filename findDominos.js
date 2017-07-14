@@ -15,7 +15,7 @@ function getPairKey(k, left, right) {
 
 function findDominos(list, k) {
   let dominos = new Map();
-  for (let domino in list) {
+  for (let domino of list) {
     let [left, right] = domino;
     let key = getKey(left, right);
     let pairKey = getPairKey(k, left, right);
