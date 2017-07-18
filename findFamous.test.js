@@ -11,5 +11,5 @@ function fiveIsFamous(i, j) {
 }
 
 test('finding five', () => {
-  // TODO
+  expect(findFamous(fiveIsFamous, 1000)).toBe(5);
 });
