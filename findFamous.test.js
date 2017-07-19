@@ -13,3 +13,7 @@ function fiveIsFamous(i, j) {
 test('finding five', () => {
   expect(findFamous(fiveIsFamous, 1000)).toBe(5);
 });
+
+test('when there is no five', () => {
+  expect(findFamous(fiveIsFamous, 3)).toBe(-1);
+});
