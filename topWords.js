@@ -20,7 +20,7 @@ function topWords(doc, n) {
 function comparePair(pair1, pair2) {
   let [word1, count1] = pair1;
   let [word2, count2] = pair2;
-  return count1 - count2;
+  return count2 - count1;
 }
 
 module.exports = topWords;
