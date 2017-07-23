@@ -9,3 +9,12 @@ test('basic usage', () => {
     ['c', 2],
   ]);
 });
+
+test('with punctuation', () => {
+  let doc = 'Bonk, and bonk.';
+  let top = topWords(doc, 3);
+  expect(top).toEqual([
+    ['bonk', 2],
+    ['and', 1],
+  ]);
+});
