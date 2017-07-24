@@ -7,7 +7,9 @@ function topWords(doc, n) {
   let words = doc.toLowerCase().split(/[ \.,]+/);
   let counts = {};
   for (let word of words) {
-    counts[word] = (counts[word] || 0) + 1;
+    if (word.length > 0) {
+      counts[word] = (counts[word] || 0) + 1;
+    }
   }
   let pairs = [];
   for (let word in counts) {
