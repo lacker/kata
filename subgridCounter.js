@@ -9,6 +9,7 @@ class SubgridCounter {
     for (let x = 0; x <= maxX; x++) {
       for (let y = 0; y <= maxY; y++) {
         let answer = (
+          grid[x][y] +
           this._get(x - 1, y) + this._get(x, y - 1) - this._get(x - 1, y - 1));
         this._set(x, y, answer);
       }
