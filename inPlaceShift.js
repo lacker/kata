@@ -20,5 +20,10 @@ function helper(array, k, i) {
 
 // Right circular k-shift everything in the array
 function inPlaceShift(array, k) {
-  // TODO
+  let todo = array.length;
+  for (let i = 0; todo > 0; i++) {
+    todo -= helper(array, k, i);
+  }
 }
+
+module.exports = inPlaceShift;
