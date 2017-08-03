@@ -7,8 +7,8 @@ function helper(array, k, i) {
   let carry = array[index];
   while (true) {
     index = (index + k) % array.length;
-    let temp = array[to];
-    array[to] = carry;
+    let temp = array[index];
+    array[index] = carry;
     carry = temp;
     count++;
     if (index === i) {
