@@ -11,3 +11,9 @@ test('both even', () => {
   inPlaceShift(arr, 2);
   expect(arr).toEqual([5, 6, 1, 2, 3, 4]);
 });
+
+test('zero', () => {
+  let arr = [1, 2, 3];
+  inPlaceShift(arr, 0);
+  expect(arr).toEqual([1, 2, 3]);
+});
