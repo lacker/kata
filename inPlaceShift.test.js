@@ -17,3 +17,9 @@ test('zero', () => {
   inPlaceShift(arr, 0);
   expect(arr).toEqual([1, 2, 3]);
 });
+
+test('negative numbers', () => {
+  let arr = [1, 2, 3, 4, 5, 6, 7];
+  inPlaceShift(arr, -3);
+  expect(arr).toEqual([4, 5, 6, 7, 1, 2, 3]);
+});
