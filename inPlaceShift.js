@@ -6,7 +6,7 @@ function helper(array, k, i) {
   let index = i;
   let carry = array[index];
   while (true) {
-    index = (index + k) % array.length;
+    index = (index + k + array.length) % array.length;
     let temp = array[index];
     array[index] = carry;
     carry = temp;
