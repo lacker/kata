@@ -1,3 +1,8 @@
+// Handles negative numbers appropriately
+function mod(n, modulus) {
+  return ((n % modulus) + modulus) % modulus;
+}
+
 // Right circular k-shift, in place, starting at i.
 // So this shifts i, i + k, ... ending at i.
 // Returns how many items got shifted.
@@ -6,7 +11,7 @@ function helper(array, k, i) {
   let index = i;
   let carry = array[index];
   while (true) {
-    index = (index + k + array.length) % array.length;
+    index = mod(index + k, array.length);
     let temp = array[index];
     array[index] = carry;
     carry = temp;
