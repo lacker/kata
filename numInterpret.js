@@ -2,7 +2,7 @@
 // numInterpret takes a string of digits as an input and computes
 // the number of valid interpretations of the input.
 function numInterpret(s) {
-  let cache = new Set();
+  let cache = new Map();
   // Helper uses the cache and returns the number of interpretations
   // for the string containing indices 0..i
   // So when i = -1 it's the empty string
@@ -33,6 +33,8 @@ function numInterpret(s) {
     cache.set(i, answer);
     return answer;
   };
+
+  return helper(s.length - 1);
 }
 
 module.exports = numInterpret;
