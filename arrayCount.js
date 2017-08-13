@@ -24,5 +24,19 @@ function indexOf(array, i, j, k) {
 
 // In a sorted array of integers, count how many times a particular one appears.
 function arrayCount(array, k) {
-  // TODO
+  let i = indexOf(array, 0, array.length - 1, k);
+  if (i === -1) {
+    return 0;
+  }
+  let min = i;
+  while (min > 0 && array[min - 1] === k) {
+    min -= 1;
+  }
+  let max = i;
+  while (max < array.length - 1 && array[max + 1] === k) {
+    max += 1;
+  }
+  return max - min + 1;
 }
+
+module.exports = arrayCount;
