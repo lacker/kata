@@ -30,3 +30,16 @@ clone(tree) {
   }
   return answer;
 }
+
+// Finds the clone of node in tree
+findNodeClone(node, tree) {
+  if (!node.parent) {
+    return tree;
+  }
+  let parentClone = findNodeClone(node.parent, tree);
+  if (node === node.parent.left) {
+    return parentClone.left;
+  } else {
+    return parentClone.right;
+  }
+}
