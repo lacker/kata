@@ -43,3 +43,5 @@ findNodeClone(node, tree) {
     return parentClone.right;
   }
 }
+
+module.exports = findNodeClone;
