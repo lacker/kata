@@ -3,7 +3,7 @@ const {
   addParentLinks,
 } = require('./findNodeClone');
 
-test('normal behavior', () => {
+function makeTree() {
   let tree = {
     value: 'A',
     left: {
@@ -13,6 +13,14 @@ test('normal behavior', () => {
       value: 'C',
     }
   };
-  addParentLinks(tree, null);
+  addParentLinks(tree);
+  return tree;
+}
+
+test('tree-making', () => {
+  let tree = makeTree();
+  expect(tree.left.value).toBe('B');
   expect(tree.left.parent.value).toBe('A');
+  expect(tree.right.value).toBe('C');
+  expect(tree.right.parent).toBe(tree);
 });

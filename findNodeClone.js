@@ -5,8 +5,8 @@ function addParentLinks(tree, parent) {
     return;
   }
   tree.parent = parent;
-  addParentLinks(tree.left);
-  addParentLinks(tree.right);
+  addParentLinks(tree.left, tree);
+  addParentLinks(tree.right, tree);
 }
 
 // Clones left, right, value, and parent
