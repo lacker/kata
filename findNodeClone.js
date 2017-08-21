@@ -1,6 +1,6 @@
 // Add "parent" links to a tree.
 // For the root, parent should be null.
-addParentLinks(tree, parent) {
+function addParentLinks(tree, parent) {
   if (!tree) {
     return;
   }
@@ -10,7 +10,7 @@ addParentLinks(tree, parent) {
 }
 
 // Clones left, right, value, and parent
-clone(tree) {
+function clone(tree) {
   if (!tree) {
     return null;
   }
@@ -32,7 +32,7 @@ clone(tree) {
 }
 
 // Finds the clone of node in tree
-findNodeClone(node, tree) {
+function findNodeClone(node, tree) {
   if (!node.parent) {
     return tree;
   }
@@ -44,4 +44,4 @@ findNodeClone(node, tree) {
   }
 }
 
-module.exports = findNodeClone;
+module.exports = { findNodeClone, addParentLinks };

@@ -1,4 +1,7 @@
-const findNodeClone = require('./findNodeClone');
+const {
+  findNodeClone,
+  addParentLinks,
+} = require('./findNodeClone');
 
 test('normal behavior', () => {
   let tree = {
