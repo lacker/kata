@@ -1,5 +1,6 @@
 const {
   findNodeClone,
+  clone,
   addParentLinks,
 } = require('./findNodeClone');
 
@@ -23,4 +24,11 @@ test('tree-making', () => {
   expect(tree.left.parent.value).toBe('A');
   expect(tree.right.value).toBe('C');
   expect(tree.right.parent).toBe(tree);
+});
+
+test('cloning', () => {
+  let tree1 = makeTree();
+  let tree2 = clone(tree1);
+  expect(tree2.left.value).toBe('B');
+  expect(tree2.right.parent.value).toBe('A');
 });

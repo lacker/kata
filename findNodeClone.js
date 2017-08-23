@@ -44,4 +44,4 @@ function findNodeClone(node, tree) {
   }
 }
 
-module.exports = { findNodeClone, addParentLinks };
+module.exports = { findNodeClone, clone, addParentLinks };
