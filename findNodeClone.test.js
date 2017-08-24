@@ -32,3 +32,9 @@ test('cloning', () => {
   expect(tree2.left.value).toBe('B');
   expect(tree2.right.parent.value).toBe('A');
 });
+
+test('finding the clone', () => {
+  let tree1 = makeTree();
+  let tree2 = clone(tree1);
+  expect(findNodeClone(tree1.left, tree2)).toBe(tree2.left);
+});
