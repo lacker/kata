@@ -1,3 +1,15 @@
+// Does allow trailing zeros
+function isValidPostDecimalPoint(str, i) {
+  while (i < str.length) {
+    if ('0123456789'.indexOf(str[i]) < 0) {
+      return false;
+    }
+    i++;
+  }
+  return true;
+}
+
+// Does not allow leading zeros
 function isValidPositiveNumber(str, i) {
   // TODO
 }
