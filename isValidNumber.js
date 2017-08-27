@@ -9,9 +9,23 @@ function isValidPostDecimalPoint(str, i) {
   return true;
 }
 
-// Does not allow leading zeros
+// Allows leading zeros
 function isValidPositiveNumber(str, i) {
-  // TODO
+  if (str === '.') {
+    return false;
+  }
+  if (str === '') {
+    return false;
+  }
+  while (i < str.length) {
+    if (str[i] === '.') {
+      return isValidPostDecimalPoint(str, i + 1);
+    }
+    if ('0123456789'.indexOf(str[i]) < 0) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function isValidNumber(str) {
@@ -25,4 +39,5 @@ function isValidNumber(str) {
   }
 }
 
+// TODO: test
 module.exports = isValidNumber;
