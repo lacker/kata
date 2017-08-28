@@ -39,5 +39,4 @@ function isValidNumber(str) {
   }
 }
 
-// TODO: test
 module.exports = isValidNumber;
