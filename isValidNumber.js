@@ -24,6 +24,7 @@ function isValidPositiveNumber(str, i) {
     if ('0123456789'.indexOf(str[i]) < 0) {
       return false;
     }
+    i++;
   }
   return true;
 }
