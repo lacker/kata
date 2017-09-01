@@ -1,15 +1,27 @@
 const isValidNumber = require('./isValidNumber');
 
+function numberize(x) {
+  if (isValidNumber(x)) {
+    return x;
+  } else {
+    return 'nan';
+  }
+}
+
+function expectInvalid(x) {
+  expect(numberize(x)).toBe('nan');
+}
+
 test('basic', () => {
   expect(isValidNumber('13')).toBe(true);
 });
 
 test('bad stuff', () => {
-  expect(isValidNumber('a')).toBe(false);
-  expect(isValidNumber('.')).toBe(false);
-  expect(isValidNumber('-')).toBe(false);
-  expect(isValidNumber('1e3')).toBe(false);
-  expect(isValidNumber('-.')).toBe(false);
+  expectInvalid('a');
+  expectInvalid('.');
+  expectInvalid('-');
+  expectInvalid('1e3');
+  expectInvalid('-.');
 });
 
 test('decimals', () => {

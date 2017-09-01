@@ -11,10 +11,11 @@ function isValidPostDecimalPoint(str, i) {
 
 // Allows leading zeros
 function isValidPositiveNumber(str, i) {
-  if (str === '.') {
+  if (i >= str.length) {
     return false;
   }
-  if (str === '') {
+  if (i === str.length - 1 && str[i] === '.') {
+    // It's only a deciaml point
     return false;
   }
   while (i < str.length) {
