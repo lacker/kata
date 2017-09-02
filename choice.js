@@ -1,9 +1,15 @@
 // Pick k items from the list randomly
-function choice(list, k) {
-  if (list.length > k) {
+function choice(list, numToChoose) {
+  let total = list.length;
+  if (total < numToChoose) {
     throw new Error(
-      'cannot choose ' + k +
-      ' from a list of length ' + list.length);
+      'cannot choose ' + numToChoose +
+      ' from a list of length ' + total);
   }
-  // TODO
+
+  let output = [];
+  while (output.length < numToChoose) {
+    // Consider taking index total - 1
+    // TODO
+  }
 }
