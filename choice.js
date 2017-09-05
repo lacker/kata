@@ -8,7 +8,7 @@ function choice(list, numToChoose) {
   }
 
   let output = [];
-  while (output.length < numToChoose) {
+  while (numToChoose > 0) {
     // Consider taking index total - 1
     // There is a numToChoose / total chance of wanting it
     let chance = numToChoose / total;
