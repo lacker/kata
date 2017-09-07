@@ -9,7 +9,7 @@ test('right length', () => {
 });
 
 test('edge cases', () => {
-  expect(choice([1, 2], 3)).toThrow();
+  expect(() => choice([1, 2], 3)).toThrow();
   expect(choice([], 0)).toEqual([]);
   expect(choice([3, 3, 3], 3)).toEqual(3);
 });
