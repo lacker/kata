@@ -7,3 +7,7 @@ test('normal behavior', () => {
 test('nonexistent', () => {
   expect(arrayCount([3, 4, 5, 6, 8, 9, 10], 7)).toBe(0);
 });
+
+test('empty', () => {
+  expect(arrayCount([], 5)).toBe(0);
+});
