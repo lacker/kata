@@ -3,7 +3,6 @@ var CACHE = {};
 // Sizes is an array of ints representing the size of minions.
 // Returns an array of probabilities that each one will be the last standing.
 function volcano(sizes) {
-  console.log("XXX running volcano", sizes);
   if (sizes.length == 1) {
     return [1.0];
   }
