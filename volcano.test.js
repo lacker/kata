@@ -6,4 +6,7 @@ test("basic usage", () => {
   expect(response[1]).toBeCloseTo(0.25, 4);
   expect(response[2]).toBeCloseTo(0.25, 4);
   expect(response[3]).toBeCloseTo(0.25, 4);
+
+  response = volcano([1, 2]);
+  expect(response[1]).toBeGreaterThan(response[0]);
 });
