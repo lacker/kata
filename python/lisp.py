@@ -1,11 +1,12 @@
 def evaluate(expr):
-	if type(expr) in (int, float):
+	t = type(expr)
+	if t in (int, float):
 		return expr
-	if type(expr) is not list:
-		raise BaseException("can only evaluate lists")
-	return t
+	if t is list:
+		return apply(expr[0], expr[1:])
+	raise BaseException(f"cannot evaluate type: {t}")
 	
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
-#print(evaluate(evaluate))
+print(evaluate(evaluate))
 print("ok")
