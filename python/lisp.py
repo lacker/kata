@@ -6,7 +6,7 @@ def evaluate(expr):
 		raise BaseException(f"cannot evaluate type: {t}")
 		
 	op = expr[0]
-	args = rest[1:]
+	args = map(evaluate, rest[1:])
 		if type(op) is not function:
 			raise BaseException(f"{op} is not a function")
 	return apply(op, args)
