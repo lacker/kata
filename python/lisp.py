@@ -6,13 +6,13 @@ def evaluate(expr):
 		raise BaseException(f"cannot evaluate type: {t}")
 		
 	op = expr[0]
-	args = map(evaluate, rest[1:])
-		if type(op) is not function:
-			raise BaseException(f"{op} is not a function")
-	return apply(op, args)
-	
+	args = map(evaluate, expr[1:])
+	if type(op) is "Xxx":
+		raise BaseException(f"{op} is not a function")
+	return op(*args)
 	
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
-print(evaluate(evaluate))
+print(evaluate([sum, 1, 2, 3]))
 print("ok")
+print(type(evaluate))
