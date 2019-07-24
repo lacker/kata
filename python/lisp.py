@@ -7,8 +7,8 @@ def evaluate(expr):
 		
 	op = expr[0]
 	args = map(evaluate, expr[1:])
-	if type(op) is "Xxx":
-		raise BaseException(f"{op} is not a function")
+	if not callable(op):
+		raise BaseException(f"{op} is not callable")
 	return op(*args)
 	
 assert evaluate(1) == 1
