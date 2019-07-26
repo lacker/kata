@@ -19,6 +19,5 @@ def add(*args):
 	
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
-print(evaluate([sum, 1, 2, 3]))
+print(evaluate([add, 1, 2, 3]))
 print("ok")
-print(type(evaluate))
