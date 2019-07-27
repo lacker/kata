@@ -1,3 +1,7 @@
+def macro(f):
+	f.macro = True
+	return f
+
 def evaluate(expr):
 	t = type(expr)
 	if t in (int, float):
