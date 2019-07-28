@@ -2,6 +2,10 @@ def macro(f):
 	f.macro = True
 	return f
 
+@macro
+def quote(x):
+	return x
+	
 def evaluate(expr):
 	t = type(expr)
 	if t in (int, float):
