@@ -17,7 +17,10 @@ def evaluate(expr):
 	args = map(evaluate, expr[1:])
 	if not callable(op):
 		raise BaseException(f"{op} is not callable")
-	return op(*args)
+	if op.macro:
+		return op(*args)
+	args = map(evalute, args)
+	return op(args)
 	
 def add(*args):
 	answer = 0
