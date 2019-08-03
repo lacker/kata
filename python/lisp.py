@@ -6,6 +6,13 @@ def macro(f):
 def quote(x):
 	return x
 	
+def is_macro(f):
+	try:
+		f.macro
+	except AttributeError:
+		return False
+	return True
+	
 def evaluate(expr):
 	t = type(expr)
 	if t in (int, float):
@@ -17,10 +24,10 @@ def evaluate(expr):
 	args = map(evaluate, expr[1:])
 	if not callable(op):
 		raise BaseException(f"{op} is not callable")
-	if op.macro:
+	if is_macro(op):
 		return op(*args)
-	args = map(evalute, args)
-	return op(args)
+	args = map(evaluate, args)
+	return op(*args)
 	
 def add(*args):
 	answer = 0
@@ -30,5 +37,5 @@ def add(*args):
 	
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
-print(evaluate([add, 1, 2, 3]))
+assert evaluate([add, 1, 2, 3]) == 6
 print("ok")
