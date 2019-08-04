@@ -1,3 +1,5 @@
+ENV = {}
+
 def macro(f):
 	f.macro = True
 	return f
