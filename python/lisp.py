@@ -5,6 +5,10 @@ def macro(f):
 	return f
 
 @macro
+def define(symbol, expr):
+	ENV[symbol] = expr
+
+@macro
 def quote(x):
 	return x
 	
