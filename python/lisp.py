@@ -25,7 +25,7 @@ def evaluate(expr):
 		return expr
 	if t is not list:
 		raise BaseException(f"cannot evaluate type: {t}")
-	if t is string:
+	if t is str:
 		return evaluate(ENV[expr])
 	if callable(expr):
 		return expr
