@@ -19,7 +19,7 @@ def is_macro(f):
 		return False
 	return True
 	
-def evaluate(expr):
+def evaluate(expr, local={}):
 	t = type(expr)
 	if t in (int, float):
 		return expr
