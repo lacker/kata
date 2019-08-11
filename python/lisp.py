@@ -24,7 +24,7 @@ def evaluate(expr, local={}):
 	if t in (int, float):
 		return expr
 	if t is str:
-		return evaluate(ENV[expr])
+		return evaluate(ENV[expr], local=local)
 	if callable(expr):
 		return expr
 	if t is not list:
