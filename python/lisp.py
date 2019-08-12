@@ -43,7 +43,10 @@ def add(*args):
 	answer = 0
 	for arg in args:
 		answer += arg
-	return answer	
+	return answer
+	
+def func(vars, expr):
+	raise Exception("TODO")
 	
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
