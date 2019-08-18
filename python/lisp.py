@@ -3,6 +3,10 @@ ENV = {}
 def macro(f):
 	f.macro = True
 	return f
+	
+def expose(f):
+	ENV[f.__name__] = f
+	return f
 
 @macro
 def define(symbol, expr):
