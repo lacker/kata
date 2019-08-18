@@ -48,6 +48,10 @@ def add(*args):
 def func(vars, expr):
 	raise Exception("TODO")
 	
+def do(exprs):
+	for expr in exprs:
+		evaluate(expr)
+	
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
 assert evaluate([add, 1, 2, 3]) == 6
