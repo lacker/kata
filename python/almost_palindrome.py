@@ -7,7 +7,12 @@ def seq_is_pal(s, i, j):
   return seq_is_pal(s, i+1, j-1)
  
 def is_almost_pal(s, i, j):
-	 return "xxx"
+	if i >= j:
+		return True
+	if s[i] == s[j]:
+		return is_almost_pal(s, i+1, j-1)
+		
+	return "xxx"
 	 
 def is_pal(s):
 	return seq_is_pal(s, 0, len(s)-1)
