@@ -10,8 +10,16 @@ fn is_palindrome(s: &[char]) -> bool {
     is_palindrome(&s[1..last])
 }
 
-fn main() {
-    let s = "footatoof";
+fn test_palindrome(s: &str) {
     let chars: Vec<char> = s.chars().collect();
-    println!("answer = {}", is_palindrome(&chars));
+    println!("is_palindrome(\"{}\") = {}", s, is_palindrome(&chars));
+}
+
+fn main() {
+    test_palindrome("");
+    test_palindrome("x");
+    test_palindrome("oo");
+    test_palindrome("boof");
+    test_palindrome("pogop");
+    test_palindrome("pogrop");
 }
