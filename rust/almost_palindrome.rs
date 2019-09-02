@@ -10,6 +10,17 @@ fn is_palindrome(s: &[char]) -> bool {
     is_palindrome(&s[1..last])
 }
 
+fn is_almost_palindrome(s: &[char]) -> bool {
+    if s.len() < 3 {
+        return true;
+    }
+    let last = s.len() - 1;
+    if s[0] == s[last] {
+        return is_almost_palindrome(&s[1..last]);
+    }
+    is_palindrome(&s[1..]) || is_palindrome(&s[..last])
+}
+
 fn test_palindrome(s: &str) {
     let chars: Vec<char> = s.chars().collect();
     println!("is_palindrome(\"{}\") = {}", s, is_palindrome(&chars));
