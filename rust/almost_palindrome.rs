@@ -21,21 +21,22 @@ fn is_almost_palindrome(s: &[char]) -> bool {
     is_palindrome(&s[1..]) || is_palindrome(&s[..last])
 }
 
-fn test_palindrome(s: &str) {
-    let chars: Vec<char> = s.chars().collect();
-    println!("is_palindrome(\"{}\") = {}", s, is_palindrome(&chars));
-}
-
 fn test_almost_palindrome(s: &str) {
     let chars: Vec<char> = s.chars().collect();
     println!("is_almost_palindrome(\"{}\") = {}", s, is_almost_palindrome(&chars));
 }
 
 fn main() {
-    test_palindrome("");
-    test_palindrome("x");
-    test_palindrome("oo");
-    test_palindrome("boof");
-    test_palindrome("pogop");
-    test_palindrome("pogrop");
+    test_almost_palindrome("");
+    test_almost_palindrome("x");
+    test_almost_palindrome("oo");
+    test_almost_palindrome("boof");
+    test_almost_palindrome("boofb");
+    test_almost_palindrome("bbboofbbb");
+    test_almost_palindrome("fboofb");
+    test_almost_palindrome("pogop");
+    test_almost_palindrome("pogrop");
+    test_almost_palindrome("pogrop");
+    test_almost_palindrome("pogroop");
+    test_almost_palindrome("pogrrop");
 }
