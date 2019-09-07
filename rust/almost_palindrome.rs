@@ -26,6 +26,11 @@ fn test_palindrome(s: &str) {
     println!("is_palindrome(\"{}\") = {}", s, is_palindrome(&chars));
 }
 
+fn test_almost_palindrome(s: &str) {
+    let chars: Vec<char> = s.chars().collect();
+    println!("is_almost_palindrome(\"{}\") = {}", s, is_almost_palindrome(&chars));
+}
+
 fn main() {
     test_palindrome("");
     test_palindrome("x");
