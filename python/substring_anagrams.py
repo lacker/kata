@@ -10,4 +10,9 @@ def find_substring_anagrams(big, small):
 	count = {}
 	for ch in small:
 		update(count, ch, -1)
-	# TODO
+	answer = []
+	for i, ch in enumerate:
+		update(count, ch, 1)
+		if not count:
+			answer.append(i - len(small) + 1)
+	return answer
