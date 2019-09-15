@@ -16,3 +16,5 @@ def find_substring_anagrams(big, small):
 		if not count:
 			answer.append(i - len(small) + 1)
 	return answer
+	
+print(find_substring_anagrams("boofoboo", "bo"))
