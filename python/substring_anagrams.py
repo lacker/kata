@@ -11,7 +11,7 @@ def find_substring_anagrams(big, small):
 	for ch in small:
 		update(count, ch, -1)
 	answer = []
-	for i, ch in enumerate:
+	for i, ch in enumerate(big):
 		update(count, ch, 1)
 		if not count:
 			answer.append(i - len(small) + 1)
