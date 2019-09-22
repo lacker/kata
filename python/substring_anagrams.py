@@ -13,6 +13,9 @@ def find_substring_anagrams(big, small):
 	answer = []
 	for i, ch in enumerate(big):
 		update(count, ch, 1)
+		j = i - len(small)
+		if j >= 0:
+			update(count, big[j], -1)
 		if not count:
 			answer.append(i - len(small) + 1)
 	return answer
