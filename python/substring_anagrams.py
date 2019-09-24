@@ -20,4 +20,4 @@ def find_substring_anagrams(big, small):
 			answer.append(i - len(small) + 1)
 	return answer
 	
-print(find_substring_anagrams("boofoboo", "bo"))
+find_substring_anagrams("abcdefedcba", "feed")
