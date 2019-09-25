@@ -21,3 +21,4 @@ def find_substring_anagrams(big, small):
 	return answer
 	
 find_substring_anagrams("abcdefedcba", "feed")
+find_substring_anagrams("","")
