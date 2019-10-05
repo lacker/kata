@@ -8,4 +8,5 @@ def all_perms(digits):
 		return [[]]
 	subperms = all_perms(digits[1:])
 	answer = []
-	raise Exception("todo")
+	for subperm in subperms:
+  	raise Exception("todo")
