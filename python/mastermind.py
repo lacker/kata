@@ -7,6 +7,7 @@ def all_perms(digits):
 	if not digits:
 		return [[]]
 	subperms = all_perms(digits[1:])
+	item = digits[0]
 	answer = []
 	for subperm in subperms:
   	raise Exception("todo")
