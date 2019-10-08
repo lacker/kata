@@ -11,4 +11,6 @@ def all_perms(digits):
 	answer = []
 	for subperm in subperms:
 		for i in range(len(digits)):
+			# put item at spot i
+			pre = subperm[:i]
     	raise Exception("todo")
