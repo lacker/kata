@@ -10,4 +10,5 @@ def all_perms(digits):
 	item = digits[0]
 	answer = []
 	for subperm in subperms:
-  	raise Exception("todo")
+		for i in range(len(digits)):
+    	raise Exception("todo")
