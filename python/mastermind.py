@@ -15,4 +15,4 @@ def all_perms(digits):
 			pre = subperm[:i]
 			post = subperm[i:]
 			newperm = pre + [item] + post
-    	raise Exception("todo")
+    	answer.append(newperm)
