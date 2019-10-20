@@ -16,3 +16,4 @@ def all_perms(digits):
 			post = subperm[i:]
 			newperm = pre + [item] + post
     	answer.append(newperm)
+  return answer
