@@ -19,3 +19,4 @@ def all_perms(digits):
 	return answer
 
 print(all_perms([1, 2]))
+print(all_perms([1, 2, 3]))
