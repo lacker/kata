@@ -18,5 +18,8 @@ def all_perms(digits):
 			answer.append(newperm)
 	return answer
 
+def right_place(perm1, perm2):
+	xxx
+
 print(all_perms([1, 2]))
 print(all_perms([1, 2, 3]))
