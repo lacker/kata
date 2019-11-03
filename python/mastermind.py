@@ -19,6 +19,7 @@ def all_perms(digits):
 	return answer
 
 def right_place(perm1, perm2):
+	score = 0
 	xxx
 
 print(all_perms([1, 2]))
