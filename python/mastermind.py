@@ -20,7 +20,9 @@ def all_perms(digits):
 
 def right_place(perm1, perm2):
 	score = 0
-	xxx
+	for x, y in zip(perm1, perm2):
+		score += 1
+	return score
 
 print(all_perms([1, 2]))
 print(all_perms([1, 2, 3]))
