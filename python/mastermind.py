@@ -24,5 +24,8 @@ def right_place(perm1, perm2):
 		score += 1
 	return score
 
+def right_items(list1, list2):
+	pass
+
 print(all_perms([1, 2]))
 print(all_perms([1, 2, 3]))
