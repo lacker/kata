@@ -24,6 +24,9 @@ def right_place(perm1, perm2):
 		score += 1
 	return score
 
+def make_count(items):
+	pass
+
 def right_items(list1, list2):
 	pass
 
