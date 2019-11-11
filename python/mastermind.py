@@ -25,7 +25,10 @@ def right_place(perm1, perm2):
 	return score
 
 def make_count(items):
-	pass
+	answer = {}
+	for item in items:
+		answer[item] = answer.get(item, 0) + 1
+	return answer
 
 def right_items(list1, list2):
 	pass
