@@ -31,7 +31,7 @@ def make_count(items):
 	return answer
 
 def right_items(list1, list2):
-	pass
+	count1 = make_count(list1)
 
 print(all_perms([1, 2]))
 print(all_perms([1, 2, 3]))
