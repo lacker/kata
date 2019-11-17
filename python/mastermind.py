@@ -32,6 +32,7 @@ def make_count(items):
 
 def right_items(list1, list2):
 	count1 = make_count(list1)
+	count2 = make_count(list2)
 
 print(all_perms([1, 2]))
 print(all_perms([1, 2, 3]))
