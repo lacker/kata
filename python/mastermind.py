@@ -35,7 +35,7 @@ def right_items(list1, list2):
 	count2 = make_count(list2)
 	answer = 0
 	for (item, count) in count1:
-		pass
+		answer += min(count, count2.get(item, 0))
 
 print(all_perms([1, 2]))
 print(all_perms([1, 2, 3]))
