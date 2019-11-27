@@ -40,3 +40,4 @@ def right_items(list1, list2):
 
 print(all_perms([1, 2]))
 print(all_perms([1, 2, 3]))
+print(right_items([1,1],[1,2,3,3]))
