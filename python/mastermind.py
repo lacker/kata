@@ -34,10 +34,8 @@ def right_items(list1, list2):
 	count1 = make_count(list1)
 	count2 = make_count(list2)
 	answer = 0
-	for (item, count) in count1:
+	for (item, count) in count1.items():
 		answer += min(count, count2.get(item, 0))
-	return answer
-
-print(all_perms([1, 2]))
-print(all_perms([1, 2, 3]))
+	return answer	
+			
 print(right_items([1,1],[1,2,3,3]))
