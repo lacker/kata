@@ -36,6 +36,9 @@ def right_items(list1, list2):
 	answer = 0
 	for (item, count) in count1.items():
 		answer += min(count, count2.get(item, 0))
-	return answer	
+	return answer
+	
+def print_score(list1, list2):
+	pass
 			
 print(right_items([1,1],[1,2,3,3]))
