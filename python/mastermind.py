@@ -39,6 +39,6 @@ def right_items(list1, list2):
 	return answer
 	
 def print_score(list1, list2):
-	pass
+	rp = right_place(list1, list2)
 			
 print(right_items([1,1],[1,2,3,3]))
