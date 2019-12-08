@@ -37,10 +37,10 @@ def right_items(list1, list2):
 	for (item, count) in count1.items():
 		answer += min(count, count2.get(item, 0))
 	return answer
-
-def right_list(list1, list2):
-    pass
-
+	
+def right_answer(list1, list2):
+	s1 = sorted(list1)	
+	
 def print_score(list1, list2):
 	rp = right_place(list1, list2)
 	ri = right_items(list1, list2)
