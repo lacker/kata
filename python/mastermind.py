@@ -39,7 +39,8 @@ def right_items(list1, list2):
 	return answer
 	
 def right_answer(list1, list2):
-	s1 = sorted(list1)	
+	s1 = sorted(list1)
+	s2 = sorted(list2)
 	
 def print_score(list1, list2):
 	rp = right_place(list1, list2)
