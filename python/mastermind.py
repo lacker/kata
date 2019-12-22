@@ -50,6 +50,6 @@ def check(list1, list2):
 		return True
 	rp = right_place(list1, list2)
 	ri = right_items(list1, list2)
-	print("ok")
+	return False
 			
 print(right_items([1,1],[1,2,3,3]))
