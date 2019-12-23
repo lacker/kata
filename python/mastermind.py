@@ -49,6 +49,7 @@ def check(list1, list2):
 		print("correct!")
 		return True
 	rp = right_place(list1, list2)
+	print(rp, "in the right place")
 	ri = right_items(list1, list2)
 	return False
 			
