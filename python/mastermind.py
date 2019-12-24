@@ -48,9 +48,10 @@ def check(list1, list2):
 	if right_answer(list1, list2):
 		print("correct!")
 		return True
+	ri = right_items(list1, list2)
 	rp = right_place(list1, list2)
 	print(rp, "in the right place")
-	ri = right_items(list1, list2)
+	print(ri - rp, "in the wrong place")
 	return False
 			
 print(right_items([1,1],[1,2,3,3]))
