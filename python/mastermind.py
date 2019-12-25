@@ -1,7 +1,10 @@
-from random import shuffle
+from random import choice, shuffle
 
 SIZE = 6
 DIGITS = range(SIZE)
+
+def generate():
+	answer = []
 
 def all_perms(digits):
 	if not digits:
@@ -52,6 +55,6 @@ def check(list1, list2):
 	rp = right_place(list1, list2)
 	print(rp, "in the right place")
 	print(ri - rp, "in the wrong place")
-	return False
-			
+	return False		
+							
 print(right_items([1,1],[1,2,3,3]))
