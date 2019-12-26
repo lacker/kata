@@ -5,6 +5,9 @@ DIGITS = range(SIZE)
 
 def generate():
 	answer = []
+	for _ in range(SIZE):
+		answer.append(choice(DIGITS))
+	return answer
 
 def all_perms(digits):
 	if not digits:
