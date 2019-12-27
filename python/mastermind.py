@@ -60,4 +60,7 @@ def check(list1, list2):
 	print(ri - rp, "in the wrong place")
 	return False		
 							
+def play():
+	target = generate()							
+							
 print(right_items([1,1],[1,2,3,3]))
