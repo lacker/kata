@@ -59,8 +59,12 @@ def check(list1, list2):
 	print(rp, "in the right place")
 	print(ri - rp, "in the wrong place")
 	return False		
-							
+
+def read():
+	while True:
+		pass							
+																					
 def play():
-	target = generate()							
+	target = generate()				
 							
 print(right_items([1,1],[1,2,3,3]))
