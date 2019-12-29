@@ -62,7 +62,8 @@ def check(list1, list2):
 
 def read():
 	while True:
-		pass							
+		line = input("guess:")			
+		print("line is", line)			
 																					
 def play():
 	target = generate()				
