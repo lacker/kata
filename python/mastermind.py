@@ -62,9 +62,14 @@ def check(list1, list2):
 
 def read():
 	line = input("guess:")			
-	print("line is", line)			
+	print("line is", line)
+	digits = line.split()
+	print("digits:", digits)
 																					
 def play():
-	target = generate()				
+	target = generate()
+	while True:
+		guess = read()
+			
 							
 print(right_items([1,1],[1,2,3,3]))
