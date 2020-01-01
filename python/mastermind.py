@@ -47,7 +47,7 @@ def right_items(list1, list2):
 def right_answer(list1, list2):
 	s1 = sorted(list1)
 	s2 = sorted(list2)
-	return s1 === s2
+	return s1 == s2
 
 # returns whether you did it	
 def check(list1, list2):
@@ -63,7 +63,7 @@ def check(list1, list2):
 def read():
 	line = input("guess:")			
 	print("line is", line)
-	digits = line.split()
+	digits = map(int, line.split())
 	print("digits:", digits)
 																					
 def play():
@@ -73,3 +73,5 @@ def play():
 			
 							
 print(right_items([1,1],[1,2,3,3]))
+
+play()
