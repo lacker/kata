@@ -63,7 +63,7 @@ def check(list1, list2):
 def read():
 	line = input("guess:")			
 	print("line is", line)
-	digits = map(int, line.split())
+	digits = list(map(int, line.split()))
 	print("digits:", digits)
 																					
 def play():
