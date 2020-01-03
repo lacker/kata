@@ -61,9 +61,8 @@ def check(list1, list2):
 	return False		
 
 def read():
-	line = input("guess:")			
-	print("line is", line)
-	digits = list(map(int, line.split()))
+	line = input("guess:")
+	digits = list(line.strip())
 	print("digits:", digits)
 																					
 def play():
