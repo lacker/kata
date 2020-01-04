@@ -66,6 +66,7 @@ def read():
 	print("digits:", digits)
 																					
 def play():
+	print("let's play a game")
 	target = generate()
 	while True:
 		guess = read()
