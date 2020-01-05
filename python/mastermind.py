@@ -61,9 +61,16 @@ def check(list1, list2):
 	return False		
 
 def read():
-	line = input("guess:")
-	digits = list(line.strip())
-	print("digits:", digits)
+	while True:
+		line = input("guess:")
+		chars = list(line.strip())
+		try:
+			digits = list(map(int, chars))
+			if len(digits) != 6:
+				continue
+			return digits
+		except:
+			pass
 																					
 def play():
 	print("let's play a game")
