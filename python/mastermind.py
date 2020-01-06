@@ -77,6 +77,8 @@ def play():
 	target = generate()
 	while True:
 		guess = read()
+		if check(target, guess):
+			return
 			
 							
 print(right_items([1,1],[1,2,3,3]))
