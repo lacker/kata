@@ -66,7 +66,7 @@ def read():
 		chars = list(line.strip())
 		try:
 			digits = list(map(int, chars))
-			if len(digits) != 6:
+			if len(digits) != SIZE:
 				continue
 			return digits
 		except:
