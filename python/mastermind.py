@@ -27,7 +27,8 @@ def all_perms(digits):
 def right_place(perm1, perm2):
 	score = 0
 	for x, y in zip(perm1, perm2):
-		score += 1
+		if x == y:
+			score += 1
 	return score
 
 def make_count(items):
@@ -77,7 +78,7 @@ def play():
 	target = generate()
 	while True:
 		guess = read()
-		if check(guess, target):
+		if check(target, guess):
 			print("you win")
 			return
 
