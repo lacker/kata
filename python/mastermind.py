@@ -75,6 +75,7 @@ def read():
 																					
 def play():
 	print("let's play a game")
+	guesses = 0
 	target = generate()
 	while True:
 		guess = read()
