@@ -50,6 +50,12 @@ def right_answer(list1, list2):
 	s2 = sorted(list2)
 	return s1 == s2
 
+def info(list1, list2):
+	return (
+		right_answer(list1, list2),
+	  right_items(list1, list2),
+	  right_place(list1, list2))
+
 # returns whether you did it	
 def check(list1, list2):
 	if right_answer(list1, list2):
