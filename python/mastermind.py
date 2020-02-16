@@ -85,6 +85,7 @@ def play():
 	target = generate()
 	while True:
 		guess = read()
+		guesses += 1
 		if check(target, guess):
 			print("you win")
 			return
