@@ -87,7 +87,7 @@ def play():
 		guess = read()
 		guesses += 1
 		if check(target, guess):
-			print("you win")
+			print("you win with", guesses, "guesses")
 			return
 
 play()
