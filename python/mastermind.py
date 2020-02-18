@@ -88,6 +88,6 @@ def play():
 		guesses += 1
 		if check(target, guess):
 			print("you win with", guesses, "guesses")
-			return
+			return guesses
 
 play()
