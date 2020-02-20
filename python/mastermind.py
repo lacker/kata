@@ -59,7 +59,7 @@ def info(list1, list2):
 # returns whether you did it	
 def check(list1, list2):
 	ra, ri, rp = info(list1, list2)
-	if right_answer(list1, list2):
+	if ra:
 		print("correct!")
 		return True
 	ri = right_items(list1, list2)
