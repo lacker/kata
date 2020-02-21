@@ -62,8 +62,6 @@ def check(list1, list2):
 	if ra:
 		print("correct!")
 		return True
-	ri = right_items(list1, list2)
-	rp = right_place(list1, list2)
 	print(rp, "in the right place")
 	print(ri - rp, "in the wrong place")
 	return False		
@@ -79,7 +77,14 @@ def read():
 			return digits
 		except:
 			pass
-																					
+	
+class HumanPlayer:
+	def __init__(self):
+		pass
+	
+	def guess():
+		raise Exception("todo")																					
+																																				
 def play():
 	print("let's play a game")
 	guesses = 0
