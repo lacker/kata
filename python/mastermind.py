@@ -83,7 +83,7 @@ class HumanPlayer:
 		pass
 	
 	def guess():
-		raise Exception("todo")																					
+		return read()																		
 																																				
 def play():
 	print("let's play a game")
