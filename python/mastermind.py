@@ -93,7 +93,7 @@ def play():
 	target = generate()
 	player = HumanPlayer()
 	while True:
-		guess = read()
+		guess = player.guess()
 		guesses += 1
 		if check(target, guess):
 			print("you win with", guesses, "guesses")
