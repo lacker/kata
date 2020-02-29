@@ -87,7 +87,7 @@ class HumanPlayer:
 		
 	
 																																				
-def play():
+def play(player):
 	print("let's play a game")
 	guesses = 0
 	target = generate()
@@ -99,4 +99,4 @@ def play():
 			print("you win with", guesses, "guesses")
 			return guesses
 
-play()
+play(HumanPlayer())
