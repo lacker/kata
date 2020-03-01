@@ -83,9 +83,13 @@ class HumanPlayer:
 		pass
 	
 	def guess():
-		return read()																	
+		return read()				
 		
-	
+	def inform(guess, ra, ri, rp):
+		if ra:
+			print("correct!")
+		print(rp, "in the right place")
+		print(ri - rp, "in the wrong place")	
 																																				
 def play(player):
 	print("let's play a game")
