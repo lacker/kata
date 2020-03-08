@@ -103,5 +103,6 @@ def play(player):
 			print("you win with", guesses, "guesses")
 			return guesses
 		ra, ri, rp = info(target, guess)
+		player.inform(guess, ra, ri, rp)
 
 play(HumanPlayer())
