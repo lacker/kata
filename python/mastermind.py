@@ -90,7 +90,10 @@ class HumanPlayer:
 			print("correct!")
 		print(rp, "in the right place")
 		print(ri - rp, "in the wrong place")	
-																																				
+
+class ComputerPlayer():
+	def __init__(self):
+		pass																														
 def play(player):
 	print("let's play a game")
 	guesses = 0
