@@ -9,6 +9,10 @@ def generate():
 		answer.append(choice(DIGITS))
 	return answer
 
+def all_possible():
+	answer = []
+	# TODO more
+
 def all_perms(digits):
 	if not digits:
 		return [[]]
