@@ -9,7 +9,9 @@ def generate():
 		answer.append(choice(DIGITS))
 	return answer
 
-def all_possible():
+def all_possible(length):
+	if length == 0:
+		return [[]]
 	answer = []
 	# TODO more
 
