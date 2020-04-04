@@ -13,6 +13,7 @@ def all_possible(length):
 	if length == 0:
 		return [[]]
 	answer = []
+	tails = all_possible(length - 1)
 	# TODO more
 
 def all_perms(digits):
