@@ -14,7 +14,10 @@ def all_possible(length):
 		return [[]]
 	answer = []
 	tails = all_possible(length - 1)
-	# TODO more
+	for first in digits:
+		for tail in tails:
+			answer.append([first] + tail)
+	return answer
 
 def all_perms(digits):
 	if not digits:
