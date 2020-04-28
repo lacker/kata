@@ -103,7 +103,8 @@ class HumanPlayer:
 
 class ComputerPlayer():
 	def __init__(self):
-		pass																														
+		self.possibilities = all_possible(SIZE)
+	
 def play(player):
 	print("let's play a game")
 	guesses = 0
