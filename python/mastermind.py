@@ -101,9 +101,10 @@ class HumanPlayer:
 		print(rp, "in the right place")
 		print(ri - rp, "in the wrong place")	
 
+
 class ComputerPlayer():
 	def __init__(self):
-		pass																														
+		self.possibilities = all_possibilities(SIZE)																												
 def play(player):
 	print("let's play a game")
 	guesses = 0
