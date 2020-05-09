@@ -109,7 +109,8 @@ class ComputerPlayer():
 		new_possibilities = []
 		for possibility in self.possibilities:
 			ta, ti, tp = info(guess, possibility)
-			pass # TODO																																
+			if ta, ti, tp == ra, ri, rp:
+				new_possibilities.append(possibility)																																
 def play(player):
 	print("let's play a game")
 	guesses = 0
