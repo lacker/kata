@@ -104,13 +104,17 @@ class HumanPlayer:
 
 class ComputerPlayer():
 	def __init__(self):
-		self.possibilities = all_possibile(SIZE)				
+		self.possibilities = all_possible(SIZE)				
+
 	def inform(guess, ra, ri, rp):
 		new_possibilities = []
 		for possibility in self.possibilities:
 			ta, ti, tp = info(guess, possibility)
 			if ta, ti, tp == ra, ri, rp:
-				new_possibilities.append(possibility)																																
+				new_possibilities.append(possibility)	
+				
+	def guess():
+		return self.possibilities[0]																																																													
 def play(player):
 	print("let's play a game")
 	guesses = 0
