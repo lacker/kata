@@ -119,7 +119,6 @@ def play(player):
 	print("let's play a game")
 	guesses = 0
 	target = generate()
-	player = HumanPlayer()
 	while True:
 		guess = player.guess()
 		guesses += 1
