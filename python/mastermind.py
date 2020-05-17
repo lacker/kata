@@ -128,4 +128,4 @@ def play(player):
 		ra, ri, rp = info(target, guess)
 		player.inform(guess, ra, ri, rp)
 
-play(HumanPlayer())
+play(ComputerPlayer())
