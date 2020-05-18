@@ -101,14 +101,24 @@ class HumanPlayer:
 		print(rp, "in the right place")
 		print(ri - rp, "in the wrong place")	
 
+
 class ComputerPlayer():
 	def __init__(self):
-		pass																														
+		self.possibilities = all_possible(SIZE)				
+
+	def inform(guess, ra, ri, rp):
+		new_possibilities = []
+		for possibility in self.possibilities:
+			ta, ti, tp = info(guess, possibility)
+			if ta, ti, tp == ra, ri, rp:
+				new_possibilities.append(possibility)	
+				
+	def guess():
+		return self.possibilities[0]																																																													
 def play(player):
 	print("let's play a game")
 	guesses = 0
 	target = generate()
-	player = HumanPlayer()
 	while True:
 		guess = player.guess()
 		guesses += 1
@@ -118,4 +128,4 @@ def play(player):
 		ra, ri, rp = info(target, guess)
 		player.inform(guess, ra, ri, rp)
 
-play(HumanPlayer())
+play(ComputerPlayer())
