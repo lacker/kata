@@ -14,7 +14,7 @@ iff.intro
 (or_swap q p)
 
 /- TODO: prove that times_successor(x) is even -/
-def times_successor (n : ℕ) := n * ( n + 1)
+def times_successor (n : ℕ) := n * (n + 1)
 
 def is_even (a : ℕ) := ∃ b, 2 * b = a
 
@@ -45,6 +45,12 @@ exists.intro (b + 1)
 )
 )
 
-/- TODO: get library_search working, try to avoid using this stupid lemma -/
+theorem even_or_odd (a : ℕ) : (is_even a) ∨ (is_odd a) := sorry
 
+/-
 
+TODO: get library_search working, try to avoid using this stupid lemma
+Might want/need to create a real project, via:
+https://leanprover-community.github.io/install/project.html
+
+-/
