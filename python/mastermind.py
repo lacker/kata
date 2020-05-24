@@ -14,7 +14,7 @@ def all_possible(length):
 		return [[]]
 	answer = []
 	tails = all_possible(length - 1)
-	for first in digits:
+	for first in DIGITS:
 		for tail in tails:
 			answer.append([first] + tail)
 	return answer
