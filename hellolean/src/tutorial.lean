@@ -34,7 +34,7 @@ exists.intro b
   )       
 )
 
-lemma l1: 2 * 1 = 1 + 1 := rfl
+lemma two_times_one: 2 * 1 = 1 + 1 := rfl
 
 theorem odd_plus_one_is_even (a : ℕ) (h: is_odd a) : is_even (a + 1) :=
 exists.elim h
@@ -42,16 +42,29 @@ exists.elim h
 exists.intro (b + 1)
 (calc
   2 * (b + 1) = 2 * b + 2 * 1 : by rw mul_add
-  ... = 2 * b + 1 + 1 : by rw l1
+  ... = 2 * b + 1 + 1 : by rw two_times_one
   ... = a + 1 : by rw hb
 )
 )
 
-theorem even_or_odd (a : ℕ) : (is_even a) ∨ (is_odd a) := sorry
+def eoro (a : ℕ) := (is_even a) ∨ (is_odd a)
+
+lemma even_plus_one_eoro (a : ℕ) (h: is_even a) : eoro (a + 1) :=
+(or.intro_right (is_even (a + 1)) (even_plus_one_is_odd a h))
+
+lemma odd_plus_one_eoro (a : ℕ) (h: is_odd a) : eoro (a + 1) :=
+(or.intro_left (is_odd (a + 1)) (odd_plus_one_is_even a h))
+
+lemma eoro_inducts (a : ℕ) (h: eoro a) : eoro (a + 1) :=
+or.elim h
+(assume he: is_even a, show eoro (a + 1), from even_plus_one_eoro a he)
+(assume ho: is_odd a, show eoro (a + 1), from odd_plus_one_eoro a ho)
+
 
 /-
 
 TODO: get library_search working
-TODO: avoid using this stupid lemma l1
+
+TODO: prove all eoro
 
 -/
