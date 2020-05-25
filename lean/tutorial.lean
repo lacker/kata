@@ -21,7 +21,7 @@ def is_even (a : ℕ) := ∃ b, 2 * b = a
 def is_odd (a : ℕ) := ∃ b, 2 * b + 1 = a
 
 theorem zero_is_even: is_even 0 :=
-exists.intro 0 (zero_mul 2)
+exists.intro 0 (nat.zero_mul 2)
 
 theorem even_plus_one_is_odd (a : ℕ) (h: is_even a) : is_odd (a + 1) :=
 exists.elim h
@@ -39,7 +39,7 @@ exists.elim h
 (assume b, assume hb: 2 * b + 1 = a, show is_even (a + 1), from
 exists.intro (b + 1)
 (calc
-  2 * (b + 1) = 2 * b + 2 * 1 : by rw mul_add
+  2 * (b + 1) = 2 * b + 2 * 1 : by rw nat.mul_add
   ... = 2 * b + 1 + 1 : by rw l1
   ... = a + 1 : by rw hb
 )
