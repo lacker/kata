@@ -15,9 +15,6 @@ iff.intro
 (or_swap p q)
 (or_swap q p)
 
-/- TODO: prove that times_successor(x) is even -/
-def times_successor (n : ℕ) := n * (n + 1)
-
 def is_even (a : ℕ) := ∃ b, 2 * b = a
 
 def is_odd (a : ℕ) := ∃ b, 2 * b + 1 = a
@@ -60,12 +57,40 @@ or.elim h
 (assume he: is_even a, show eoro (a + 1), from even_plus_one_eoro a he)
 (assume ho: is_odd a, show eoro (a + 1), from odd_plus_one_eoro a ho)
 
-theorem zero_eoro : (eoro 0) := or.intro_left (is_odd 0) zero_is_even
+lemma zero_eoro : (eoro 0) := or.intro_left (is_odd 0) zero_is_even
 
-/-
+theorem all_eoro (n : ℕ) : eoro n :=
+nat.rec_on n
+(show eoro 0, from zero_eoro)
+(assume n,
+ assume hn : eoro n,
+ show eoro (n + 1),
+ from eoro_inducts n hn)
 
-TODO: get library_search working
+def times_successor (n : ℕ) := n * (n + 1)
 
-TODO: prove all eoro
+theorem even_times_any (a b : ℕ) (h: is_even a) : is_even (a * b) :=
+exists.elim h
+(assume c, assume hc: 2 * c = a, show is_even (a * b), from
+ exists.intro (c * b)
+ (calc
+  2 * (c * b) = (2 * c) * b : by rw mul_assoc 2 c b
+  ... = a * b : by rw hc))
 
--/
+theorem any_times_even (a b : ℕ) (h: is_even b): is_even (a * b) :=
+have h1: b * a = a * b, from (mul_comm b a),
+have h2: is_even (b * a), from (even_times_any b a h),
+h1 ▸ h2
+
+lemma even_tse (a : ℕ) (h: is_even a) : is_even (times_successor a) :=
+even_times_any a (a + 1) h
+
+lemma odd_tse (a : ℕ) (h1: is_odd a) : is_even (times_successor a) :=
+have h2: is_even (a + 1), from (odd_plus_one_is_even a h1),
+any_times_even a (a + 1) h2
+
+theorem times_successor_even (a : ℕ) : is_even (times_successor a) :=
+have h: eoro a, from all_eoro a,
+or.elim h
+(assume he: is_even a, show is_even (times_successor a), from even_tse a he)
+(assume ho: is_odd a, show is_even (times_successor a), from odd_tse a ho)
