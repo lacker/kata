@@ -60,6 +60,7 @@ or.elim h
 (assume he: is_even a, show eoro (a + 1), from even_plus_one_eoro a he)
 (assume ho: is_odd a, show eoro (a + 1), from odd_plus_one_eoro a ho)
 
+theorem zero_eoro : (eoro 0) := or.intro_left (is_odd 0) zero_is_even
 
 /-
 
