@@ -94,3 +94,26 @@ have h: eoro a, from all_eoro a,
 or.elim h
 (assume he: is_even a, show is_even (times_successor a), from even_tse a he)
 (assume ho: is_odd a, show is_even (times_successor a), from odd_tse a ho)
+
+/- TODO: perhaps work towards FLT: x^p congruent to x, mod p? -/
+/- subgoal: every number has an inverse mod p -/
+/- subsubgoal: prove sub_smaller -/
+
+def is_composite (a : ℕ) := ∃ b, ∃ c, b > 1 ∧ c > 1 ∧ b * c = a
+
+def is_prime (p : ℕ) := p > 1 ∧ not (is_composite p)
+
+def divides (a b : ℕ) := ∃ c, a * c = b
+
+lemma sub_smaller (a b : ℕ) : 0 < b → a - b < a := sorry
+
+def mod : ℕ → ℕ → ℕ
+| a m :=
+  if h : 0 < m ∧ m ≤ a then
+    have a - m < a,
+      from sub_smaller a m h.left,
+    mod (a - m) m
+  else
+    a
+
+
