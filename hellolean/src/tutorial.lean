@@ -1,4 +1,6 @@
 import data.nat.basic
+import tactic.basic
+import tactic.suggest
 
 constants p q : Prop
 
@@ -95,9 +97,13 @@ or.elim h
 (assume he: is_even a, show is_even (times_successor a), from even_tse a he)
 (assume ho: is_odd a, show is_even (times_successor a), from odd_tse a ho)
 
-/- TODO: perhaps work towards FLT: x^p congruent to x, mod p? -/
-/- subgoal: every number has an inverse mod p -/
-/- subsubgoal: prove sub_smaller -/
+/-
+TODO: perhaps work towards FLT: x^p congruent to x, mod p?
+subgoals:
+define gcd
+∃ c, d s.t. ac + bd = gcd(a, b)
+euclid's lemma
+-/
 
 def is_composite (a : ℕ) := ∃ b, ∃ c, b > 1 ∧ c > 1 ∧ b * c = a
 
@@ -105,15 +111,16 @@ def is_prime (p : ℕ) := p > 1 ∧ not (is_composite p)
 
 def divides (a b : ℕ) := ∃ c, a * c = b
 
-lemma sub_smaller (a b : ℕ) : 0 < b → a - b < a := sorry
-
 def mod : ℕ → ℕ → ℕ
 | a m :=
   if h : 0 < m ∧ m ≤ a then
+    have ha: 0 < a,
+      from lt_of_lt_of_le h.left h.right,
     have a - m < a,
-      from sub_smaller a m h.left,
+      from nat.sub_lt ha h.left,
     mod (a - m) m
   else
     a
 
-
+theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
+: divides p a ∨ divides p b := sorry
