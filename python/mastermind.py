@@ -114,7 +114,8 @@ class ComputerPlayer():
 				new_possibilities.append(possibility)	
 				
 	def guess(self):
-		return self.possibilities[0]																																																													
+		answer = self.possibilities[0]
+		print("guessing:", answer)																																																											
 def play(player):
 	print("let's play a game")
 	guesses = 0
