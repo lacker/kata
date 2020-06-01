@@ -102,7 +102,9 @@ or.elim h
 TODO: perhaps work towards FLT: x^p congruent to x, mod p?
 subgoals:
 
-define smallest
+prove bounded_smallest
+prove any subset of naturals has a smallest element
+
 define gcd
 ∃ c, d s.t. ac + bd = gcd(a, b)
 euclid's lemma
@@ -126,8 +128,16 @@ def mod : ℕ → ℕ → ℕ
     a
 
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
+def is_not_empty (s : set ℕ) := ∃ a : ℕ, a ∈ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
+def strict_lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a < b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
+
+def bounded_subset (s : set ℕ) (a : ℕ) := {b : ℕ | b ∈ s ∧ b < a}
+
+lemma bounded_smallest (s : set ℕ) :
+∀ n : ℕ, is_empty (bounded_subset s n) ∨ ∃ a : ℕ, is_smallest a (bounded_subset s n) := sorry
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
+
