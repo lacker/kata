@@ -102,6 +102,8 @@ or.elim h
 TODO: perhaps work towards FLT: x^p congruent to x, mod p?
 subgoals:
 
+prove not_ltz
+prove bsz_empty
 prove bounded_smallest
 prove any subset of naturals has a smallest element
 
@@ -134,6 +136,16 @@ def strict_lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a < b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
 
 def bounded_subset (s : set ℕ) (a : ℕ) := {b : ℕ | b ∈ s ∧ b < a}
+
+theorem not_ltz (a : ℕ) : ¬ (a < 0) := sorry
+
+lemma bsz_sub_e (s : set ℕ) : bounded_subset s 0 ⊆ ∅ :=
+assume x,
+assume h : x ∈ bounded_subset s 0,
+have h1: x < 0, from h.right,
+show x ∈ ∅, from absurd h1 (not_ltz x)
+
+lemma bsz_empty (s : set ℕ) : bounded_subset s 0 = ∅ := sorry
 
 lemma bounded_smallest (s : set ℕ) :
 ∀ n : ℕ, is_empty (bounded_subset s n) ∨ ∃ a : ℕ, is_smallest a (bounded_subset s n) := sorry
