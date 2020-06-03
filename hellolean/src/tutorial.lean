@@ -154,8 +154,10 @@ lemma bsnz (s : set ℕ) : bsn s 0 := or.inl (bsz_empty s)
 lemma bs_containment (s : set ℕ) (n : ℕ) : (bounded_subset s n) ⊆ (bounded_subset s (n+1)) := 
 assume x,
 assume h : x ∈ bounded_subset s n,
-show x ∈ bounded_subset s (n+ 1),
-from sorry
+have hc : x ∈ s, from h.left,
+have hni : x < (n + 1), from nat.lt.step h.right,
+show x ∈ bounded_subset s (n + 1),
+from set.mem_sep hc hni
 
 lemma isbsi (s : set ℕ) (a n : ℕ) (h : is_smallest a (bounded_subset s n)) :
 is_smallest a (bounded_subset s (n+1)) := sorry
