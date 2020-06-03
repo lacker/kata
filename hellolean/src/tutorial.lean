@@ -160,7 +160,11 @@ show x ∈ bounded_subset s (n + 1),
 from set.mem_sep hc hni
 
 lemma isbsi (s : set ℕ) (a n : ℕ) (h : is_smallest a (bounded_subset s n)) :
-is_smallest a (bounded_subset s (n+1)) := sorry
+is_smallest a (bounded_subset s (n+1)) :=
+have h1: a ∈ bounded_subset s n, from h.left,
+have h2: bounded_subset s n ⊆ bounded_subset s (n+1), from bs_containment s n,
+have h3: a ∈ bounded_subset s (n+1), from set.mem_of_subset_of_mem h2 h1,
+show is_smallest a (bounded_subset s (n+1)), from sorry
 
 lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) :=
 or.elim h
@@ -169,10 +173,8 @@ or.elim h
   (assume hr : ∃ a : ℕ, is_smallest a (bounded_subset s n),
      exists.elim hr
        (assume x, assume hx : is_smallest x (bounded_subset s n),
-        have h1: x ∈ (bounded_subset s n), from hx.left,
-        have h2: (bounded_subset s n) ⊆ (bounded_subset s (n+1)), from bs_containment s n,
-        have h3: x ∈ (bounded_subset s (n+1)), from set.mem_of_subset_of_mem h2 h1,
-        show bsn s (n + 1), from sorry))
+        have hi: is_smallest x (bounded_subset s (n+1)), from isbsi s x n hx,
+        show bsn s (n + 1), from or.inr (exists.intro x hi)))
 
 lemma bounded_smallest (s : set ℕ) : ∀ n : ℕ, bsn s n := sorry
 
