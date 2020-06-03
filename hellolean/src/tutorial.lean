@@ -102,8 +102,7 @@ or.elim h
 TODO: perhaps work towards FLT: x^p congruent to x, mod p?
 subgoals:
 
-prove bounded_smallest
-prove any subset of naturals has a smallest element
+prove these unproved lemmas and theorems, top to bottom
 
 define gcd
 ∃ c, d s.t. ac + bd = gcd(a, b)
@@ -152,7 +151,21 @@ def bsn (s : set ℕ) (n : ℕ) :=
 
 lemma bsnz (s : set ℕ) : bsn s 0 := or.inl (bsz_empty s)
 
-lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) := sorry
+lemma bs_containment (s : set ℕ) (n : ℕ) : (bounded_subset s n) ⊆ (bounded_subset s (n+1)) := 
+assume x,
+assume h : x ∈ bounded_subset s n,
+show x ∈ bounded_subset s (n+ 1),
+from sorry
+
+lemma isbsi (s : set ℕ) (a n : ℕ) (h : is_smallest a (bounded_subset s n)) :
+is_smallest a (bounded_subset s (n+1)) := sorry
+
+lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) :=
+or.elim h
+  (assume hl : (bounded_subset s n) = ∅,
+     show bsn s (n + 1), from sorry)
+  (assume hr : ∃ a : ℕ, is_smallest a (bounded_subset s n),
+     show bsn s (n + 1), from sorry)
 
 lemma bounded_smallest (s : set ℕ) : ∀ n : ℕ, bsn s n := sorry
 
