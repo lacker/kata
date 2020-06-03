@@ -128,7 +128,6 @@ def mod : ℕ → ℕ → ℕ
 
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
-def strict_lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a < b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
 
 def bounded_subset (s : set ℕ) (a : ℕ) := {b : ℕ | b ∈ s ∧ b < a}
@@ -171,8 +170,18 @@ have hni : x < (n + 1), from nat.lt.step h.right,
 show x ∈ bounded_subset s (n + 1),
 from set.mem_sep hc hni
 
-lemma lbi (s : set ℕ) (b n : ℕ) (h: lower_bound b (bounded_subset s n)) :
-lower_bound b (bounded_subset s (n+1)) := sorry
+lemma lbi (s : set ℕ) (a n : ℕ) (h: lower_bound a (bounded_subset s n)) (ha : a < n) :
+lower_bound a (bounded_subset s (n+1)) :=
+assume b : ℕ,
+assume h1: b ∈ (bounded_subset s (n+1)),
+have h2: b ∈ bounded_subset s n ∨ b = n, from bsnib s b n h1,
+or.elim h2
+  (assume h3: b ∈ bounded_subset s n,
+   show a ≤ b, from h b h3)
+  (assume h4: b = n,
+   have h5: n = b, from eq.symm h4,
+   have h6: a < b, from eq.subst h5 ha,
+   show a ≤ b, from le_of_lt h6)
 
 lemma isbsi (s : set ℕ) (a n : ℕ) (h : is_smallest a (bounded_subset s n)) :
 is_smallest a (bounded_subset s (n+1)) :=
@@ -180,8 +189,9 @@ have h1: a ∈ bounded_subset s n, from h.left,
 have h2: bounded_subset s n ⊆ bounded_subset s (n+1), from bs_containment s n,
 have h3: a ∈ bounded_subset s (n+1), from set.mem_of_subset_of_mem h2 h1,
 have h4: lower_bound a (bounded_subset s n), from h.right,
-have h5: lower_bound a (bounded_subset s (n+1)), from lbi s a n h4,
-show is_smallest a (bounded_subset s (n+1)), from and.intro h3 h5
+have h5: a < n, from h1.right,
+have h6: lower_bound a (bounded_subset s (n+1)), from lbi s a n h4 h5,
+show is_smallest a (bounded_subset s (n+1)), from and.intro h3 h6
 
 lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) :=
 or.elim h
