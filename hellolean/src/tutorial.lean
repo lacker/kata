@@ -102,7 +102,6 @@ or.elim h
 TODO: perhaps work towards FLT: x^p congruent to x, mod p?
 subgoals:
 
-prove bsz_empty
 prove bounded_smallest
 prove any subset of naturals has a smallest element
 
@@ -129,7 +128,6 @@ def mod : ℕ → ℕ → ℕ
     a
 
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
-def is_not_empty (s : set ℕ) := ∃ a : ℕ, a ∈ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
 def strict_lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a < b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
@@ -144,10 +142,19 @@ assume h : x ∈ bounded_subset s 0,
 have h1: x < 0, from h.right,
 show x ∈ ∅, from absurd h1 (not_ltz x)
 
-lemma bsz_empty (s : set ℕ) : bounded_subset s 0 = ∅ := sorry
+lemma bsz_empty (s : set ℕ) : bounded_subset s 0 = ∅ :=
+set.eq_of_subset_of_subset
+  (bsz_sub_e s)
+  (bounded_subset s 0).empty_subset
 
-lemma bounded_smallest (s : set ℕ) :
-∀ n : ℕ, is_empty (bounded_subset s n) ∨ ∃ a : ℕ, is_smallest a (bounded_subset s n) := sorry
+def bsn (s : set ℕ) (n : ℕ) :=
+(bounded_subset s n) = ∅ ∨ ∃ a : ℕ, is_smallest a (bounded_subset s n)
+
+lemma bsnz (s : set ℕ) : bsn s 0 := or.inl (bsz_empty s)
+
+lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) := sorry
+
+lemma bounded_smallest (s : set ℕ) : ∀ n : ℕ, bsn s n := sorry
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
