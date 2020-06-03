@@ -151,6 +151,18 @@ def bsn (s : set ℕ) (n : ℕ) :=
 
 lemma bsnz (s : set ℕ) : bsn s 0 := or.inl (bsz_empty s)
 
+lemma bsnib (s : set ℕ) (a n : ℕ) (h : a ∈ bounded_subset s (n+1)) :
+a ∈ bounded_subset s n ∨ a = n :=
+if h1: a = n then
+  or.inr h1
+else
+  have h2: a < n + 1, from h.right,
+  have h3: a ≠ n, from h1,
+  have h4: a < n, from array.push_back_idx h2 h1,
+  have h5: a ∈ s, from h.left,
+  have hc: a ∈ bounded_subset s n, from and.intro h5 h4,
+  or.inl hc
+
 lemma bs_containment (s : set ℕ) (n : ℕ) : (bounded_subset s n) ⊆ (bounded_subset s (n+1)) := 
 assume x,
 assume h : x ∈ bounded_subset s n,
