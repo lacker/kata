@@ -167,7 +167,12 @@ or.elim h
   (assume hl : (bounded_subset s n) = ∅,
      show bsn s (n + 1), from sorry)
   (assume hr : ∃ a : ℕ, is_smallest a (bounded_subset s n),
-     show bsn s (n + 1), from sorry)
+     exists.elim hr
+       (assume x, assume hx : is_smallest x (bounded_subset s n),
+        have h1: x ∈ (bounded_subset s n), from hx.left,
+        have h2: (bounded_subset s n) ⊆ (bounded_subset s (n+1)), from bs_containment s n,
+        have h3: x ∈ (bounded_subset s (n+1)), from set.mem_of_subset_of_mem h2 h1,
+        show bsn s (n + 1), from sorry))
 
 lemma bounded_smallest (s : set ℕ) : ∀ n : ℕ, bsn s n := sorry
 
