@@ -171,12 +171,17 @@ have hni : x < (n + 1), from nat.lt.step h.right,
 show x ∈ bounded_subset s (n + 1),
 from set.mem_sep hc hni
 
+lemma lbi (s : set ℕ) (b n : ℕ) (h: lower_bound b (bounded_subset s n)) :
+lower_bound b (bounded_subset s (n+1)) := sorry
+
 lemma isbsi (s : set ℕ) (a n : ℕ) (h : is_smallest a (bounded_subset s n)) :
 is_smallest a (bounded_subset s (n+1)) :=
 have h1: a ∈ bounded_subset s n, from h.left,
 have h2: bounded_subset s n ⊆ bounded_subset s (n+1), from bs_containment s n,
 have h3: a ∈ bounded_subset s (n+1), from set.mem_of_subset_of_mem h2 h1,
-show is_smallest a (bounded_subset s (n+1)), from sorry
+have h4: lower_bound a (bounded_subset s n), from h.right,
+have h5: lower_bound a (bounded_subset s (n+1)), from lbi s a n h4,
+show is_smallest a (bounded_subset s (n+1)), from and.intro h3 h5
 
 lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) :=
 or.elim h
