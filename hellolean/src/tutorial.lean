@@ -193,10 +193,14 @@ have h5: a < n, from h1.right,
 have h6: lower_bound a (bounded_subset s (n+1)), from lbi s a n h4 h5,
 show is_smallest a (bounded_subset s (n+1)), from and.intro h3 h6
 
+lemma bsnei (s : set ℕ) (n : ℕ) (h : bounded_subset s n = ∅) :
+n ∈ s ∨ bounded_subset s (n + 1) = ∅ :=
+sorry
+
 lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) :=
 or.elim h
   (assume hl : (bounded_subset s n) = ∅,
-     show bsn s (n + 1), from sorry)
+    sorry)
   (assume hr : ∃ a : ℕ, is_smallest a (bounded_subset s n),
      exists.elim hr
        (assume x, assume hx : is_smallest x (bounded_subset s n),
