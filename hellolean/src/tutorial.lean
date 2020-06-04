@@ -99,17 +99,6 @@ or.elim h
 (assume he: is_even a, show is_even (times_successor a), from even_tse a he)
 (assume ho: is_odd a, show is_even (times_successor a), from odd_tse a ho)
 
-/-
-TODO: perhaps work towards FLT: x^p congruent to x, mod p?
-subgoals:
-
-prove these unproved lemmas and theorems, top to bottom
-
-define gcd
-∃ c, d s.t. ac + bd = gcd(a, b)
-euclid's lemma
--/
-
 def is_composite (a : ℕ) := ∃ b, ∃ c, b > 1 ∧ c > 1 ∧ b * c = a
 
 def is_prime (p : ℕ) := p > 1 ∧ not (is_composite p)
@@ -131,68 +120,7 @@ def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
 
-def bounded_subset (s : set ℕ) (a : ℕ) := {b : ℕ | b ∈ s ∧ b < a}
-
 theorem not_ltz (a : ℕ) : ¬ (a < 0) := not_lt_bot
-
-lemma bsz_sub_e (s : set ℕ) : bounded_subset s 0 ⊆ ∅ :=
-assume x,
-assume h : x ∈ bounded_subset s 0,
-have h1: x < 0, from h.right,
-show x ∈ ∅, from absurd h1 (not_ltz x)
-
-lemma bsz_empty (s : set ℕ) : bounded_subset s 0 = ∅ :=
-set.eq_of_subset_of_subset
-  (bsz_sub_e s)
-  (bounded_subset s 0).empty_subset
-
-def bsn (s : set ℕ) (n : ℕ) :=
-(bounded_subset s n) = ∅ ∨ ∃ a : ℕ, is_smallest a (bounded_subset s n)
-
-lemma bsnz (s : set ℕ) : bsn s 0 := or.inl (bsz_empty s)
-
-lemma bsnib (s : set ℕ) (a n : ℕ) (h : a ∈ bounded_subset s (n+1)) :
-a ∈ bounded_subset s n ∨ a = n :=
-if h1: a = n then
-  or.inr h1
-else
-  have h2: a < n + 1, from h.right,
-  have h3: a ≠ n, from h1,
-  have h4: a < n, from array.push_back_idx h2 h1,
-  have h5: a ∈ s, from h.left,
-  have hc: a ∈ bounded_subset s n, from and.intro h5 h4,
-  or.inl hc
-
-lemma bs_containment (s : set ℕ) (n : ℕ) : (bounded_subset s n) ⊆ (bounded_subset s (n+1)) := 
-assume x,
-assume h : x ∈ bounded_subset s n,
-have hc : x ∈ s, from h.left,
-have hni : x < (n + 1), from nat.lt.step h.right,
-show x ∈ bounded_subset s (n + 1),
-from set.mem_sep hc hni
-
-lemma lbbsi (s : set ℕ) (a n : ℕ) (h: lower_bound a (bounded_subset s n)) (ha : a < n) :
-lower_bound a (bounded_subset s (n+1)) :=
-assume b : ℕ,
-assume h1: b ∈ (bounded_subset s (n+1)),
-have h2: b ∈ bounded_subset s n ∨ b = n, from bsnib s b n h1,
-or.elim h2
-  (assume h3: b ∈ bounded_subset s n,
-   show a ≤ b, from h b h3)
-  (assume h4: b = n,
-   have h5: n = b, from eq.symm h4,
-   have h6: a < b, from eq.subst h5 ha,
-   show a ≤ b, from le_of_lt h6)
-
-lemma isbsi (s : set ℕ) (a n : ℕ) (h : is_smallest a (bounded_subset s n)) :
-is_smallest a (bounded_subset s (n+1)) :=
-have h1: a ∈ bounded_subset s n, from h.left,
-have h2: bounded_subset s n ⊆ bounded_subset s (n+1), from bs_containment s n,
-have h3: a ∈ bounded_subset s (n+1), from set.mem_of_subset_of_mem h2 h1,
-have h4: lower_bound a (bounded_subset s n), from h.right,
-have h5: a < n, from h1.right,
-have h6: lower_bound a (bounded_subset s (n+1)), from lbbsi s a n h4 h5,
-show is_smallest a (bounded_subset s (n+1)), from and.intro h3 h6
 
 lemma lower_bound_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
 (h1 : lower_bound a1 s1) (h2 : lower_bound a2 s2) (h3 : a1 ≤ a2) :
@@ -211,13 +139,6 @@ is_smallest a1 (s1 ∪ s2) :=
 have h4: a1 ∈ (s1 ∪ s2), from set.mem_union_left s2 h1.left,
 have h5: lower_bound a1 (s1 ∪ s2), from lower_bound_union s1 s2 a1 a2 h1.right h2.right h3,
 and.intro h4 h5
-
-lemma bsnlb (s : set ℕ) (n : ℕ) (h : bounded_subset s n = ∅) : lower_bound n s :=
-assume a : ℕ,
-assume h1 : a ∈ s,
-have h2: a ∉ bounded_subset s n, from not_of_eq_false (congr_arg (has_mem.mem a) h),
-have h3: ¬ (a < n), from not_and.mp h2 h1,
-show n ≤ a, from not_lt.mp h3
 
 lemma inne (s : set ℕ) (a b : ℕ) (ha : a ∈ s) (hb : b ∉ s) : a ≠ b :=
 have h1: a = b ∨ a ≠ b, from em(a=b),
@@ -294,6 +215,21 @@ or.elim h1
          )
      )
 )
+
+/-
+TODO: perhaps work towards FLT: x^p congruent to x, mod p?
+subgoals:
+
+prove these unproved lemmas and theorems, top to bottom
+
+define gcd
+∃ c, d s.t. ac + bd = gcd(a, b)
+euclid's lemma
+-/
+
+theorem one_divides (n : ℕ) : divides 1 n :=
+have h: 1 * n = n, from one_mul n,
+exists.intro n h
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
