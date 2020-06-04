@@ -265,6 +265,8 @@ exists.elim h4
    have h7: a ≤ a * b, from nat.le_mul_of_pos_right h6,
    show a ≤ n, from eq.subst h5 h7)
 
+def flip_set (s : set ℕ) (n : ℕ) := { a : ℕ | n - a ∈ s }
+
 theorem has_largest (s : set ℕ) (b : ℕ) (h1: s.nonempty) (h2: upper_bound b s) :
 ∃ a, is_largest a s :=
 sorry
