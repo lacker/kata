@@ -288,11 +288,12 @@ or.elim h1
       or.elim h7
         (assume h8: lower_bound (n+1) s,
          have h9: false, from nlb s n h6 h8,
-         show s = ∅ ∨ ∃ a, is_smallest a s, from false.rec (s = ∅ ∨ ∃ a, is_smallest a s) h9)
-        (sorry)
+         false.rec (s = ∅ ∨ ∃ a, is_smallest a s) h9)
+        (assume h10: ∃ a, is_smallest a s,
+         or.inr h10
+         )
      )
 )
-
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
