@@ -2,6 +2,7 @@ import data.nat.basic
 import data.set.basic
 import tactic.basic
 import tactic.suggest
+open classical
 
 constants p q : Prop
 
@@ -193,9 +194,21 @@ have h5: a < n, from h1.right,
 have h6: lower_bound a (bounded_subset s (n+1)), from lbi s a n h4 h5,
 show is_smallest a (bounded_subset s (n+1)), from and.intro h3 h6
 
-lemma bsnei (s : set ℕ) (n : ℕ) (h : bounded_subset s n = ∅) :
-n ∈ s ∨ bounded_subset s (n + 1) = ∅ :=
-sorry
+lemma lower_bound_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
+(h1 : lower_bound a1 s1) (h2 : lower_bound a2 s2) (h3 : a1 ≤ a2) :
+lower_bound a1 (s1 ∪ s2) :=
+assume b : ℕ,
+assume h4: b ∈ (s1 ∪ s2),
+or.elim h4
+(assume h5: b ∈ s1, show a1 ≤ b, from sorry)
+(assume h6: b ∈ s2, show a1 ≤ b, from sorry)
+
+lemma is_smallest_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
+(h1 : is_smallest a1 s1) (h2 : is_smallest a2 s2) (h3 : a1 ≤ a2) :
+is_smallest a1 (s1 ∪ s2) :=
+have h4: a1 ∈ (s1 ∪ s2), from set.mem_union_left s2 h1.left,
+have h5: lower_bound a1 (s1 ∪ s2), from lower_bound_union s1 s2 a1 a2 h1.right h2.right h3,
+and.intro h4 h5
 
 lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) :=
 or.elim h
