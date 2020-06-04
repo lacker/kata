@@ -200,8 +200,10 @@ lower_bound a1 (s1 ∪ s2) :=
 assume b : ℕ,
 assume h4: b ∈ (s1 ∪ s2),
 or.elim h4
-(assume h5: b ∈ s1, show a1 ≤ b, from sorry)
-(assume h6: b ∈ s2, show a1 ≤ b, from sorry)
+(assume h5: b ∈ s1, show a1 ≤ b, from h1 b h5)
+(assume h6: b ∈ s2,
+ have h7: a2 ≤ b, from h2 b h6,
+ show a1 ≤ b, from le_trans h3 h7)
 
 lemma is_smallest_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
 (h1 : is_smallest a1 s1) (h2 : is_smallest a2 s2) (h3 : a1 ≤ a2) :
