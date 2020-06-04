@@ -171,7 +171,7 @@ have hni : x < (n + 1), from nat.lt.step h.right,
 show x ∈ bounded_subset s (n + 1),
 from set.mem_sep hc hni
 
-lemma lbi (s : set ℕ) (a n : ℕ) (h: lower_bound a (bounded_subset s n)) (ha : a < n) :
+lemma lbbsi (s : set ℕ) (a n : ℕ) (h: lower_bound a (bounded_subset s n)) (ha : a < n) :
 lower_bound a (bounded_subset s (n+1)) :=
 assume b : ℕ,
 assume h1: b ∈ (bounded_subset s (n+1)),
@@ -191,7 +191,7 @@ have h2: bounded_subset s n ⊆ bounded_subset s (n+1), from bs_containment s n,
 have h3: a ∈ bounded_subset s (n+1), from set.mem_of_subset_of_mem h2 h1,
 have h4: lower_bound a (bounded_subset s n), from h.right,
 have h5: a < n, from h1.right,
-have h6: lower_bound a (bounded_subset s (n+1)), from lbi s a n h4 h5,
+have h6: lower_bound a (bounded_subset s (n+1)), from lbbsi s a n h4 h5,
 show is_smallest a (bounded_subset s (n+1)), from and.intro h3 h6
 
 lemma lower_bound_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
@@ -212,17 +212,87 @@ have h4: a1 ∈ (s1 ∪ s2), from set.mem_union_left s2 h1.left,
 have h5: lower_bound a1 (s1 ∪ s2), from lower_bound_union s1 s2 a1 a2 h1.right h2.right h3,
 and.intro h4 h5
 
-lemma bounded_smallest_inducts (s : set ℕ) (n : ℕ) (h : bsn s n) : bsn s (n + 1) :=
-or.elim h
-  (assume hl : (bounded_subset s n) = ∅,
-    sorry)
-  (assume hr : ∃ a : ℕ, is_smallest a (bounded_subset s n),
-     exists.elim hr
-       (assume x, assume hx : is_smallest x (bounded_subset s n),
-        have hi: is_smallest x (bounded_subset s (n+1)), from isbsi s x n hx,
-        show bsn s (n + 1), from or.inr (exists.intro x hi)))
+lemma bsnlb (s : set ℕ) (n : ℕ) (h : bounded_subset s n = ∅) : lower_bound n s :=
+assume a : ℕ,
+assume h1 : a ∈ s,
+have h2: a ∉ bounded_subset s n, from not_of_eq_false (congr_arg (has_mem.mem a) h),
+have h3: ¬ (a < n), from not_and.mp h2 h1,
+show n ≤ a, from not_lt.mp h3
 
-lemma bounded_smallest (s : set ℕ) : ∀ n : ℕ, bsn s n := sorry
+lemma inne (s : set ℕ) (a b : ℕ) (ha : a ∈ s) (hb : b ∉ s) : a ≠ b :=
+have h1: a = b ∨ a ≠ b, from em(a=b),
+or.elim h1
+  (assume h2: a = b,
+   have h3: b ∈ s, from eq.subst h2 ha,
+   show a ≠ b, from absurd h3 hb)
+  (assume h4: a ≠ b, show a ≠ b, from h4)
+
+lemma lbih (s : set ℕ) (n : ℕ) (h1 : lower_bound n s) (h2 : n ∉ s) : lower_bound (n+1) s :=
+assume b : ℕ,
+assume h3 : b ∈ s,
+have h4: b ≠ n, from inne s b n h3 h2,
+have h5: b ≥ n, from h1 b h3,
+have h6: b > n, from lt_of_le_of_ne h5 (ne.symm h4),
+show b ≥ n + 1, from h6
+
+lemma lbi1 (s : set ℕ) (n : ℕ) (h : lower_bound n s) : is_smallest n s ∨ lower_bound (n+1) s :=
+have h1: n ∈ s ∨ n ∉ s, from em(n ∈ s),
+or.elim h1
+  (assume h2: n ∈ s,
+   have h3: is_smallest n s, from and.intro h2 h,
+   or.inl h3)
+  (assume h3: n ∉ s,
+   have h4: lower_bound (n+1) s, from lbih s n h h3,
+   or.inr h4)
+
+lemma lbiz (s : set ℕ) : lower_bound 0 s :=
+assume b : ℕ,
+assume h: b ∈ s,
+show b ≥ 0, from bot_le
+
+lemma lbi2 (s : set ℕ) (n : ℕ) : lower_bound n s ∨ ∃ a, is_smallest a s :=
+nat.rec_on n
+(or.inl (lbiz s))
+(assume n,
+ assume h1: lower_bound n s ∨ ∃ a, is_smallest a s,
+ or.elim h1
+ (assume h2: lower_bound n s,
+  have h3: is_smallest n s ∨ lower_bound (n+1) s, from lbi1 s n h2,
+  or.elim h3
+    (assume h4: is_smallest n s,
+     have h5: ∃ a, is_smallest a s, from exists.intro n h4,
+     or.inr h5)
+    (assume h6: lower_bound (n+1) s,
+     or.inl h6)
+  )
+ (assume ha: ∃ a, is_smallest a s,
+  or.inr ha)
+)
+
+lemma nlb (s : set ℕ) (n : ℕ) (h1: n ∈ s) (h2: lower_bound (n+1) s) : false := 
+have h3: n + 1 ≤ n, from h2 n h1,
+have h4: n + 1 > n, from lt_add_one n,
+show false, from nat.lt_le_antisymm h4 h3
+
+theorem well_ordered (s : set ℕ) : s = ∅ ∨ ∃ a, is_smallest a s :=
+have h1: s = ∅ ∨ s ≠ ∅, from em(s = ∅),
+or.elim h1
+  (assume h2: s = ∅, or.inl h2)
+  (assume h3: s ≠ ∅,
+   have h4: s.nonempty, from set.nmem_singleton_empty.mp h3,
+   have h5: ∃ a, a ∈ s, from h4,
+   exists.elim h4
+     (assume n,
+      assume h6: n ∈ s,
+      have h7: lower_bound (n+1) s ∨ ∃ a, is_smallest a s, from lbi2 s (n+1),
+      or.elim h7
+        (assume h8: lower_bound (n+1) s,
+         have h9: false, from nlb s n h6 h8,
+         show s = ∅ ∨ ∃ a, is_smallest a s, from false.rec (s = ∅ ∨ ∃ a, is_smallest a s) h9)
+        (sorry)
+     )
+)
+
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
