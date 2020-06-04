@@ -118,7 +118,9 @@ def mod : ℕ → ℕ → ℕ
 
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
+def upper_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≥ b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
+def is_largest (a : ℕ) (s : set ℕ) := a ∈ s ∧ upper_bound a s
 
 theorem not_ltz (a : ℕ) : ¬ (a < 0) := not_lt_bot
 
@@ -230,6 +232,42 @@ euclid's lemma
 theorem one_divides (n : ℕ) : divides 1 n :=
 have h: 1 * n = n, from one_mul n,
 exists.intro n h
+
+def divisors (n : ℕ) := { d : ℕ | divides d n }
+
+theorem divisors_nonempty (n : ℕ) : (divisors n).nonempty :=
+have 1 ∈ (divisors n), from one_divides n,
+show (divisors n).nonempty, from set.nonempty_of_mem this
+
+lemma divisor_nonzero (a b c : ℕ) (h1 : c > 0) (h2 : a * b = c) : b > 0 :=
+have h3: b = 0 ∨ b > 0, from nat.eq_zero_or_pos b,
+or.elim h3
+  (assume h4: b = 0,
+   have h5: a * 0 = 0, from rfl,
+   have h6: a * b = 0, from eq.subst (eq.symm h4) h5,
+   have h7: c = 0, from eq.subst h2 h6,
+   have h8: ¬ (0 > 0), from irrefl 0,
+   have h9: ¬ (c > 0), from eq.subst (eq.symm h7) h8,
+   absurd h1 h9)
+  (assume h10: b > 0,
+   h10)
+
+theorem divisors_bounded (n : ℕ) (h : n > 0) : upper_bound n (divisors n) :=
+assume a,
+assume h1: a ∈ divisors n,
+have h2: divides a n, from h1,
+have h3: 0 < n, from h,
+have h4: ∃ c, a * c = n, from h1,
+exists.elim h4
+  (assume b,
+   assume h5: a * b = n,
+   have h6: b > 0, from divisor_nonzero a b n h h5,
+   have h7: a ≤ a * b, from nat.le_mul_of_pos_right h6,
+   show a ≤ n, from eq.subst h5 h7)
+
+theorem has_largest (s : set ℕ) (b : ℕ) (h1: s.nonempty) (h2: upper_bound b s) :
+∃ a, is_largest a s :=
+sorry
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
