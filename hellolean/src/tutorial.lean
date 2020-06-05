@@ -265,11 +265,30 @@ exists.elim h4
    have h7: a ≤ a * b, from nat.le_mul_of_pos_right h6,
    show a ≤ n, from eq.subst h5 h7)
 
-def flip_set (s : set ℕ) (n : ℕ) := { a : ℕ | n - a ∈ s }
+def flip_set (s : set ℕ) (n : ℕ) := { a : ℕ | a ≤ n ∧ n - a ∈ s }
 
-theorem has_largest (s : set ℕ) (b : ℕ) (h1: s.nonempty) (h2: upper_bound b s) :
-∃ a, is_largest a s :=
-sorry
+lemma doubleflip (a n : ℕ) (h: a ≤ n) : (n - (n - a)) = a := nat.sub_sub_self h
+
+lemma lb_flips (s : set ℕ) (a n : ℕ) (h1: lower_bound a s) :
+upper_bound (n - a) (flip_set s n) :=
+(assume b,
+ assume h2: b ∈ (flip_set s n),
+ have h3: n - b ∈ s, from h2.right,
+ have h4: a ≤ n - b, from h1 (n-b) h3,
+ have h5: b ≤ n, from h2.left,
+ have h6: a + b ≤ n, from (nat.add_le_to_le_sub a h5).mpr h4,
+ show n - a ≥ b, from sorry)
+
+lemma smallest_flips (s : set ℕ) (a n : ℕ) (h1: upper_bound n s) (h2: is_smallest a s) :
+is_largest (n-a) (flip_set s n) :=
+have h3: a ∈ s, from h2.left,
+have h4: n ≥ a, from h1 a h3,
+have h5: n - (n - a) = a, from doubleflip a n h4,
+have h6: n - (n - a) ∈ s, from set.mem_of_eq_of_mem h5 h3,
+have h7: n - a ≤ n, from nat.sub_le n a,
+have h8: n - a ∈ (flip_set s n), from and.intro h7 h6,
+have h9: upper_bound (n - a) (flip_set s n), from lb_flips s a n h2.right,
+and.intro h8 h9
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
