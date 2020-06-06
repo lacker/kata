@@ -106,17 +106,6 @@ def is_prime (p : ℕ) := p > 1 ∧ not (is_composite p)
 
 def divides (a b : ℕ) := ∃ c, a * c = b
 
-def mod : ℕ → ℕ → ℕ
-| a m :=
-  if h : 0 < m ∧ m ≤ a then
-    have ha: 0 < a,
-      from lt_of_lt_of_le h.left h.right,
-    have a - m < a,
-      from nat.sub_lt ha h.left,
-    mod (a - m) m
-  else
-    a
-
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
 def upper_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≥ b
@@ -338,6 +327,20 @@ exists.elim h4
  have h8: flip_set (flip_set s n) n = s, from double_flip s n h1,
  have h9: is_largest (n-b) s, from eq.subst h8 h7,
  show ∃ a, is_largest a s, from exists.intro (n-b) h9)
+
+def common_divisors (a b : ℕ) := (divisors a) ∩ (divisors b)
+
+def is_gcd (d a b : ℕ) := is_largest d (common_divisors a b)
+
+def relatively_prime (a b : ℕ) := is_gcd 1 a b
+
+theorem division (a m : ℕ) (h1: m > 0) : ∃ c : ℕ, ∃ d : ℕ, m * c + d = a ∧ d < m :=
+nat.rec_on a
+(have h2: m * 0 + 0 = 0, from rfl,
+ have h3: m * 0 + 0 = 0 ∧ 0 < m, from and.intro h2 h1,
+ have h4: ∃ d : ℕ, m * 0 + d = 0 ∧ d < m, from exists.intro 0 h3,
+ show ∃ c : ℕ, ∃ d : ℕ, m * c + d = 0 ∧ d < m, from exists.intro 0 h4)
+(sorry)
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
