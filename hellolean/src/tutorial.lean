@@ -278,8 +278,13 @@ show a ∈ s, from eq.subst h5 h4
 
 lemma df2 (s : set ℕ) (n : ℕ) (h1 : upper_bound n s) : s ⊆ flip_set (flip_set s n) n :=
 assume a,
-assume h1: a ∈ s,
-show a ∈ flip_set (flip_set s n) n, from sorry
+assume h2: a ∈ s,
+have h3: n - a ≤ n, from nat.sub_le n a,
+have h4: a ≤ n, from h1 a h2,
+have h5: n - (n - a) = a, from nat.sub_sub_self h4,
+have h6: n - (n - a) ∈ s, from eq.subst (eq.symm h5) h2,
+have h7: n - a ∈ flip_set s n, from and.intro h3 h6,
+show a ∈ flip_set (flip_set s n) n, from and.intro h4 h7
 
 def double_flip (s : set ℕ) (n : ℕ) (h1: upper_bound n s) : flip_set (flip_set s n) n = s :=
 set.subset.antisymm (df1 s n) (df2 s n h1)
