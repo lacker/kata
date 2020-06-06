@@ -334,13 +334,17 @@ def is_gcd (d a b : ℕ) := is_largest d (common_divisors a b)
 
 def relatively_prime (a b : ℕ) := is_gcd 1 a b
 
+/- TODO: split h5 into cases, either way show the recursion -/
+
 theorem division (a m : ℕ) (h1: m > 0) : ∃ c : ℕ, ∃ d : ℕ, m * c + d = a ∧ d < m :=
 nat.rec_on a
 (have h2: m * 0 + 0 = 0, from rfl,
  have h3: m * 0 + 0 = 0 ∧ 0 < m, from and.intro h2 h1,
  have h4: ∃ d : ℕ, m * 0 + d = 0 ∧ d < m, from exists.intro 0 h3,
  show ∃ c : ℕ, ∃ d : ℕ, m * c + d = 0 ∧ d < m, from exists.intro 0 h4)
-(sorry)
+(assume n,
+ assume h5: ∃ c : ℕ, ∃ d : ℕ, m * c + d = n ∧ d < m,
+ show ∃ c : ℕ, ∃ d : ℕ, m * c + d = n + 1 ∧ d < m, from sorry)
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
