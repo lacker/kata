@@ -1,5 +1,6 @@
 import data.nat.basic
 import data.set.basic
+import logic.basic
 import tactic.basic
 import tactic.suggest
 open classical
@@ -197,26 +198,16 @@ have h3: n + 1 ≤ n, from h2 n h1,
 have h4: n + 1 > n, from lt_add_one n,
 show false, from nat.lt_le_antisymm h4 h3
 
-theorem well_ordered (s : set ℕ) : s = ∅ ∨ ∃ a, is_smallest a s :=
-have h1: s = ∅ ∨ s ≠ ∅, from em(s = ∅),
-or.elim h1
-  (assume h2: s = ∅, or.inl h2)
-  (assume h3: s ≠ ∅,
-   have h4: s.nonempty, from set.nmem_singleton_empty.mp h3,
-   have h5: ∃ a, a ∈ s, from h4,
-   exists.elim h4
-     (assume n,
-      assume h6: n ∈ s,
-      have h7: lower_bound (n+1) s ∨ ∃ a, is_smallest a s, from lbi2 s (n+1),
-      or.elim h7
-        (assume h8: lower_bound (n+1) s,
-         have h9: false, from nlb s n h6 h8,
-         false.rec (s = ∅ ∨ ∃ a, is_smallest a s) h9)
-        (assume h10: ∃ a, is_smallest a s,
-         or.inr h10
-         )
-     )
-)
+theorem well_ordered (s : set ℕ) (h1: s.nonempty) : ∃ a, is_smallest a s :=
+exists.elim h1
+ (assume n,
+  assume h2: n ∈ s,
+  have h3: lower_bound (n+1) s ∨ ∃ a, is_smallest a s, from lbi2 s (n+1),
+  or.elim h3
+    (assume h4: lower_bound (n+1) s,
+     have h5: false, from nlb s n h2 h4,
+     false.rec (∃ a, is_smallest a s) h5)
+    (assume h6: ∃ a, is_smallest a s, show ∃ a, is_smallest a s, from h6)
 
 /-
 TODO: perhaps work towards FLT: x^p congruent to x, mod p?
@@ -310,8 +301,34 @@ have h8: n - a ∈ (flip_set s n), from and.intro h7 h6,
 have h9: upper_bound (n - a) (flip_set s n), from lb_flips s a n h2.right,
 and.intro h8 h9
 
+lemma nonempty_flips (s : set ℕ) (n : ℕ) (h1: upper_bound n s) (h2: s.nonempty) :
+(flip_set s n).nonempty :=
+exists.elim h2
+(assume a,
+ assume h3: a ∈ s,
+ have h4: a ≤ n, from h1 a h3,
+ have h5: n - (n - a) = a, from nat.sub_sub_self h4,
+ have h6: n - a ≤ n, from nat.sub_le n a,
+ have h7: n - (n - a) ∈ s, from eq.subst (eq.symm h5) h3,
+ have h6: n - a ∈ flip_set s n, from set.mem_sep h6 h7,
+ show (flip_set s n).nonempty, from set.nonempty_of_mem h6)
 
+theorem bounded_has_largest (s : set ℕ) (n : ℕ) (h1: upper_bound n s) (h2: s.nonempty) :
+∃ a, is_largest a s :=
+have h3: (flip_set s n).nonempty, from nonempty_flips s n h1 h2,
+have h4: ∃ x, is_smallest x (flip_set s n), from well_ordered (flip_set s n) h3,
+exists.elim h4
+(assume b,
+ assume h5: is_smallest b (flip_set s n),
+ have h6: upper_bound n (flip_set s n), from lb_flips s 0 n (lbiz s),
+ have h7: is_largest (n-b) (flip_set (flip_set s n) n),
+   from (smallest_flips (flip_set s n) b n h6 h5),
+ have h8: flip_set (flip_set s n) n = s, from double_flip s n h1,
+ have h9: is_largest (n-b) s, from eq.subst h8 h7,
+ show ∃ a, is_largest a s, from exists.intro (n-b) h9)
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
+
+
 
