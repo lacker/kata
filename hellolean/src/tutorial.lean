@@ -126,7 +126,7 @@ def is_largest (a : ℕ) (s : set ℕ) := a ∈ s ∧ upper_bound a s
 theorem not_ltz (a : ℕ) : ¬ (a < 0) := not_lt_bot
 
 lemma lower_bound_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
-(h1 : lower_bound a1 s1) (h2 : lower_bound a2 s2) (h3 : a1 ≤ a2) :
+(h1: lower_bound a1 s1) (h2: lower_bound a2 s2) (h3 : a1 ≤ a2) :
 lower_bound a1 (s1 ∪ s2) :=
 assume b : ℕ,
 assume h4: b ∈ (s1 ∪ s2),
@@ -135,6 +135,18 @@ or.elim h4
 (assume h6: b ∈ s2,
  have h7: a2 ≤ b, from h2 b h6,
  show a1 ≤ b, from le_trans h3 h7)
+
+lemma upper_bound_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
+(h1: upper_bound a1 s1) (h2: upper_bound a2 s2) (h3 : a1 ≤ a2) :
+upper_bound a2 (s1 ∪ s2) :=
+assume b : ℕ,
+assume h4: b ∈ s1 ∪ s2,
+or.elim h4
+(assume h5: b ∈ s1,
+ have h6: a1 ≥ b, from h1 b h5,
+ show a2 ≥ b, from le_trans h6 h3)
+(assume h7: b ∈ s2,
+ show a2 ≥ b, from h2 b h7)
 
 lemma is_smallest_union (s1 s2 : set ℕ) (a1 a2 : ℕ)
 (h1 : is_smallest a1 s1) (h2 : is_smallest a2 s2) (h3 : a1 ≤ a2) :
@@ -207,7 +219,7 @@ exists.elim h1
     (assume h4: lower_bound (n+1) s,
      have h5: false, from nlb s n h2 h4,
      false.rec (∃ a, is_smallest a s) h5)
-    (assume h6: ∃ a, is_smallest a s, show ∃ a, is_smallest a s, from h6)
+    (assume h6: ∃ a, is_smallest a s, show ∃ a, is_smallest a s, from h6))
 
 /-
 TODO: perhaps work towards FLT: x^p congruent to x, mod p?
