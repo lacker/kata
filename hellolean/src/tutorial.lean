@@ -369,5 +369,3 @@ theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
 
 
-
-(congr_arg (has_add.add (m * c)) (eq.symm h9)).trans h11
