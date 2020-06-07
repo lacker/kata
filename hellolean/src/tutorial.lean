@@ -344,10 +344,30 @@ nat.rec_on a
  show ∃ c : ℕ, ∃ d : ℕ, m * c + d = 0 ∧ d < m, from exists.intro 0 h4)
 (assume n,
  assume h5: ∃ c : ℕ, ∃ d : ℕ, m * c + d = n ∧ d < m,
- show ∃ c : ℕ, ∃ d : ℕ, m * c + d = n + 1 ∧ d < m, from sorry)
+ exists.elim h5
+ (assume c,
+  assume h6: ∃ d : ℕ, m * c + d = n ∧ d < m,
+  exists.elim h6
+  (assume d,
+   assume h7: m * c + d = n ∧ d < m,
+   have h8: d + 1 = m ∨ d + 1 ≠ m, from em(d + 1 = m),
+   have h9: m * c + d = n, from h7.left,
+   have h10: m * c + d + 1 = n + 1, from congr_fun (congr_arg has_add.add h9) 1,
+   or.elim h8
+   (assume h11: d + 1 = m,
+    have h12: m * (c + 1) + 0 = n + 1, from (congr_arg (has_add.add (m * c)) (eq.symm h11)).trans h10,
+    have h13: ∃ f : ℕ, m * (c + 1) + f = n + 1 ∧ f < m, from exists.intro 0 (and.intro h12 h1),
+    show ∃ e : ℕ, ∃ f : ℕ, m * e + f = n + 1 ∧ f < m, from exists.intro (c+1) h13)
+   (assume h14: d + 1 ≠ m,
+    have h15: d < m, from h7.right,
+    have h16: d + 1 < m, from lt_of_le_of_ne h15 h14,
+    have h17: ∃ f : ℕ, m * c + f = n + 1 ∧ f < m, from exists.intro (d+1) (and.intro h10 h16),
+    show ∃ e : ℕ, ∃ f : ℕ, m * e + f = n + 1 ∧ f < m, from exists.intro c h17)
+)))
 
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
 
 
 
+(congr_arg (has_add.add (m * c)) (eq.symm h9)).trans h11
