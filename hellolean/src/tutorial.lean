@@ -365,6 +365,11 @@ nat.rec_on a
     show ∃ e : ℕ, ∃ f : ℕ, m * e + f = n + 1 ∧ f < m, from exists.intro c h17)
 )))
 
+/-
+Trying proving using:
+https://math.stackexchange.com/questions/1471102/showing-that-if-p-is-a-prime-and-p-mid-ab-then-p-mid-a-or-p-mid-b/1471135#1471135
+-/
+
 theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
 : divides p a ∨ divides p b := sorry
 
