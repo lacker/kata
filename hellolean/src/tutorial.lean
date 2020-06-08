@@ -104,6 +104,10 @@ def is_composite (a : ℕ) := ∃ b, ∃ c, b > 1 ∧ c > 1 ∧ b * c = a
 
 def is_prime (p : ℕ) := p > 1 ∧ not (is_composite p)
 
+def prime_positive (p : ℕ) (h1: is_prime p) : p > 0 :=
+have p > 1, from h1.left,
+show p > 0, from nat.lt_of_succ_lt this
+
 def divides (a b : ℕ) := ∃ c, a * c = b
 
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
@@ -364,6 +368,17 @@ nat.rec_on a
     have h17: ∃ f : ℕ, m * c + f = n + 1 ∧ f < m, from exists.intro (d+1) (and.intro h10 h16),
     show ∃ e : ℕ, ∃ f : ℕ, m * e + f = n + 1 ∧ f < m, from exists.intro c h17)
 )))
+
+def eset (p b : ℕ) (h: is_prime p) := { x : ℕ | x > 0 ∧ divides p (x*b) }
+
+theorem eset_nonempty (p b : ℕ) (h1: is_prime p) : (eset p b h1).nonempty :=
+have h2: p > 0, from prime_positive p h1,
+have h3: divides p (p*b), from exists.intro b rfl,
+have h4: p ∈ (eset p b h1), from and.intro h2 h3,
+show (eset p b h1).nonempty, from set.nonempty_of_mem h4
+
+lemma ehelp (a b p x0 x : ℕ) (h1: is_prime p) (h2: divides p (a*b)) (h3: ¬ divides p a)
+(h4: is_smallest x0 (eset p b h1)) (h5: x ∈ eset p b h1) : divides x0 x := sorry
 
 /-
 Trying proving using:
