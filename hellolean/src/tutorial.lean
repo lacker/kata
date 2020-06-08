@@ -110,6 +110,8 @@ show p > 0, from nat.lt_of_succ_lt this
 
 def divides (a b : ℕ) := ∃ c, a * c = b
 
+theorem prime_divisors (d p : ℕ) (h1: is_prime p) (h2: divides d p) : d = 1 ∨ d = p := sorry
+
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
 def upper_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≥ b
@@ -216,18 +218,25 @@ exists.elim h1
 
 /-
 TODO: perhaps work towards FLT: x^p congruent to x, mod p?
-subgoals:
-
-prove these unproved lemmas and theorems, top to bottom
-
-define gcd
-∃ c, d s.t. ac + bd = gcd(a, b)
-euclid's lemma
+we have euclid's lemma.
 -/
 
 theorem one_divides (n : ℕ) : divides 1 n :=
 have h: 1 * n = n, from one_mul n,
 exists.intro n h
+
+theorem divides_zero (n : ℕ) : divides n 0 :=
+have h: n * 0 = 0, from rfl,
+exists.intro 0 h
+
+theorem divides_nonzero (a b : ℕ) (h1: ¬ divides a b) : b ≠ 0 :=
+have h2: b = 0 ∨ b ≠ 0, from (em(b = 0)),
+or.elim h2
+  (assume h3: b = 0,
+   have h4: divides a 0, from divides_zero a,
+   have h5: divides a b, from eq.subst (eq.symm h3) h4,
+   show b ≠ 0, from absurd h5 h1)
+  (assume h6: b ≠ 0, show b ≠ 0, from h6)
 
 def divisors (n : ℕ) := { d : ℕ | divides d n }
 
@@ -338,8 +347,6 @@ def is_gcd (d a b : ℕ) := is_largest d (common_divisors a b)
 
 def relatively_prime (a b : ℕ) := is_gcd 1 a b
 
-/- TODO: split h5 into cases, either way show the recursion -/
-
 theorem division (a m : ℕ) (h1: m > 0) : ∃ c : ℕ, ∃ d : ℕ, m * c + d = a ∧ d < m :=
 nat.rec_on a
 (have h2: m * 0 + 0 = 0, from rfl,
@@ -445,12 +452,34 @@ exists.elim h5
       have h29: ¬ (r < x0), from not_lt.mpr h28,
       show divides x0 x, from absurd h26 h29)))
 
-/-
-Trying proving using:
-https://math.stackexchange.com/questions/1471102/showing-that-if-p-is-a-prime-and-p-mid-ab-then-p-mid-a-or-p-mid-b/1471135#1471135
--/
-
-theorem euclids_lemma (p a b : ℕ) (hp : is_prime p) (hd : divides p (a * b))
-: divides p a ∨ divides p b := sorry
+theorem euclids_lemma (p a b : ℕ) (h1 : is_prime p) (h2 : divides p (a * b))
+: divides p a ∨ divides p b :=
+have h3: divides p a ∨ ¬ divides p a, from em(divides p a),
+or.elim h3
+ (assume h4: divides p a, or.inl h4)
+ (assume h5: ¬ divides p a,
+  have h6: (eset p b h1).nonempty, from eset_nonempty p b h1,
+  have h7: ∃ x0, is_smallest x0 (eset p b h1), from well_ordered (eset p b h1) h6,
+  exists.elim h7
+   (assume x0,
+    assume h8: is_smallest x0 (eset p b h1),
+    have h9: divides p (p * b), from exists.intro b rfl,
+    have h10: p ∈ eset p b h1, from and.intro (prime_positive p h1) h9,
+    have h11: a ≠ 0, from divides_nonzero p a h5,
+    have h12: a > 0, from bot_lt_iff_ne_bot.mpr h11,
+    have h13: a ∈ eset p b h1, from and.intro h12 h2,
+    have h14: divides x0 p, from ehelp a b p x0 p h1 h8 h10,
+    have h15: divides x0 a, from ehelp a b p x0 a h1 h8 h13,
+    have h16: x0 = 1 ∨ x0 = p, from prime_divisors x0 p h1 h14,
+    or.elim h16
+     (assume h17: x0 = 1,
+      have h18: divides p (x0 * b), from h8.left.right,
+      have h19: 1 * b = b, from one_mul b,
+      have h20: x0 * b = b, from eq.subst (eq.symm h17) h19,
+      have h21: divides p b, from eq.subst h20 h18,
+      or.inr h21)
+     (assume h22: x0 = p,
+      have h23: divides p a, from eq.subst h22 h15,
+      absurd h23 h5)))
 
 
