@@ -409,34 +409,41 @@ have h3: divides p (p*b), from exists.intro b rfl,
 have h4: p ∈ (eset p b h1), from and.intro h2 h3,
 show (eset p b h1).nonempty, from set.nonempty_of_mem h4
 
-lemma ehelp (a b p x0 x : ℕ) (h1: is_prime p) (h2: divides p (a*b)) (h3: ¬ divides p a)
-(h4: is_smallest x0 (eset p b h1)) (h5: x ∈ eset p b h1) : divides x0 x :=
-have h6: x0 > 0, from h4.left.left,
-have h7: ∃ q : ℕ, ∃ r : ℕ, x0 * q + r = x ∧ r < x0, from division x x0 h6,
-exists.elim h7
+lemma ehelp (a b p x0 x : ℕ) (h1: is_prime p) (h2: is_smallest x0 (eset p b h1)) (h3: x ∈ eset p b h1) :
+divides x0 x :=
+have h4: x0 > 0, from h2.left.left,
+have h5: ∃ q : ℕ, ∃ r : ℕ, x0 * q + r = x ∧ r < x0, from division x x0 h4,
+exists.elim h5
  (assume q,
-  assume h8: ∃ r : ℕ, x0 * q + r = x ∧ r < x0,
-  exists.elim h8
+  assume h6: ∃ r : ℕ, x0 * q + r = x ∧ r < x0,
+  exists.elim h6
    (assume r,
-    assume h9: x0 * q + r = x ∧ r < x0,
-    have h10: x - x0 * q = r, from nat.sub_eq_of_eq_add (eq.symm h9.left),
-    have h11: (x - x0 * q) * b = r * b, from congr_fun (congr_arg has_mul.mul h10) b,
-    have h12: x * b - x0 * q * b = r * b, from eq.subst (nat.mul_sub_right_distrib x (x0*q) b) h11,
-    have h13: divides p (x * b), from h5.right,
-    have h14: divides p (x0 * b), from h4.left.right,
-    have h15: divides p (x0 * b * q), from divides_mul p (x0 * b) q h14,
-    have h16: divides p (x0 * (b * q)), from eq.subst (mul_assoc x0 b q) h15,
-    have h17: divides p (x0 * (q * b)), from eq.subst (mul_comm b q) h16,
-    have h18: divides p (x0 * q * b), from eq.subst (eq.symm (mul_assoc x0 q b)) h17,
-    have h19: divides p (x * b - x0 * q * b), from divides_sub p (x * b) (x0 * q * b) h13 h18,
-    have h20: divides p (r * b), from eq.subst h12 h19,
-    have h21: r = 0 ∨ r ≠ 0, from em(r=0),
-    or.elim h21
-     (assume h22: r = 0,
-      have h23: x0 * q + 0 = x, from eq.subst h22 h9.left,
-      have h24: x0 * q = x, from h23,
-      show divides x0 x, from exists.intro q h24)
-     (assume hz: r ≠ 0, show divides x0 x, from sorry)))
+    assume h7: x0 * q + r = x ∧ r < x0,
+    have h8: x - x0 * q = r, from nat.sub_eq_of_eq_add (eq.symm h7.left),
+    have h9: (x - x0 * q) * b = r * b, from congr_fun (congr_arg has_mul.mul h8) b,
+    have h10: x * b - x0 * q * b = r * b, from eq.subst (nat.mul_sub_right_distrib x (x0*q) b) h9,
+    have h11: divides p (x * b), from h3.right,
+    have h12: divides p (x0 * b), from h2.left.right,
+    have h13: divides p (x0 * b * q), from divides_mul p (x0 * b) q h12,
+    have h14: divides p (x0 * (b * q)), from eq.subst (mul_assoc x0 b q) h13,
+    have h15: divides p (x0 * (q * b)), from eq.subst (mul_comm b q) h14,
+    have h16: divides p (x0 * q * b), from eq.subst (eq.symm (mul_assoc x0 q b)) h15,
+    have h17: divides p (x * b - x0 * q * b), from divides_sub p (x * b) (x0 * q * b) h11 h16,
+    have h18: divides p (r * b), from eq.subst h10 h17,
+    have h19: r = 0 ∨ r ≠ 0, from em(r=0),
+    or.elim h19
+     (assume h20: r = 0,
+      have h21: x0 * q + 0 = x, from eq.subst h20 h7.left,
+      have h22: x0 * q = x, from h21,
+      show divides x0 x, from exists.intro q h22)
+     (assume h23: r ≠ 0,
+      have h24: r > 0, from bot_lt_iff_ne_bot.mpr h23,
+      have h25: r ∈ eset p b h1, from and.intro h24 h18,
+      have h26: r < x0, from h7.right,
+      have h27: lower_bound x0 (eset p b h1), from h2.right,
+      have h28: x0 ≤ r, from h27 r h25,
+      have h29: ¬ (r < x0), from not_lt.mpr h28,
+      show divides x0 x, from absurd h26 h29)))
 
 /-
 Trying proving using:
