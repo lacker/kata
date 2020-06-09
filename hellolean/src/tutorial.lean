@@ -102,21 +102,21 @@ or.elim h
 
 def is_composite (a : ℕ) := ∃ b, ∃ c, b > 1 ∧ c > 1 ∧ b * c = a
 
-def is_prime (p : ℕ) := p > 1 ∧ not (is_composite p)
+def is_prime (p : ℕ) := p > 1 ∧ ¬ (is_composite p)
 
-def prime_positive (p : ℕ) (h1: is_prime p) : p > 0 :=
+theorem prime_positive (p : ℕ) (h1: is_prime p) : p > 0 :=
 have p > 1, from h1.left,
 show p > 0, from nat.lt_of_succ_lt this
 
 def divides (a b : ℕ) := ∃ c, a * c = b
-
-theorem prime_divisors (d p : ℕ) (h1: is_prime p) (h2: divides d p) : d = 1 ∨ d = p := sorry
 
 def is_empty (s : set ℕ) := ∀ a : ℕ, a ∉ s
 def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
 def upper_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≥ b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
 def is_largest (a : ℕ) (s : set ℕ) := a ∈ s ∧ upper_bound a s
+
+def coprime (a b : ℕ) := ∀ d : ℕ, divides d a ∧ divides d b → d = 1
 
 theorem not_ltz (a : ℕ) : ¬ (a < 0) := not_lt_bot
 
@@ -244,7 +244,7 @@ theorem divisors_nonempty (n : ℕ) : (divisors n).nonempty :=
 have 1 ∈ (divisors n), from one_divides n,
 show (divisors n).nonempty, from set.nonempty_of_mem this
 
-lemma divisor_nonzero (a b c : ℕ) (h1 : c > 0) (h2 : a * b = c) : b > 0 :=
+lemma rdivisor_nonzero (a b c : ℕ) (h1 : c > 0) (h2 : a * b = c) : b > 0 :=
 have h3: b = 0 ∨ b > 0, from nat.eq_zero_or_pos b,
 or.elim h3
   (assume h4: b = 0,
@@ -257,6 +257,42 @@ or.elim h3
   (assume h10: b > 0,
    h10)
 
+theorem divisors_nonzero (a b c : ℕ) (h1 : c > 0) (h2 : a * b = c) : a > 0 ∧ b > 0 :=
+have h3: b > 0, from rdivisor_nonzero a b c h1 h2,
+have h4: b * a = c, from eq.subst (mul_comm a b) h2,
+have h5: a > 0, from rdivisor_nonzero b a c h1 h4,
+and.intro h5 h3
+
+theorem prime_divisors (d p : ℕ) (h1: is_prime p) (h2: divides d p) : d = 1 ∨ d = p :=
+have h3: (d = 1 ∨ d = p) ∨ ¬ (d = 1 ∨ d = p), from em(d = 1 ∨ d = p),
+or.elim h3
+ (assume h4: d = 1 ∨ d = p,
+  h4)
+ (assume h5: ¬ (d = 1 ∨ d = p),
+  have h6: ¬ (d = 1) ∧ ¬ (d = p), from or_imp_distrib.mp h5,
+  have h7: d ≠ 1, from h6.left,
+  have h8: d ≠ p, from h6.right,
+  have h9: p > 1, from h1.left,
+  exists.elim h2
+   (assume c,
+    assume h10: d * c = p,
+    have h11: p > 0, from nat.lt_of_succ_lt h9,
+    have h12: d > 0 ∧ c > 0, from divisors_nonzero d c p h11 h10,
+    have h13: d > 0, from h12.left,
+    have h14: d > 1, from lt_of_le_of_ne h13 (ne.symm h7),
+    have h15: c > 0, from h12.right,
+    have h16: c = 1 ∨ c ≠ 1, from em(c = 1),
+    or.elim h16
+     (assume h17: c = 1,
+      have h18: d * 1 = p, from eq.subst h17 h10,
+      have h19: d = p, from eq.subst (mul_one d) h18,
+      absurd h19 h8)
+     (assume h20: c ≠ 1,
+      have h21: c > 1, from lt_of_le_of_ne h15 (ne.symm h20),
+      have h22: d > 1 ∧ c > 1 ∧ d * c = p, from and.intro h14 (and.intro h21 h10),
+      have h23: is_composite p, from exists.intro d (exists.intro c h22),
+      absurd h23 h1.right)))
+
 theorem divisors_bounded (n : ℕ) (h : n > 0) : upper_bound n (divisors n) :=
 assume a,
 assume h1: a ∈ divisors n,
@@ -266,7 +302,7 @@ have h4: ∃ c, a * c = n, from h1,
 exists.elim h4
   (assume b,
    assume h5: a * b = n,
-   have h6: b > 0, from divisor_nonzero a b n h h5,
+   have h6: b > 0, from rdivisor_nonzero a b n h h5,
    have h7: a ≤ a * b, from nat.le_mul_of_pos_right h6,
    show a ≤ n, from eq.subst h5 h7)
 
