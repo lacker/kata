@@ -102,6 +102,9 @@ or.elim h
 
 def is_composite (a : ℕ) := ∃ b, ∃ c, b > 1 ∧ c > 1 ∧ b * c = a
 
+theorem composite_divisor_lt (a b c : ℕ) (h1: a * b = c) (h2: a > 1) (h3: b > 1) : a < c :=
+sorry
+
 def is_prime (p : ℕ) := p > 1 ∧ ¬ (is_composite p)
 
 theorem prime_positive (p : ℕ) (h1: is_prime p) : p > 0 :=
@@ -444,6 +447,13 @@ exists.elim h1
   have h4: d * (c * b) = a * b, from eq.subst (mul_assoc d c b) h3,
   exists.intro (c*b) h4)
 
+theorem divides_trans (a b c : ℕ) (h1: divides a b) (h2: divides b c) : divides a c :=
+exists.elim h2
+ (assume e,
+  assume h3: b * e = c,
+  have h4: divides a (b * e), from divides_mul a b e h1,
+  show divides a c, from eq.subst h3 h4)
+
 def eset (p b : ℕ) (h: is_prime p) := { x : ℕ | x > 0 ∧ divides p (x*b) }
 
 theorem eset_nonempty (p b : ℕ) (h1: is_prime p) : (eset p b h1).nonempty :=
@@ -518,4 +528,27 @@ or.elim h3
       have h23: divides p a, from eq.subst h22 h15,
       absurd h23 h5)))
 
+def g1_divisors (n : ℕ) := { d : ℕ | d > 1 ∧ divides d n }
 
+def smallest_g1_divisor_prime (p n : ℕ) (h1: is_smallest p (g1_divisors n)) : is_prime p :=
+have h2: is_composite p ∨ ¬ is_composite p, from em(is_composite p),
+have h3: p > 1, from h1.left.left,
+or.elim h2
+ (assume h3: is_composite p,
+  exists.elim h3
+   (assume b,
+    assume h4: ∃ c, b > 1 ∧ c > 1 ∧ b * c = p,
+    exists.elim h4
+     (assume c,
+      assume h5: b > 1 ∧ c > 1 ∧ b * c = p,
+      have h6: divides b p, from exists.intro c h5.right.right,
+      have h7: divides b n, from divides_trans b p n h6 h1.left.right,
+      have h8: b ∈ g1_divisors n, from and.intro h5.left h7,
+      have h9: b < p, from composite_divisor_lt b c p h5.right.right h5.left h5.right.left,
+      have h10: p ≤ b, from h1.right b h8,
+      have h11: ¬ (b < p), from not_lt.mpr h10,
+      absurd h9 h11)))
+ (assume hz: ¬ is_composite p, and.intro h3 hz)
+
+theorem single_factoring (a b : ℕ) : coprime a b ∨ ∃ p, is_prime p ∧ divides p a ∧ divides p b :=
+sorry
