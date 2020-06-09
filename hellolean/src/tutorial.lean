@@ -103,7 +103,19 @@ or.elim h
 def is_composite (a : ℕ) := ∃ b, ∃ c, b > 1 ∧ c > 1 ∧ b * c = a
 
 theorem composite_divisor_lt (a b c : ℕ) (h1: a * b = c) (h2: a > 1) (h3: b > 1) : a < c :=
-sorry
+have h4: 0 < b, from nat.lt_of_succ_lt h3,
+have h5: a ≤ a * b, from nat.le_mul_of_pos_right h4,
+have h6: a ≤ c, from eq.subst h1 h5,
+have h7: a = c ∨ a ≠ c, from em(a=c),
+or.elim h7
+ (assume h8: a = c,
+  have h9: a * b = a, from (rfl.congr (eq.symm h8)).mp h1,
+  have h10: 0 < a, from nat.lt_of_succ_lt h2,
+  have h11: b = 1, from (nat.mul_right_eq_self_iff h10).mp h9,
+  have h12: b ≠ 1, from ne_of_gt h3,
+  absurd h11 h12)
+ (assume : a ≠ c,
+  show a < c, from lt_of_le_of_ne h6 this)
 
 def is_prime (p : ℕ) := p > 1 ∧ ¬ (is_composite p)
 
@@ -118,8 +130,6 @@ def lower_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≤ b
 def upper_bound (a : ℕ) (s : set ℕ) := ∀ b : ℕ, b ∈ s → a ≥ b
 def is_smallest (a : ℕ) (s : set ℕ) := a ∈ s ∧ lower_bound a s
 def is_largest (a : ℕ) (s : set ℕ) := a ∈ s ∧ upper_bound a s
-
-def coprime (a b : ℕ) := ∀ d : ℕ, divides d a ∧ divides d b → d = 1
 
 theorem not_ltz (a : ℕ) : ¬ (a < 0) := not_lt_bot
 
@@ -218,11 +228,6 @@ exists.elim h1
      have h5: false, from nlb s n h2 h4,
      false.rec (∃ a, is_smallest a s) h5)
     (assume h6: ∃ a, is_smallest a s, show ∃ a, is_smallest a s, from h6))
-
-/-
-TODO: perhaps work towards FLT: x^p congruent to x, mod p?
-we have euclid's lemma.
--/
 
 theorem one_divides (n : ℕ) : divides 1 n :=
 have h: 1 * n = n, from one_mul n,
@@ -415,6 +420,10 @@ nat.rec_on a
     show ∃ e : ℕ, ∃ f : ℕ, m * e + f = n + 1 ∧ f < m, from exists.intro c h17)
 )))
 
+theorem divides_self (n : ℕ) : divides n n :=
+have h1: n * 1 = n, from mul_one n,
+exists.intro 1 h1
+
 theorem divides_add (d a b : ℕ) (h1: divides d a) (h2: divides d b) : divides d (a + b) :=
 exists.elim h1
  (assume e,
@@ -530,7 +539,7 @@ or.elim h3
 
 def g1_divisors (n : ℕ) := { d : ℕ | d > 1 ∧ divides d n }
 
-def smallest_g1_divisor_prime (p n : ℕ) (h1: is_smallest p (g1_divisors n)) : is_prime p :=
+theorem smallest_g1_divisor_prime (p n : ℕ) (h1: is_smallest p (g1_divisors n)) : is_prime p :=
 have h2: is_composite p ∨ ¬ is_composite p, from em(is_composite p),
 have h3: p > 1, from h1.left.left,
 or.elim h2
@@ -550,5 +559,58 @@ or.elim h2
       absurd h9 h11)))
  (assume hz: ¬ is_composite p, and.intro h3 hz)
 
-theorem single_factoring (a b : ℕ) : coprime a b ∨ ∃ p, is_prime p ∧ divides p a ∧ divides p b :=
-sorry
+theorem g1_divisors_nonempty (n : ℕ) (h1: n > 1) : (g1_divisors n).nonempty :=
+have h2: divides n n, from divides_self n,
+have h3: n ∈ g1_divisors n, from and.intro h1 h2,
+set.nonempty_of_mem h3
+
+theorem has_prime_divisor (n : ℕ) (h1: n > 1) : ∃ p, is_prime p ∧ divides p n :=
+have h2: ∃ p, is_smallest p (g1_divisors n),
+    from well_ordered (g1_divisors n) (g1_divisors_nonempty n h1),
+exists.elim h2
+ (assume p,
+  assume h2: is_smallest p (g1_divisors n),
+  have h3: is_prime p, from smallest_g1_divisor_prime p n h2,
+  have h4: divides p n, from h2.left.right,
+  exists.intro p (and.intro h3 h4))
+
+def codivisors (a b : ℕ) := {d : ℕ | divides d a ∧ divides d b}
+
+def coprime (a b : ℕ) := upper_bound 1 (codivisors a b)
+
+lemma not_coprime (x y : ℕ) (h1: ¬ coprime x y) : ∃ z, z > 1 ∧ divides z x ∧ divides z y :=
+have h2: ∃ b : ℕ, ¬ (b ∈ codivisors x y → 1 ≥ b), from classical.not_forall.mp h1,
+exists.elim h2
+ (assume b,
+  assume h4: ¬ (b ∈ codivisors x y → 1 ≥ b),
+  have h5: b ∈ codivisors x y ∧ ¬ (1 ≥ b), from classical.not_imp.mp h4,
+  have h6: divides b x ∧ divides b y, from h5.left,
+  have h7: ¬ (1 ≥ b), from h5.right,
+  have h8: b > 1, from not_le.mp h7,
+  have h9: b > 1 ∧ divides b x ∧ divides b y, from and.intro h8 h6,
+  exists.intro b h9)
+
+theorem cofactoring (a b : ℕ) (h1: a > 0) (h2: b > 0) :
+coprime a b ∨ ∃ p, is_prime p ∧ divides p a ∧ divides p b :=
+have h3: coprime a b ∨ ¬ coprime a b, from em(coprime a b),
+or.elim h3
+ (assume h4: coprime a b,
+  or.inl h4)
+ (assume h5: ¬ coprime a b,
+  have h6: ∃ d : ℕ, d > 1 ∧ divides d a ∧ divides d b, from not_coprime a b h5,
+  exists.elim h6
+   (assume d,
+    assume h7: d > 1 ∧ divides d a ∧ divides d b,
+    have h8: ∃ p, is_prime p ∧ divides p d, from has_prime_divisor d h7.left,
+    exists.elim h8
+     (assume p,
+      assume h9: is_prime p ∧ divides p d,
+      have h10: divides p a, from divides_trans p d a h9.right h7.right.left,
+      have h11: divides p b, from divides_trans p d b h9.right h7.right.right,
+      or.inr (exists.intro p (and.intro h9.left (and.intro h10 h11))))))
+
+/-
+TODO:
+prove the bezout rule, when a and b are coprime then ac - bd = 1
+prove fermat's little theorem - x^p = x mod p
+-/
