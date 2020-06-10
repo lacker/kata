@@ -609,6 +609,44 @@ or.elim h3
       have h11: divides p b, from divides_trans p d b h9.right h7.right.right,
       or.inr (exists.intro p (and.intro h9.left (and.intro h10 h11))))))
 
+def linear_combo (a b : ℕ) := { e : ℕ | e ≠ 0 ∧ ∃ c : ℕ, ∃ d : ℕ, a * c - b * d = e }
+
+lemma slcda (a b s : ℕ) (h1: is_smallest s (linear_combo a b)) : divides s a :=
+have h2: a = 0 ∨ a ≠ 0, from em(a = 0),
+or.elim h2
+ (assume h3: a = 0,
+  eq.subst (eq.symm h3) (divides_zero s))
+ (assume h4: a ≠ 0,
+  have h5: a * 1 - b * 0 = a, from mul_one a,
+  have h6: a ∈ linear_combo a b, from and.intro h4 (exists.intro 1 (exists.intro 0 h5)),
+  have h7: s ≤ a, from h1.right a h6,
+  have h8: s = a ∨ s < a, from eq_or_lt_of_le h7,
+  or.elim h8
+   (assume h9: s = a,
+    eq.subst h9 (divides_self s))
+   (assume h10: s < a,
+    have h11: s ≠ 0, from h1.left.left,
+    have h12: s > 0, from bot_lt_iff_ne_bot.mpr h11,
+    have h13: ∃ q : ℕ, ∃ r : ℕ, s * q + r = a ∧ r < s, from division a s h12,
+    exists.elim h13
+     (assume q,
+      assume h14: ∃ r : ℕ, s * q + r = a ∧ r < s,
+      exists.elim h14
+       (assume r,
+        assume h15: s * q + r = a ∧ r < s,
+        have h16: ∃ c : ℕ, ∃ d : ℕ, a * c - b * d = s, from h1.left.right,
+        exists.elim h16
+         (assume c,
+          assume h17: ∃ d : ℕ, a * c - b * d = s,
+          exists.elim h17
+           (assume d,
+            assume h18: a * c - b * d = s,
+            sorry))))))
+
+theorem bezout (a b : ℕ) (h1: coprime a b) : ∃ c : ℕ, ∃ d : ℕ, a * c - b * d = 1 :=
+sorry
+
+
 /-
 TODO:
 prove the bezout rule, when a and b are coprime then ac - bd = 1
