@@ -732,6 +732,21 @@ set.eq_of_subset_of_subset
  (lc_comm_subset a b h2)
  (lc_comm_subset b a h1)
 
+theorem lc_a_minus (a b e : ℕ) (ha: a > 0) (hb: b > 0) (h1: e ∈ linear_combo a b) :
+a - e ∈ linear_combo a b :=
+exists.elim h1
+ (assume c, assume : ∃ d, a*c = b*d + e,
+  exists.elim this
+   (assume d,
+    assume h2: a*c = b*d + e,
+    have h3: a*c - e = a*c - e, from rfl,
+    have h4: b*d + e - e = a*c - e, from eq.subst h2 h3,
+    have h5: b*d + e - e = b*d, from (b*d).add_sub_cancel e,
+    have h6: b*d = a*c - e, from eq.subst h5 h4,
+    have h7: a*c - a*1 = a*(c-1), from (nat.mul_sub_left_distrib a c 1).symm,
+    have h8: a*c - a = a*(c-1), from sorry,
+    sorry))
+
 theorem bezout (a b : ℕ) (h1: coprime a b) : 1 ∈ linear_combo a b :=
 sorry
 
