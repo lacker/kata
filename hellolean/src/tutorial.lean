@@ -611,6 +611,52 @@ or.elim h3
 
 def linear_combo (a b : ℕ) := { e : ℕ | ∃ c : ℕ, ∃ d : ℕ, a * c = b * d + e }
 
+theorem lc_left (a b : ℕ) : a ∈ linear_combo a b :=
+have h1: a * 1 = b * 0 + a, from rfl,
+exists.intro 1 (exists.intro 0 h1)
+
+theorem lc_right (a b : ℕ) (h1: a > 0) : b ∈ linear_combo a b :=
+have h2: b*(a-1) + b = b * (a-1) + b, from rfl,
+have h3: b*(a-1) = b*a - b, from nat.mul_pred_right b (nat.sub a 0),
+have h4: b*a - b + b = b * (a-1) + b, from eq.subst h3 h2,
+have h5: b ≤ b*a, from nat.le_mul_of_pos_right h1,
+have h6: b*a - b + b = b*a + b - b, from nat.sub_add_eq_add_sub h5,
+have h7: b*a + b - b = b*a, from (b*a).add_sub_cancel b,
+have h8: a * b = b * a, from mul_comm a b,
+have h9: a * b = b * (a-1) + b, by rw [h8, h7.symm, h6.symm, h4],
+exists.intro b (exists.intro (a-1) h9)
+
+theorem lc_zero (a b : ℕ) : 0 ∈ linear_combo a b :=
+have h1: a * 0 = b * 0 + 0, from rfl,
+exists.intro 0 (exists.intro 0 h1)
+
+lemma lc_gz (a b e : ℕ) (h1: a > 0) (h2: b > 0) (h3: e ∈ linear_combo a b) :
+∃ c : ℕ, ∃ d : ℕ, c > 0 ∧ d > 0 ∧ a * c = b * d + e :=
+exists.elim h3
+ (assume c, assume : ∃ d, a * c = b * d + e,
+  exists.elim this
+   (assume d,
+    assume h4: a * c = b * d + e,
+    have h5: a * c + a * b = b * d + e + a * b,
+        from congr_fun (congr_arg has_add.add h4) (a*b),
+    have h6: b*d + e + a*b = b*d + a*b + e, from add_right_comm (b*d) e (a*b),
+    have h7: a * c + a * b = a * (c+b), from (mul_add a c b).symm,
+    have h8: a*b = b*a, from mul_comm a b,
+    have h9: b*d + b*a = b * (d+a), from (mul_add b d a).symm,
+    have h10: a * c + a * b = b * (d+a) + e, by rw [h5, h6, h8, h9],
+    have h11: a*(c+b) = b*(d+a) + e, from eq.subst h7 h10,
+    have h12: c+b > 0, from nat.lt_add_left 0 b c h2,
+    have h13: d+a > 0, from nat.lt_add_left 0 a d h1,
+    exists.intro (c+b) (exists.intro (d+a) (and.intro h12 (and.intro h13 h11)))))
+
+/-
+elim on lc_gz instead of the containment itself.
+-/
+lemma lc_minus_b (a b x : ℕ) (h1: a > 0) (h2: b > 0) (h3: x ∈ linear_combo a b) :
+(x - b) ∈ linear_combo a b :=
+sorry
+
+
 theorem lc_add (a b c d : ℕ) (h1: c ∈ linear_combo a b) (h2: d ∈ linear_combo a b) :
 (c + d) ∈ linear_combo a b :=
 exists.elim h1
