@@ -630,6 +630,7 @@ theorem lc_zero (a b : ℕ) : 0 ∈ linear_combo a b :=
 have h1: a * 0 = b * 0 + 0, from rfl,
 exists.intro 0 (exists.intro 0 h1)
 
+/- Do we even need this? -/
 lemma lc_gz (a b e : ℕ) (h1: a > 0) (h2: b > 0) (h3: e ∈ linear_combo a b) :
 ∃ c : ℕ, ∃ d : ℕ, c > 0 ∧ d > 0 ∧ a * c = b * d + e :=
 exists.elim h3
@@ -649,13 +650,32 @@ exists.elim h3
     have h13: d+a > 0, from nat.lt_add_left 0 a d h1,
     exists.intro (c+b) (exists.intro (d+a) (and.intro h12 (and.intro h13 h11)))))
 
-/-
-elim on lc_gz instead of the containment itself.
--/
-lemma lc_minus_b (a b x : ℕ) (h1: a > 0) (h2: b > 0) (h3: x ∈ linear_combo a b) :
-(x - b) ∈ linear_combo a b :=
-sorry
-
+lemma lc_minus_b (a b e : ℕ) (h1: e ∈ linear_combo a b) :
+(e - b) ∈ linear_combo a b :=
+exists.elim h1
+ (assume c, assume : ∃ d, a * c = b * d + e,
+  exists.elim this
+   (assume d,
+    assume h2: a * c = b * d + e,
+    have h3: b + e - b = e, from nat.sub_eq_of_eq_add rfl,
+    have h4: a * c = b * d + (b + e - b), from eq.subst h3.symm h2,
+    have h5: b > e ∨ ¬ (b > e), from em(b > e),
+    or.elim h5
+     (assume h6: b > e,
+      have h7: e ≤ b, from le_of_lt h6,
+      have h8: e - b ≤ b - b, from nat.sub_le_sub_right h7 b,
+      have h9: b - b = 0, from nat.sub_self b,
+      have h10: e - b ≤ 0, from eq.subst h9 h8,
+      have h11: e - b = 0, from eq_bot_iff.mpr h10,
+      eq.subst h11.symm (lc_zero a b))
+     (assume h12: ¬ (b > e),
+      have h13: b ≤ e, from not_lt.mp h12,
+      have h14: b + e - b = b + (e - b), from nat.add_sub_assoc h13 b,
+      have h15: a * c = b * d + (b + (e-b)), from eq.subst h14 h4,
+      have h16: a * c = (b * d + b * 1) + (e-b), by rw [h15, add_assoc, mul_one],
+      have h17: b * d + b * 1 = b * (d + 1), from (mul_add b d 1).symm,
+      have h18: a * c = b * (d + 1) + (e-b), from eq.subst h17 h16,
+      exists.intro c (exists.intro (d + 1) h18))))
 
 theorem lc_add (a b c d : ℕ) (h1: c ∈ linear_combo a b) (h2: d ∈ linear_combo a b) :
 (c + d) ∈ linear_combo a b :=
@@ -678,8 +698,6 @@ exists.elim h1
         have h10: a*(e+g) = (b*f + b*h) + (c+d), from eq.subst h9 h8,
         have h11: a*(e+g) = b*(f+h) + (c+d), from eq.subst (mul_add b f h).symm h10,
         exists.intro (e+g) (exists.intro (f+h) h11)))))
-
-
 
 theorem bezout (a b : ℕ) (h1: coprime a b) : ∃ c : ℕ, ∃ d : ℕ, a * c - b * d = 1 :=
 sorry
