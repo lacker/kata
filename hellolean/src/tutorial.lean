@@ -650,32 +650,32 @@ exists.elim h3
     have h13: d+a > 0, from nat.lt_add_left 0 a d h1,
     exists.intro (c+b) (exists.intro (d+a) (and.intro h12 (and.intro h13 h11)))))
 
-lemma lc_minus_b (a b e : ℕ) (h1: e ∈ linear_combo a b) :
-(e - b) ∈ linear_combo a b :=
+lemma lc_minus_bx (a b e x : ℕ) (h1: e ∈ linear_combo a b) :
+(e - b*x) ∈ linear_combo a b :=
 exists.elim h1
  (assume c, assume : ∃ d, a * c = b * d + e,
   exists.elim this
    (assume d,
     assume h2: a * c = b * d + e,
-    have h3: b + e - b = e, from nat.sub_eq_of_eq_add rfl,
-    have h4: a * c = b * d + (b + e - b), from eq.subst h3.symm h2,
-    have h5: b > e ∨ ¬ (b > e), from em(b > e),
+    have h3: b*x + e - b*x = e, from nat.sub_eq_of_eq_add rfl,
+    have h4: a * c = b * d + (b*x + e - b*x), from eq.subst h3.symm h2,
+    have h5: b*x > e ∨ ¬ (b*x > e), from em(b*x > e),
     or.elim h5
-     (assume h6: b > e,
-      have h7: e ≤ b, from le_of_lt h6,
-      have h8: e - b ≤ b - b, from nat.sub_le_sub_right h7 b,
-      have h9: b - b = 0, from nat.sub_self b,
-      have h10: e - b ≤ 0, from eq.subst h9 h8,
-      have h11: e - b = 0, from eq_bot_iff.mpr h10,
+     (assume h6: b*x > e,
+      have h7: e ≤ b*x, from le_of_lt h6,
+      have h8: e - b*x ≤ b*x - b*x, from nat.sub_le_sub_right h7 (b*x),
+      have h9: b*x - b*x = 0, from nat.sub_self (b*x),
+      have h10: e - b*x ≤ 0, from eq.subst h9 h8,
+      have h11: e - b*x = 0, from eq_bot_iff.mpr h10,
       eq.subst h11.symm (lc_zero a b))
-     (assume h12: ¬ (b > e),
-      have h13: b ≤ e, from not_lt.mp h12,
-      have h14: b + e - b = b + (e - b), from nat.add_sub_assoc h13 b,
-      have h15: a * c = b * d + (b + (e-b)), from eq.subst h14 h4,
-      have h16: a * c = (b * d + b * 1) + (e-b), by rw [h15, add_assoc, mul_one],
-      have h17: b * d + b * 1 = b * (d + 1), from (mul_add b d 1).symm,
-      have h18: a * c = b * (d + 1) + (e-b), from eq.subst h17 h16,
-      exists.intro c (exists.intro (d + 1) h18))))
+     (assume h12: ¬ (b*x > e),
+      have h13: b*x ≤ e, from not_lt.mp h12,
+      have h14: b*x + e - b*x = b*x + (e - b*x), from nat.add_sub_assoc h13 (b*x),
+      have h15: a * c = b * d + (b*x + (e-b*x)), from eq.subst h14 h4,
+      have h16: a * c = (b * d + b * x) + (e-b*x), by rw [h15, add_assoc],
+      have h17: b * d + b * x = b * (d + x), from (mul_add b d x).symm,
+      have h18: a * c = b * (d + x) + (e-b*x), from eq.subst h17 h16,
+      exists.intro c (exists.intro (d + x) h18))))
 
 theorem lc_add (a b c d : ℕ) (h1: c ∈ linear_combo a b) (h2: d ∈ linear_combo a b) :
 (c + d) ∈ linear_combo a b :=
