@@ -832,10 +832,68 @@ exists.elim h5
   have h13: s = 1, from le_antisymm h11 h12,
   eq.subst h13 h6.left.right)
 
-def mod (a m : ℕ) := 0
+def mod : ℕ → ℕ → ℕ
+| a m :=
+  if h1 : m ≥ 1 ∧ m ≤ a then
+    have a - m < a, from nat.sub_lt (le_trans h1.left h1.right) h1.left,
+    mod (a-m) m
+  else
+    a
+   
+lemma mdl (a m : ℕ) (h: m ≥ 1 ∧ m ≤ a) : mod a m = mod (a-m) m := by rw [mod, if_pos h]
+
+lemma mdr (a m : ℕ) (h: ¬ (m ≥ 1 ∧ m ≤ a)) : mod a m = a := by rw [mod, if_neg h]
+
+def counterexamples_mod_less (m : ℕ) := { a : ℕ | mod a m ≥ m }
+
+theorem mod_less (a m : ℕ) (h1: m > 0) : mod a m < m :=
+have h2: (mod a m < m) ∨ ¬ (mod a m < m), from em(mod a m < m),
+or.elim h2
+ (assume : mod a m < m, this)
+ (assume h3: ¬ (mod a m < m),
+  have h4: mod a m ≥ m, from not_lt.mp h3,
+  have h5: (counterexamples_mod_less m).nonempty, from set.nonempty_of_mem h4,
+  have h6: ∃ s, is_smallest s (counterexamples_mod_less m),
+      from well_ordered (counterexamples_mod_less m) h5,
+  exists.elim h6
+   (assume s,
+    assume h7: is_smallest s (counterexamples_mod_less m),
+    have h8: m ≤ s ∨ ¬ (m ≤ s), from em(m ≤ s),
+    or.elim h8
+     (assume h9: m ≤ s,
+      have h10: m ≥ 1 ∧ m ≤ s, from and.intro h1 h9,
+      have h11: mod s m = mod (s-m) m, from mdl s m h10,
+      have h12: mod (s-m) m ≥ m, from eq.subst h11 h7.left,
+      have h13: s - m ≥ s, from h7.right (s-m) h12,
+      have h14: s - m < s, from nat.sub_lt_of_pos_le m s h1 h9,
+      have h15: ¬ (s - m < s), from not_lt.mpr h13,
+      absurd h14 h15)
+     (assume h16: ¬ (m ≤ s),
+      have h17: ¬ (m ≥ 1 ∧ m ≤ s), from not_and_of_not_right (m ≥ 1) h16,
+      have h18: mod s m = s, from mdr s m h17,
+      have h19: ¬ (mod s m ≥ m), from eq.subst h18.symm h16,
+      absurd h7.left h19))
+
+theorem mod_cyclic (a m : ℕ) : mod (a + m) m = mod a m :=
+have h1: m = 0 ∨ m ≠ 0, from em(m=0),
+or.elim h1
+ (assume h2: m = 0,
+  have h3: a + 0 = a, from rfl,
+  have h4: a + m = a, from eq.subst h2.symm h3,
+  show mod (a+m) m = mod a m, by rw [h4])
+ (assume h5: m ≠ 0,
+  have h6: m ≥ 1, from bot_lt_iff_ne_bot.mpr h5,
+  have h7: m ≤ a + m, from nat.le_add_left m a,
+  have h8: mod (a+m) m = mod (a+m-m) m, from mdl (a+m) m (and.intro h6 h7),
+  have h9: a+m-m = a, from nat.add_sub_cancel a m,
+  show mod (a+m) m = mod a m, by rw [h8, h9])
 
 /-
 TODO:
-figure out how to define mod usefully
+prove stuff about mod:
+
+mod (a*m+r) m = mod r m
+mod a m = 0 iff m divides a.
+
 prove fermat's little theorem - x^p = x mod p
 -/
