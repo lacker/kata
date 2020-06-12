@@ -743,9 +743,68 @@ exists.elim h1
     have h4: b*d + e - e = a*c - e, from eq.subst h2 h3,
     have h5: b*d + e - e = b*d, from (b*d).add_sub_cancel e,
     have h6: b*d = a*c - e, from eq.subst h5 h4,
-    have h7: a*c - a*1 = a*(c-1), from (nat.mul_sub_left_distrib a c 1).symm,
-    have h8: a*c - a = a*(c-1), from sorry,
-    sorry))
+    have h7: a*(c-1) = a*c - a*1, from nat.mul_sub_left_distrib a c 1,
+    have h8: a*(c-1) = a*c - a, by rw [h7, mul_one],
+    have h9: a*(c-1) + a = a*c - a + a, from congr (congr_arg has_add.add h8) rfl,
+    have h10: c = 0 ∨ c ≠ 0, from em(c=0),
+    or.elim h10
+     (assume h11: c = 0,
+      have h12: a*0 = 0, from rfl,
+      have h13: a*c = 0, from eq.subst h11.symm h12,
+      have h14: 0 = b*d + e, from eq.subst h13 h2,
+      have h15: e ≤ b*d + e, from nat.le_add_left e (b*d),
+      have h16: e ≤ 0, from eq.subst h14.symm h15,
+      have h17: e = 0, from eq_bot_iff.mpr h16,
+      have h18: a - 0 = a, from rfl,
+      have h19: a - e = a, from eq.subst h17.symm h18,
+      eq.subst h19.symm (lc_left a b))
+     (assume h20: c ≠ 0,
+      have h21: c ≥ 1, from bot_lt_iff_ne_bot.mpr h20,
+      have h22: a*c ≥ a, from nat.le_mul_of_pos_right h21,
+      have h23: a*c - a + a = a*c, from nat.sub_add_cancel h22,
+      have h24: a*(c-1) + a = a*c, by rw [h9, h23],
+      have h25: b*d = a*(c-1) + a - e, from eq.subst h24.symm h6,
+      have h26: e > a ∨ ¬ (e > a), from em(e > a),
+      or.elim h26
+       (assume h27: e > a,
+        have h28: a - e = 0, from sub_to_zero e a h27,
+        eq.subst h28.symm (lc_zero a b))
+       (assume h29: ¬ e > a,
+        have h30: e ≤ a, from not_lt.mp h29,
+        have h31: a*(c-1) + a - e = a*(c-1) + (a-e), from nat.add_sub_assoc h30 (a*(c-1)),
+        have h32: b*d = a*(c-1) + (a-e), from eq.subst h31 h25,
+        have h33: (a-e) ∈ linear_combo b a, from exists.intro d (exists.intro (c-1) h32),
+        eq.subst (lc_comm b a hb ha) h33))))
+
+def pos_linear_combo (a b : ℕ) := { e : ℕ | e > 0 ∧ e ∈ linear_combo a b }
+
+lemma zero_not_self_coprime : ¬ coprime 0 0 :=
+have h1: 2 ∈ codivisors 0 0, from and.intro (divides_zero 2) (divides_zero 2),
+have h2: coprime 0 0 ∨ ¬ coprime 0 0, from em(coprime 0 0),
+or.elim h2
+ (assume h2: coprime 0 0,
+  have h3: 1 ≥ 2, from h2 2 h1,
+  have h4: ¬ (1 ≥ 2), from nat.lt_irrefl 1,
+  absurd h3 h4)
+ (assume h5: ¬ coprime 0 0,
+  h5)
+
+def cpz (a : ℕ) := coprime a 0
+
+lemma coprime_pos (a b : ℕ) (hc: coprime a b) : a > 0 ∨ b > 0 :=
+have h1: (a > 0 ∨ b > 0) ∨ ¬ (a > 0 ∨ b > 0), from em(a > 0 ∨ b > 0),
+or.elim h1
+ (assume: a > 0 ∨ b > 0, this)
+ (assume h2: ¬ (a > 0 ∨ b > 0),
+  have h3: ¬ (a > 0) ∧ ¬ (b > 0), from or_imp_distrib.mp h2,
+  have h4: a ≤ 0, from not_lt.mp h3.left,
+  have h5: a = 0, from eq_bot_iff.mpr h4,
+  have h6: b ≤ 0, from not_lt.mp h3.right,
+  have h7: b = 0, from eq_bot_iff.mpr h6,
+  have h8: coprime a 0, from eq.subst h7 hc,
+  have h9: cpz 0, from eq.subst h5 h8,
+  have h10: coprime 0 0, from h9,
+  absurd h10 zero_not_self_coprime)
 
 theorem bezout (a b : ℕ) (h1: coprime a b) : 1 ∈ linear_combo a b :=
 sorry
@@ -753,6 +812,7 @@ sorry
 
 /-
 TODO:
+prove basic stuff about coprimes & pos linear combo, like that it's nonempty
 prove the bezout rule, when a and b are coprime then ac - bd = 1
 prove fermat's little theorem - x^p = x mod p
 -/
