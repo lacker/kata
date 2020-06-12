@@ -783,35 +783,28 @@ have h2: a ∈ linear_combo a b, from lc_left a b,
 have h3: a ∈ pos_linear_combo a b, from and.intro h1 h2,
 set.nonempty_of_mem h3
 
-lemma bezdiv (a b s : ℕ) (ha: a > 0) (hb: b > 0) (h2: is_smallest s (pos_linear_combo a b)) : divides s a :=
-have h3: s ∈ linear_combo a b, from h2.left.right,
-exists.elim h3
- (assume c, assume : ∃ d, a * c = b * d + s,
+lemma bezdiv (a b s : ℕ) (h1: a > 0) (h2: b > 0) (h3: is_smallest s (pos_linear_combo a b)) : divides s a :=
+exists.elim (division a s h3.left.left)
+ (assume q, assume : ∃ r : ℕ, s * q + r = a ∧ r < s,
   exists.elim this
-   (assume d,
-    assume h4: a * c = b * d + s,
-    have h5: ∃ q : ℕ, ∃ r : ℕ, s * q + r = a ∧ r < s, from division a s h2.left.left,
-    exists.elim h5
-     (assume q, assume : ∃ r : ℕ, s * q + r = a ∧ r < s,
-      exists.elim this
-       (assume r,
-        assume h6: s * q + r = a ∧ r < s,
-        have h7: r = 0 ∨ ¬ r = 0, from em(r=0),
-        or.elim h7
-         (assume h8: r = 0,
-          have h9: s * q + 0 = a, from eq.subst h8 h6.left,
-          have h10: s * q = a, from h9,
-          exists.intro q h10)
-         (assume h11: ¬ r = 0,
-          have h12: r > 0, from bot_lt_iff_ne_bot.mpr h11,
-          have h13: a - s*q = r, from nat.sub_eq_of_eq_add (h6.left.symm),
-          have h14: (s*q) ∈ linear_combo a b, from lc_mul a b s q h3,
-          have h15: (a - s*q) ∈ linear_combo a b, from lc_a_minus a b (s*q) ha hb h14,
-          have h16: r ∈ linear_combo a b, from eq.subst h13 h15,
-          have h17: r ∈ pos_linear_combo a b, from and.intro h12 h16,
-          have h18: s ≤ r, from h2.right r h17,
-          have h19: ¬ (r < s), from not_lt.mpr h18,
-          absurd h6.right h19)))))
+   (assume r,
+    assume h6: s * q + r = a ∧ r < s,
+    have h7: r = 0 ∨ ¬ r = 0, from em(r=0),
+    or.elim h7
+     (assume h8: r = 0,
+      have h9: s * q + 0 = a, from eq.subst h8 h6.left,
+      have h10: s * q = a, from h9,
+      exists.intro q h10)
+     (assume h11: ¬ r = 0,
+      have h12: r > 0, from bot_lt_iff_ne_bot.mpr h11,
+      have h13: a - s*q = r, from nat.sub_eq_of_eq_add (h6.left.symm),
+      have h14: (s*q) ∈ linear_combo a b, from lc_mul a b s q h3.left.right,
+      have h15: (a - s*q) ∈ linear_combo a b, from lc_a_minus a b (s*q) h1 h2 h14,
+      have h16: r ∈ linear_combo a b, from eq.subst h13 h15,
+      have h17: r ∈ pos_linear_combo a b, from and.intro h12 h16,
+      have h18: s ≤ r, from h3.right r h17,
+      have h19: ¬ (r < s), from not_lt.mpr h18,
+      absurd h6.right h19)))
 
 theorem bezout (a b : ℕ) (h1: a > 0) (h2: b > 0) (h3: coprime a b) : 1 ∈ linear_combo a b :=
 sorry
