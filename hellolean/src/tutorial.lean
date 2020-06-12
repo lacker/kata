@@ -590,7 +590,7 @@ exists.elim h2
   have h9: b > 1 ∧ divides b x ∧ divides b y, from and.intro h8 h6,
   exists.intro b h9)
 
-theorem cofactoring (a b : ℕ) (h1: a > 0) (h2: b > 0) :
+theorem single_cofactor (a b : ℕ) (h1: a > 0) (h2: b > 0) :
 coprime a b ∨ ∃ p, is_prime p ∧ divides p a ∧ divides p b :=
 have h3: coprime a b ∨ ¬ coprime a b, from em(coprime a b),
 or.elim h3
@@ -778,35 +778,15 @@ exists.elim h1
 
 def pos_linear_combo (a b : ℕ) := { e : ℕ | e > 0 ∧ e ∈ linear_combo a b }
 
-lemma zero_not_self_coprime : ¬ coprime 0 0 :=
-have h1: 2 ∈ codivisors 0 0, from and.intro (divides_zero 2) (divides_zero 2),
-have h2: coprime 0 0 ∨ ¬ coprime 0 0, from em(coprime 0 0),
-or.elim h2
- (assume h2: coprime 0 0,
-  have h3: 1 ≥ 2, from h2 2 h1,
-  have h4: ¬ (1 ≥ 2), from nat.lt_irrefl 1,
-  absurd h3 h4)
- (assume h5: ¬ coprime 0 0,
-  h5)
+lemma plc_nonempty (a b : ℕ) (h1: a > 0) : (pos_linear_combo a b).nonempty :=
+have h2: a ∈ linear_combo a b, from lc_left a b,
+have h3: a ∈ pos_linear_combo a b, from and.intro h1 h2,
+set.nonempty_of_mem h3
 
-def cpz (a : ℕ) := coprime a 0
+lemma bezdiv (a b s : ℕ) (h1: a > 0) (h2: b > 0) (h3: is_smallest s (pos_linear_combo a b)) : divides s a :=
+sorry
 
-lemma coprime_pos (a b : ℕ) (hc: coprime a b) : a > 0 ∨ b > 0 :=
-have h1: (a > 0 ∨ b > 0) ∨ ¬ (a > 0 ∨ b > 0), from em(a > 0 ∨ b > 0),
-or.elim h1
- (assume: a > 0 ∨ b > 0, this)
- (assume h2: ¬ (a > 0 ∨ b > 0),
-  have h3: ¬ (a > 0) ∧ ¬ (b > 0), from or_imp_distrib.mp h2,
-  have h4: a ≤ 0, from not_lt.mp h3.left,
-  have h5: a = 0, from eq_bot_iff.mpr h4,
-  have h6: b ≤ 0, from not_lt.mp h3.right,
-  have h7: b = 0, from eq_bot_iff.mpr h6,
-  have h8: coprime a 0, from eq.subst h7 hc,
-  have h9: cpz 0, from eq.subst h5 h8,
-  have h10: coprime 0 0, from h9,
-  absurd h10 zero_not_self_coprime)
-
-theorem bezout (a b : ℕ) (h1: coprime a b) : 1 ∈ linear_combo a b :=
+theorem bezout (a b : ℕ) (h1: a > 0) (h2: b > 0) (h3: coprime a b) : 1 ∈ linear_combo a b :=
 sorry
 
 
@@ -814,5 +794,6 @@ sorry
 TODO:
 prove basic stuff about coprimes & pos linear combo, like that it's nonempty
 prove the bezout rule, when a and b are coprime then ac - bd = 1
+prove total cofactoring - a divisor, and two coprime parts
 prove fermat's little theorem - x^p = x mod p
 -/
