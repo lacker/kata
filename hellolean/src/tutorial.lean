@@ -872,7 +872,7 @@ or.elim h2
       have h17: ¬ (m ≥ 1 ∧ m ≤ s), from not_and_of_not_right (m ≥ 1) h16,
       have h18: mod s m = s, from mdr s m h17,
       have h19: ¬ (mod s m ≥ m), from eq.subst h18.symm h16,
-      absurd h7.left h19))
+      absurd h7.left h19)))
 
 theorem mod_cyclic (a m : ℕ) : mod (a + m) m = mod a m :=
 have h1: m = 0 ∨ m ≠ 0, from em(m=0),
