@@ -832,9 +832,10 @@ exists.elim h5
   have h13: s = 1, from le_antisymm h11 h12,
   eq.subst h13 h6.left.right)
 
+def mod (a m : ℕ) := 0
 
 /-
 TODO:
-prove total cofactoring - the gcd, and two coprime parts
+figure out how to define mod usefully
 prove fermat's little theorem - x^p = x mod p
 -/
