@@ -783,6 +783,17 @@ have h2: a ∈ linear_combo a b, from lc_left a b,
 have h3: a ∈ pos_linear_combo a b, from and.intro h1 h2,
 set.nonempty_of_mem h3
 
+lemma plc_comm_subset (a b : ℕ) (h1: a > 0) (h2: b > 0) : pos_linear_combo a b ⊆ pos_linear_combo b a :=
+assume e,
+assume h3: e ∈ pos_linear_combo a b,
+have h4: e ∈ linear_combo b a, from eq.subst (lc_comm a b h1 h2) h3.right,
+and.intro h3.left h4
+
+theorem plc_comm (a b : ℕ) (h1: a > 0) (h2: b > 0) : pos_linear_combo a b = pos_linear_combo b a :=
+set.eq_of_subset_of_subset
+ (plc_comm_subset a b h1 h2)
+ (plc_comm_subset b a h2 h1)
+
 lemma bezdiv (a b s : ℕ) (h1: a > 0) (h2: b > 0) (h3: is_smallest s (pos_linear_combo a b)) : divides s a :=
 exists.elim (division a s h3.left.left)
  (assume q, assume : ∃ r : ℕ, s * q + r = a ∧ r < s,
@@ -807,13 +818,23 @@ exists.elim (division a s h3.left.left)
       absurd h6.right h19)))
 
 theorem bezout (a b : ℕ) (h1: a > 0) (h2: b > 0) (h3: coprime a b) : 1 ∈ linear_combo a b :=
-sorry
+have h4: (pos_linear_combo a b).nonempty, from plc_nonempty a b h1,
+have h5: ∃ s, is_smallest s (pos_linear_combo a b), from well_ordered (pos_linear_combo a b) h4,
+exists.elim h5
+ (assume s,
+  assume h6: is_smallest s (pos_linear_combo a b),
+  have h7: divides s a, from bezdiv a b s h1 h2 h6,
+  have h8: is_smallest s (pos_linear_combo b a), from eq.subst (plc_comm a b h1 h2) h6,
+  have h9: divides s b, from bezdiv b a s h2 h1 h8,
+  have h10: s ∈ codivisors a b, from and.intro h7 h9,
+  have h11: 1 ≥ s, from h3 s h10,
+  have h12: s > 0, from h6.left.left,
+  have h13: s = 1, from le_antisymm h11 h12,
+  eq.subst h13 h6.left.right)
 
 
 /-
 TODO:
-prove basic stuff about coprimes & pos linear combo, like that it's nonempty
-prove the bezout rule, when a and b are coprime then ac - bd = 1
-prove total cofactoring - a divisor, and two coprime parts
+prove total cofactoring - the gcd, and two coprime parts
 prove fermat's little theorem - x^p = x mod p
 -/
