@@ -904,6 +904,10 @@ TODO:
 
 I want to prove fermat's little theorem: x^p = x mod p .
 
-The normal way is with cosets. Maybe I should look into sets and the size of sets, how that stuff is handled.
+Can I do it with what I have here? Like without using someone else's set manipulation stuff? Hmm.
+Could define msize, the size of the intersection of a set with [0..m)
+
+I could also define cosets. Like coset a b is (a * b^n) mod m.
+
 I should also check out the community. If there's a future, it's in there somewhere.
 -/
