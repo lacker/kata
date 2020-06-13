@@ -894,23 +894,23 @@ def maps (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x: ℕ, x ∈ s1 → x ∈ s
 
 def covers (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x2: ℕ, x2 ∈ s2 → ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2
 
-def into (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ a: ℕ, ∀ b: ℕ, a ∈ s1 ∧ a ∈ s2 ∧ f a = f b → a = b
+def into (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x1: ℕ, ∀ x2: ℕ, x1 ∈ s1 ∧ x2 ∈ s2 ∧ f x2 = f x1 → x1 = x2
 
 def bijects (s1 s2 : set ℕ) (f : ℕ → ℕ) := covers s1 s2 f ∧ into s1 s2 f
 
-def has_size (s : set ℕ) (n : ℕ) := ∃ f: ℕ → ℕ, bijects s (range n) f
-
-theorem cov_imp_into (s1 s2 : set ℕ) (f : ℕ → ℕ) : ∃ g: ℕ → ℕ, into s2 s1 g := sorry
-
-theorem into_imp_cov (s1 s2 : set ℕ) (f : ℕ → ℕ) : ∃ g: ℕ → ℕ, covers s2 s1 g := sorry
+def has_size (s : set ℕ) (n : ℕ) := ∃ f: ℕ → ℕ, bijects (range n) s f
 
 /-
 TODO:
 
-I want to prove fermat's little theorem: x^p = x mod p .
+Basic set stuff.
+The empty set has size zero.
+The size of a set that is "just n" is 1.
+If two sets don't intersect, the size of their union is the sum of their sizes.
+A set cannot have two different sizes.
+If a set has a size, its subsets have a size too. (Does this require classical logic?)
 
-Can I do it with what I have here? Like without using someone else's set manipulation stuff? Hmm.
-Could define msize, the size of the intersection of a set with [0..m)
+I want to prove fermat's little theorem: x^p = x mod p .
 
 I could also define cosets. Like coset a b is (a * b^n) mod m.
 
