@@ -888,12 +888,22 @@ or.elim h1
   have h9: a+m-m = a, from nat.add_sub_cancel a m,
   show mod (a+m) m = mod a m, by rw [h8, h9])
 
+theorem mod_rem (a m r : ℕ) : mod (a*m + r) m = mod r m :=
+nat.rec_on a
+ (show mod (0*m + r) m = mod r m, by rw [zero_mul, zero_add])
+ (assume a,
+  assume h1: mod (a*m + r) m = mod r m,
+  have h2: mod ((a+1)*m + r) m = mod (a*m + r + m) m,
+      by rw [add_mul, one_mul, add_assoc, (add_comm m r), add_assoc],
+  have h3: mod (a*m + r + m) m = mod (a*m + r) m, from mod_cyclic (a*m+r) m,
+  have h4: mod (a*m + r + m) m = mod r m, from eq.subst h1 h3,
+  eq.subst h4 h2)
+
 /-
 TODO:
-prove stuff about mod:
 
-mod (a*m+r) m = mod r m
-mod a m = 0 iff m divides a.
+I want to prove fermat's little theorem: x^p = x mod p .
 
-prove fermat's little theorem - x^p = x mod p
+The normal way is with cosets. Maybe I should look into sets and the size of sets, how that stuff is handled.
+I should also check out the community. If there's a future, it's in there somewhere.
 -/
