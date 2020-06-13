@@ -5,20 +5,9 @@ import tactic.basic
 import tactic.suggest
 open classical
 
-constants p q : Prop
-
-example : p → p := assume hp: p, show p, from hp
-
-theorem or_swap (p q : Prop) : p ∨ q → q ∨ p :=
-assume h: p ∨ q,
-or.elim h
-(assume hp: p, show q ∨ p, from or.intro_right q hp)
-(assume hq: q, show q ∨ p, from or.intro_left p hq)
-
-example : p ∨ q ↔ q ∨ p :=
-iff.intro
-(or_swap p q)
-(or_swap q p)
+-- So that we can ignore the difference between computable and uncomputable sets.
+-- open_locale classical
+-- noncomputable theory
 
 def is_even (a : ℕ) := ∃ b, 2 * b = a
 
@@ -898,6 +887,22 @@ nat.rec_on a
   have h3: mod (a*m + r + m) m = mod (a*m + r) m, from mod_cyclic (a*m+r) m,
   have h4: mod (a*m + r + m) m = mod r m, from eq.subst h1 h3,
   eq.subst h4 h2)
+
+def range (n : ℕ) := { x : ℕ | x < n }
+
+def maps (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x: ℕ, x ∈ s1 → x ∈ s2
+
+def covers (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x2: ℕ, x2 ∈ s2 → ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2
+
+def into (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ a: ℕ, ∀ b: ℕ, a ∈ s1 ∧ a ∈ s2 ∧ f a = f b → a = b
+
+def bijects (s1 s2 : set ℕ) (f : ℕ → ℕ) := covers s1 s2 f ∧ into s1 s2 f
+
+def has_size (s : set ℕ) (n : ℕ) := ∃ f: ℕ → ℕ, bijects s (range n) f
+
+theorem cov_imp_into (s1 s2 : set ℕ) (f : ℕ → ℕ) : ∃ g: ℕ → ℕ, into s2 s1 g := sorry
+
+theorem into_imp_cov (s1 s2 : set ℕ) (f : ℕ → ℕ) : ∃ g: ℕ → ℕ, covers s2 s1 g := sorry
 
 /-
 TODO:
