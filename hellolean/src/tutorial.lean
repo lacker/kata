@@ -890,21 +890,66 @@ nat.rec_on a
 
 def range (n : ℕ) := { x : ℕ | x < n }
 
-def maps (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x: ℕ, x ∈ s1 → x ∈ s2
+def surj (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x2: ℕ, x2 ∈ s2 → ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2
 
-def covers (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x2: ℕ, x2 ∈ s2 → ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2
+def covers (s1 s2 : set ℕ) := ∃ f: ℕ → ℕ, surj s1 s2 f
 
-def into (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x1: ℕ, ∀ x2: ℕ, x1 ∈ s1 ∧ x2 ∈ s2 ∧ f x2 = f x1 → x1 = x2
+def bijects (s1 s2 : set ℕ) := covers s1 s2 ∧ covers s2 s1
 
-def bijects (s1 s2 : set ℕ) (f : ℕ → ℕ) := covers s1 s2 f ∧ into s1 s2 f
+def has_size (s : set ℕ) (n : ℕ) := bijects (range n) s
 
-def has_size (s : set ℕ) (n : ℕ) := ∃ f: ℕ → ℕ, bijects (range n) s f
+theorem bij_comm (s1 s2 : set ℕ) (h: bijects s1 s2) : bijects s2 s1 :=
+and.intro h.right h.left
+
+def nat_id (n : ℕ) := n
+
+theorem superset_covers (s1 s2 : set ℕ) (h1: s1 ⊇ s2) : covers s1 s2 :=
+have h2: surj s1 s2 nat_id ∨ ¬ (surj s1 s2 nat_id), from em(surj s1 s2 nat_id),
+or.elim h2
+ (assume: surj s1 s2 nat_id, exists.intro nat_id this)
+ (assume h3: ¬ (surj s1 s2 nat_id),
+  have h4: ∃ x2 : ℕ, ¬ (x2 ∈ s2 → ∃ x1: ℕ, x1 ∈ s1 ∧ nat_id x1 = x2),
+      from classical.not_forall.mp h3,
+  exists.elim h4
+   (assume x2,
+    assume h5: ¬ (x2 ∈ s2 → ∃ x1: ℕ, x1 ∈ s1 ∧ nat_id x1 = x2),
+    have h6: x2 ∈ s2 ∧ ¬ (∃ x1: ℕ, x1 ∈ s1 ∧ nat_id x1 = x2), from classical.not_imp.mp h5,
+    have h7: nat_id x2 = x2, from rfl,
+    have h8: x2 ∈ s1, from set.mem_of_mem_of_subset h6.left h1,
+    have h9: ∃ x1: ℕ, x1 ∈ s1 ∧ nat_id x1 = x2, from exists.intro x2 (and.intro h8 h7),
+    absurd h9 h6.right))
+
+theorem bij_refl (s : set ℕ) : bijects s s :=
+have h1: s ⊆ s, from set.subset.refl s,
+have h2: covers s s, from superset_covers s s h1,
+and.intro h2 h2
+
+lemma rzse : range 0 ⊆ ∅ :=
+assume x,
+assume h1: x ∈ range 0,
+have h2: x < 0, from h1,
+have h3: ¬ (x < 0), from not_ltz x,
+show x ∈ ∅, from absurd h2 h3
+
+theorem range_zero : range 0 = ∅ := set.eq_empty_of_subset_empty rzse
+
+theorem range_size (n: ℕ) : has_size (range n) n := bij_refl (range n)
+
+theorem empty_size_zero : has_size ∅ 0 := eq.subst range_zero (range_size 0)
+
+theorem surj_trans (s1 s2 s3 : set ℕ) (f1 f2 : ℕ → ℕ)
+(h1: surj s1 s2 f1) (h2: surj s2 s3 f2) :
+surj s1 s2 (f1 ∘ f2) :=
+sorry
+
+theorem covers_trans (s1 s2 s3 : set ℕ) (h1: covers s1 s2) (h2: covers s2 s3) : covers s1 s3 :=
+sorry
 
 /-
 TODO:
 
-Basic set stuff.
-The empty set has size zero.
+surj_trans
+covers_trans
 The size of a set that is "just n" is 1.
 If two sets don't intersect, the size of their union is the sum of their sizes.
 A set cannot have two different sizes.
