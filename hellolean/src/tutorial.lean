@@ -939,19 +939,38 @@ theorem empty_size_zero : has_size ∅ 0 := eq.subst range_zero (range_size 0)
 
 theorem surj_trans (s1 s2 s3 : set ℕ) (f1 f2 : ℕ → ℕ)
 (h1: surj s1 s2 f1) (h2: surj s2 s3 f2) :
-surj s1 s3 (f1 ∘ f2) :=
+surj s1 s3 (f2 ∘ f1) :=
 assume x3,
 assume h3: x3 ∈ s3,
-show ∃ x1: ℕ, x1 ∈ s1 ∧ (f1 ∘ f2) x1 = x3, from sorry
+have h4: ∃ x2: ℕ, x2 ∈ s2 ∧ f2 x2 = x3, from h2 x3 h3,
+exists.elim h4
+ (assume x2,
+  assume h5: x2 ∈ s2 ∧ f2 x2 = x3,
+  have h6: ∃ x1: ℕ, x1 ∈ s1 ∧ f1 x1 = x2, from h1 x2 h5.left,
+  exists.elim h6
+   (assume x1,
+    assume h7: x1 ∈ s1 ∧ f1 x1 = x2,
+    have h8: (f2 ∘ f1) x1 = x3, from eq.subst h5.right (congr_arg f2 h7.right),
+    exists.intro x1 (and.intro h7.left h8)))
 
 theorem covers_trans (s1 s2 s3 : set ℕ) (h1: covers s1 s2) (h2: covers s2 s3) : covers s1 s3 :=
-sorry
+exists.elim h1
+ (assume f1,
+  assume h3: surj s1 s2 f1,
+  exists.elim h2
+   (assume f2,
+    assume h4: surj s2 s3 f2,
+    have h5: surj s1 s3 (f2 ∘ f1), from surj_trans s1 s2 s3 f1 f2 h3 h4,
+    exists.intro (f2 ∘ f1) h5))
+
+theorem bijects_trans (s1 s2 s3 : set ℕ) (h1: bijects s1 s2) (h2: bijects s2 s3) : bijects s1 s3 :=
+have h3: covers s1 s3, from covers_trans s1 s2 s3 h1.left h2.left,
+have h4: covers s3 s1, from covers_trans s3 s2 s1 h2.right h1.right,
+and.intro h3 h4
 
 /-
 TODO:
 
-surj_trans
-covers_trans
 The size of a set that is "just n" is 1.
 If two sets don't intersect, the size of their union is the sum of their sizes.
 A set cannot have two different sizes.
