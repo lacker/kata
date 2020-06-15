@@ -898,7 +898,7 @@ def bijects (s1 s2 : set ℕ) := covers s1 s2 ∧ covers s2 s1
 
 def has_size (s : set ℕ) (n : ℕ) := bijects (range n) s
 
-theorem bij_comm (s1 s2 : set ℕ) (h: bijects s1 s2) : bijects s2 s1 :=
+theorem bijects_comm (s1 s2 : set ℕ) (h: bijects s1 s2) : bijects s2 s1 :=
 and.intro h.right h.left
 
 def nat_id (n : ℕ) := n
@@ -919,7 +919,7 @@ or.elim h2
     have h9: ∃ x1: ℕ, x1 ∈ s1 ∧ nat_id x1 = x2, from exists.intro x2 (and.intro h8 h7),
     absurd h9 h6.right))
 
-theorem bij_refl (s : set ℕ) : bijects s s :=
+theorem bijects_refl (s : set ℕ) : bijects s s :=
 have h1: s ⊆ s, from set.subset.refl s,
 have h2: covers s s, from superset_covers s s h1,
 and.intro h2 h2
@@ -933,9 +933,9 @@ show x ∈ ∅, from absurd h2 h3
 
 theorem range_zero : range 0 = ∅ := set.eq_empty_of_subset_empty rzse
 
-theorem range_size (n: ℕ) : has_size (range n) n := bij_refl (range n)
+theorem range_size (n: ℕ) : has_size (range n) n := bijects_refl (range n)
 
-theorem empty_size_zero : has_size ∅ 0 := eq.subst range_zero (range_size 0)
+theorem empty_size : has_size ∅ 0 := eq.subst range_zero (range_size 0)
 
 theorem surj_trans (s1 s2 s3 : set ℕ) (f1 f2 : ℕ → ℕ)
 (h1: surj s1 s2 f1) (h2: surj s2 s3 f2) :
@@ -968,12 +968,49 @@ have h3: covers s1 s3, from covers_trans s1 s2 s3 h1.left h2.left,
 have h4: covers s3 s1, from covers_trans s3 s2 s1 h2.right h1.right,
 and.intro h3 h4
 
+def single (n: ℕ) := {x | x = n}
+
+theorem range_one : range 1 = single 0 :=
+set.eq_of_subset_of_subset
+ (assume x,
+  assume h1: x ∈ range 1,
+  have h2: x ≤ 0, from nat.lt_succ_iff.mp h1,
+  have h3: x = 0, from eq_bot_iff.mpr h2,
+  show x ∈ single 0, from h3)
+ (assume x,
+  assume h4: x ∈ single 0,
+  have h5: x < 1, from eq.subst (h4.symm) (lt_add_one 0),
+  show x ∈ range 1, from h5)
+
+theorem single_covers (a b : ℕ) : covers (single a) (single b) :=
+have h1: ∃ x1: ℕ, x1 ∈ single a ∧ (λ x: ℕ, b) a = b, from exists_eq_left.mpr rfl,
+have h2: ∀ x2: ℕ, x2 ∈ single b → ∃ x1: ℕ, x1 ∈ single a ∧ (λ x: ℕ, b) a = x2, from
+ (assume x2,
+  assume h3: x2 ∈ single b,
+  have h4: x2 = b, from h3,
+  eq.subst h4.symm h1),
+have h5: surj (single a) (single b) (λ x: ℕ, b), from h2,
+exists.intro (λ x : ℕ, b) h5
+
+theorem single_bijects (a b : ℕ) : bijects (single a) (single b) :=
+and.intro (single_covers a b) (single_covers b a)
+
+theorem single_size (a: ℕ) : has_size (single a) 1 := 
+have h1: bijects (single 0) (single a), from single_bijects 0 a,
+have h2: bijects (range 1) (single a), from eq.subst range_one.symm h1,
+h2
+
+theorem bijects_size (s1 s2 : set ℕ) (h1: bijects s1 s2) (n: ℕ) (h2: has_size s1 n) : has_size s2 n :=
+have h3: bijects (range n) s1, from h2,
+have h4: bijects (range n) s2, from bijects_trans (range n) s1 s2 h3 h1,
+h4
+
 /-
 TODO:
 
-The size of a set that is "just n" is 1.
-If two sets don't intersect, the size of their union is the sum of their sizes.
+If A bijects B, then A-C bijects B-C.
 A set cannot have two different sizes.
+If two sets don't intersect, the size of their union is the sum of their sizes.
 If a set has a size, its subsets have a size too. (Does this require classical logic?)
 
 I want to prove fermat's little theorem: x^p = x mod p .
@@ -982,3 +1019,4 @@ I could also define cosets. Like coset a b is (a * b^n) mod m.
 
 I should also check out the community. If there's a future, it's in there somewhere.
 -/
+
