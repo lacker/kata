@@ -939,8 +939,10 @@ theorem empty_size_zero : has_size ∅ 0 := eq.subst range_zero (range_size 0)
 
 theorem surj_trans (s1 s2 s3 : set ℕ) (f1 f2 : ℕ → ℕ)
 (h1: surj s1 s2 f1) (h2: surj s2 s3 f2) :
-surj s1 s2 (f1 ∘ f2) :=
-sorry
+surj s1 s3 (f1 ∘ f2) :=
+assume x3,
+assume h3: x3 ∈ s3,
+show ∃ x1: ℕ, x1 ∈ s1 ∧ (f1 ∘ f2) x1 = x3, from sorry
 
 theorem covers_trans (s1 s2 s3 : set ℕ) (h1: covers s1 s2) (h2: covers s2 s3) : covers s1 s3 :=
 sorry
