@@ -963,7 +963,8 @@ exists.elim h1
     have h5: surj s1 s3 (f2 ∘ f1), from surj_trans s1 s2 s3 f1 f2 h3 h4,
     exists.intro (f2 ∘ f1) h5))
 
-theorem bijects_trans (s1 s2 s3 : set ℕ) (h1: bijects s1 s2) (h2: bijects s2 s3) : bijects s1 s3 :=
+theorem bijects_trans (s1 s2 s3 : set ℕ) (h1: bijects s1 s2) (h2: bijects s2 s3) :
+bijects s1 s3 :=
 have h3: covers s1 s3, from covers_trans s1 s2 s3 h1.left h2.left,
 have h4: covers s3 s1, from covers_trans s3 s2 s1 h2.right h1.right,
 and.intro h3 h4
@@ -1000,16 +1001,96 @@ have h1: bijects (single 0) (single a), from single_bijects 0 a,
 have h2: bijects (range 1) (single a), from eq.subst range_one.symm h1,
 h2
 
-theorem bijects_size (s1 s2 : set ℕ) (h1: bijects s1 s2) (n: ℕ) (h2: has_size s1 n) : has_size s2 n :=
+theorem bijects_size (s1 s2 : set ℕ) (h1: bijects s1 s2) (n: ℕ) (h2: has_size s1 n) :
+has_size s2 n :=
 have h3: bijects (range n) s1, from h2,
 have h4: bijects (range n) s2, from bijects_trans (range n) s1 s2 h3 h1,
 h4
 
+theorem surj_empty (s : set ℕ) (f : ℕ → ℕ) : surj s (∅: set ℕ) f :=
+assume x2: ℕ,
+assume h1: x2 ∈ (∅: set ℕ),
+have h2: x2 ∉ (∅: set ℕ), from not_false,
+absurd h1 h2
+
+theorem covers_empty (s : set ℕ) : covers s (∅: set ℕ) :=
+have h1: surj s (∅: set ℕ) nat_id, from surj_empty s nat_id,
+exists.intro nat_id h1
+
+theorem surj_nonempty (s1 s2: set ℕ) (f: ℕ → ℕ) (h1: surj s1 s2 f) (h2: s2.nonempty) :
+s1.nonempty :=
+have h3: ∃ x2: ℕ, x2 ∈ s2, from h2,
+exists.elim h3
+ (assume x2,
+  assume h4: x2 ∈ s2,
+  have h5: ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2, from h1 x2 h4,
+  exists.elim h5
+   (assume x1,
+    assume h6: x1 ∈ s1 ∧ f x1 = x2,
+    set.nonempty_of_mem h6.left))
+
+theorem empty_surj (s : set ℕ) (f : ℕ → ℕ) (h1: surj (∅: set ℕ) s f) : s = ∅ :=
+have h2: s = ∅ ∨ s.nonempty, from set.eq_empty_or_nonempty s,
+or.elim h2
+ (assume: s = ∅, this)
+ (assume h3: s.nonempty,
+  have h4: (∅: set ℕ).nonempty, from surj_nonempty ∅ s f h1 h3,
+  absurd h4 exists_false)
+
+theorem empty_covers (s : set ℕ) (h1: covers (∅: set ℕ) s) : s = ∅ :=
+exists.elim h1
+ (assume f: ℕ → ℕ,
+  assume h2: surj (∅: set ℕ) s f,
+  empty_surj s f h2)
+
+theorem covers_nonempty (s1 s2: set ℕ) (h1: covers s1 s2) (h2: s2.nonempty) : s1.nonempty :=
+exists.elim h1
+ (assume f: ℕ → ℕ,
+  assume h3: surj s1 s2 f,
+  surj_nonempty s1 s2 f h3 h2)
+
+theorem bijects_empty (s: set ℕ) (h1: bijects s ∅) : s = ∅ :=
+empty_covers s h1.right
+
+theorem bijects_nonempty (s1 s2: set ℕ) (h1: bijects s1 s2) (h2: s2.nonempty) : s1.nonempty :=
+covers_nonempty s1 s2 h1.left h2
+
+theorem range_nonempty (n: ℕ) (h1: n > 0) : (range n).nonempty :=
+have h2: 0 ∈ range n, from h1,
+set.nonempty_of_mem h2
+
+theorem pos_size (n : ℕ) (s: set ℕ) (h1: n > 0) (h2: has_size s n) : s.nonempty :=
+have h3: bijects s (range n), from bijects_comm (range n) s h2,
+have h4: (range n).nonempty, from range_nonempty n h1,
+bijects_nonempty s (range n) h3 h4
+
+/- Not clear if we need this exactly -/
+lemma rsu_zero : ∀ x: ℕ, has_size (range 0) x → 0 = x :=
+assume x,
+assume h1: has_size (range 0) x,
+have h2: bijects (range x) (range 0), from h1,
+have h3: bijects (range x) ∅, from eq.subst range_zero h2,
+have h4: range x = ∅, from bijects_empty (range x) h3,
+or.elim (em(x = 0))
+ (assume: x = 0, this.symm)
+ (assume h5: x ≠ 0,
+  have h6: x > 0, from bot_lt_iff_ne_bot.mpr h5,
+  have h7: (range x).nonempty, from range_nonempty x h6,
+  have h8: ¬ (range x).nonempty, from set.not_nonempty_iff_eq_empty.mpr h4,
+  absurd h7 h8)
+
+lemma range_cover (a: ℕ): ∀ b: ℕ, covers (range a) (range b) → a ≥ b := sorry
+
+theorem size_unique (s : set ℕ) (a b : ℕ) (h1: has_size s a) (h2: has_size s b) : a = b :=
+sorry
+
 /-
 TODO:
 
-If A bijects B, then A-C bijects B-C.
-A set cannot have two different sizes.
+A set cannot have two different sizes. How can we prove this?
+Going from range_cover to size_unique seems ok.
+How to prove range_cover? nat.rec_on a, I think
+
 If two sets don't intersect, the size of their union is the sum of their sizes.
 If a set has a size, its subsets have a size too. (Does this require classical logic?)
 
