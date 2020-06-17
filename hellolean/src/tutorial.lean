@@ -919,6 +919,10 @@ or.elim h2
     have h9: ∃ x1: ℕ, x1 ∈ s1 ∧ nat_id x1 = x2, from exists.intro x2 (and.intro h8 h7),
     absurd h9 h6.right))
 
+theorem covers_rfl (s : set ℕ) : covers s s :=
+have h1: s ⊆ s, from set.subset.refl s,
+superset_covers s s h1
+
 theorem bijects_refl (s : set ℕ) : bijects s s :=
 have h1: s ⊆ s, from set.subset.refl s,
 have h2: covers s s, from superset_covers s s h1,
@@ -953,7 +957,8 @@ exists.elim h4
     have h8: (f2 ∘ f1) x1 = x3, from eq.subst h5.right (congr_arg f2 h7.right),
     exists.intro x1 (and.intro h7.left h8)))
 
-theorem covers_trans (s1 s2 s3 : set ℕ) (h1: covers s1 s2) (h2: covers s2 s3) : covers s1 s3 :=
+theorem covers_trans (s1 s2 s3 : set ℕ) (h1: covers s1 s2) (h2: covers s2 s3) :
+covers s1 s3 :=
 exists.elim h1
  (assume f1,
   assume h3: surj s1 s2 f1,
@@ -1043,7 +1048,8 @@ exists.elim h1
   assume h2: surj (∅: set ℕ) s f,
   empty_surj s f h2)
 
-theorem covers_nonempty (s1 s2: set ℕ) (h1: covers s1 s2) (h2: s2.nonempty) : s1.nonempty :=
+theorem covers_nonempty (s1 s2: set ℕ) (h1: covers s1 s2) (h2: s2.nonempty) :
+s1.nonempty :=
 exists.elim h1
  (assume f: ℕ → ℕ,
   assume h3: surj s1 s2 f,
@@ -1052,7 +1058,8 @@ exists.elim h1
 theorem bijects_empty (s: set ℕ) (h1: bijects s ∅) : s = ∅ :=
 empty_covers s h1.right
 
-theorem bijects_nonempty (s1 s2: set ℕ) (h1: bijects s1 s2) (h2: s2.nonempty) : s1.nonempty :=
+theorem bijects_nonempty (s1 s2: set ℕ) (h1: bijects s1 s2) (h2: s2.nonempty) :
+s1.nonempty :=
 covers_nonempty s1 s2 h1.left h2
 
 theorem range_nonempty (n: ℕ) (h1: n > 0) : (range n).nonempty :=
@@ -1079,7 +1086,120 @@ or.elim (em(x = 0))
   have h8: ¬ (range x).nonempty, from set.not_nonempty_iff_eq_empty.mpr h4,
   absurd h7 h8)
 
-lemma range_cover (a: ℕ): ∀ b: ℕ, covers (range a) (range b) → a ≥ b := sorry
+def remove (s: set ℕ) (a: ℕ) := {x | x ∈ s ∧ x ≠ a}
+
+lemma surj_dec (a: ℕ) (s1 s2: set ℕ) (f: ℕ → ℕ) (h1: a ∈ s1) (h2: surj s1 s2 f):
+surj (remove s1 a) (remove s2 (f a)) f :=
+assume x2,
+assume h4: x2 ∈ (remove s2 (f a)),
+have h5: x2 ∈ s2, from h4.left,
+have h6: ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2, from h2 x2 h5,
+exists.elim h6
+ (assume x1,
+  assume h7: x1 ∈ s1 ∧ f x1 = x2,
+  have h8: x2 ≠ f a, from h4.right,
+  have h9: f x1 ≠ f a, from eq.subst h7.right.symm h8, 
+  have x1 = a ∨ x1 ≠ a, from em(x1 = a),
+  or.elim this
+   (assume h10: x1 = a,
+    have h11: f x1 = f a, from congr_arg f h10,
+    absurd h11 h9)
+   (assume h12: x1 ≠ a,
+    have h13: x1 ∈ (remove s1 a), from and.intro h7.left h12,
+    exists.intro x1 (and.intro h13 h7.right)))
+
+def swap : ℕ → ℕ → ℕ → ℕ
+| a b c :=
+if a = c then b else (if b = c then a else c)
+
+lemma swapl (a b : ℕ) : swap a b a = b := if_pos rfl
+
+lemma swapr (a b : ℕ) : swap a b b = a :=
+have h1: a = b ∨ a ≠ b, from em(a=b),
+or.elim h1
+ (assume h2: a = b,
+  have h3: swap a a a = a, from swapl a a,
+  have h4: swap a b b = a, from eq.subst h2 h3,
+  h4)
+ (assume h5: a ≠ b,
+  have h6: swap a b b = (if b = b then a else b), from if_neg h5,
+  have h7: (if b = b then a else b) = a, from if_pos rfl,
+  have h8: swap a b b = a, by rw [h6, h7],
+  h8)
+
+lemma swapne (a b c : ℕ) (h1: a ≠ c) (h2: b ≠ c) : swap a b c = c :=
+have h3: swap a b c = (if b = c then a else c), from if_neg h1,
+have h4: (if b = c then a else c) = c, from if_neg h2,
+by rw [h3, h4]
+
+lemma surj_swap (a b : ℕ) (s : set ℕ) (h1: a ∈ s) (h2: b ∈ s) (h3: a ≠ b) :
+surj (remove s a) (remove s b) (swap a b) :=
+assume x2,
+assume h4: x2 ∈ (remove s b),
+have h5: x2 = a ∨ x2 ≠ a, from em(x2 = a),
+or.elim h5
+ (assume h6: x2 = a,
+  have h7: b ∈ (remove s a), from set.mem_sep h2 h3.symm,
+  have h8: (swap a b) b = x2, from eq.subst h6.symm (swapr a b),
+  exists.intro b (and.intro h7 h8))
+ (assume h9: x2 ≠ a,
+  have h10: x2 ∈ (remove s a), from and.intro h4.left h9,
+  have h11: x2 ≠ b, from h4.right,
+  have h12: (swap a b) x2 = x2, from swapne a b x2 h9.symm h11.symm,
+  exists.intro x2 (and.intro h10 h12))
+
+lemma cover_swap (a b : ℕ) (s : set ℕ) (h1: a ∈ s) (h2: b ∈ s) :
+covers (remove s a) (remove s b) :=
+have h3: a = b ∨ a ≠ b, from em(a = b),
+or.elim h3
+ (assume h4: a = b,
+  have h5: covers (remove s a) (remove s a), from covers_rfl (remove s a),
+  have h6: remove s b = remove s a, from congr_arg (remove s) h4.symm,
+  have h7: remove s b ⊆ remove s a, from (set.subset.antisymm_iff.mp h6).left,
+  superset_covers (remove s a) (remove s b) h7)
+ (assume h8: a ≠ b,
+  exists.intro (swap a b) (surj_swap a b s h1 h2 h8))
+
+lemma bijects_swap (a b : ℕ) (s : set ℕ) (h1: a ∈ s) (h2: b ∈ s):
+bijects (remove s a) (remove s b) :=
+and.intro (cover_swap a b s h1 h2) (cover_swap b a s h2 h1)
+
+lemma rrn (n: ℕ) : range n = remove (range (n+1)) n :=
+set.eq_of_subset_of_subset
+ (assume x,
+  assume h1: x ∈ range n,
+  have h2: x < n + 1, from nat.lt.step h1,
+  have h3: x ≠ n, from ne_of_lt h1,
+  and.intro h2 h3)
+ (assume x,
+  assume h4: x ∈ remove (range (n+1)) n,
+  have h5: x < n + 1, from h4.left,
+  have h6: x ≠ n, from h4.right,
+  array.push_back_idx h5 h6)
+
+lemma range_remove (a n : ℕ) (h1: a ∈ range (n+1)) :
+bijects (range n) (remove (range (n+1)) a) :=
+have h2: n ∈ range (n+1), from lt_add_one n,
+have h3: bijects (remove (range (n+1)) n) (remove (range (n+1)) a),
+    from bijects_swap n a (range (n+1)) h2 h1,
+eq.subst (rrn n).symm h3
+
+def overcovers (n: ℕ) := covers (range n) (range (n+1))
+
+lemma noc_zero : ¬ overcovers 0 :=
+have h1: overcovers 0 ∨ ¬ overcovers 0, from em(overcovers 0),
+or.elim h1
+ (assume h2: overcovers 0,
+  have h3: covers ∅ (range 1), from eq.subst range_zero h2,
+  have h4: (range 1) = ∅, from empty_covers (range 1) h3,
+  have h5: 1 > 0, from lt_add_one 0,
+  have h6: (range 1).nonempty, from range_nonempty 1 h5,
+  have h7: ¬ (range 1 = ∅), from set.nmem_singleton_empty.mpr h6,
+  absurd h4 h7)
+ (assume: ¬ overcovers 0, this)
+
+lemma oc_inducts (n: ℕ) (h1: overcovers (n+1)) : overcovers n :=
+sorry
 
 theorem size_unique (s : set ℕ) (a b : ℕ) (h1: has_size s a) (h2: has_size s b) : a = b :=
 sorry
@@ -1087,9 +1207,10 @@ sorry
 /-
 TODO:
 
-A set cannot have two different sizes. How can we prove this?
-Going from range_cover to size_unique seems ok.
-How to prove range_cover? nat.rec_on a, I think
+A set cannot have two different sizes. size_unique. How can we prove this?
+Prove the impossibility of covering a larger range
+The tricky part is the inductive part
+surj_dec should get us there, perhaps along with some mucking about with ranges
 
 If two sets don't intersect, the size of their union is the sum of their sizes.
 If a set has a size, its subsets have a size too. (Does this require classical logic?)
