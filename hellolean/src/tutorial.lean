@@ -939,6 +939,12 @@ theorem range_zero : range 0 = ∅ := set.eq_empty_of_subset_empty rzse
 
 theorem range_size (n: ℕ) : has_size (range n) n := bijects_refl (range n)
 
+theorem range_subset (a b : ℕ) (h1: a ≤ b) : range a ⊆ range b :=
+assume x,
+assume h2: x ∈ range a,
+have h3: x < b, from lt_of_lt_of_le h2 h1,
+show x ∈ range b, from h3
+
 theorem empty_size : has_size ∅ 0 := eq.subst range_zero (range_size 0)
 
 theorem surj_trans (s1 s2 s3 : set ℕ) (f1 f2 : ℕ → ℕ)
@@ -1070,21 +1076,6 @@ theorem pos_size (n : ℕ) (s: set ℕ) (h1: n > 0) (h2: has_size s n) : s.nonem
 have h3: bijects s (range n), from bijects_comm (range n) s h2,
 have h4: (range n).nonempty, from range_nonempty n h1,
 bijects_nonempty s (range n) h3 h4
-
-/- Not clear if we need this exactly -/
-lemma rsu_zero : ∀ x: ℕ, has_size (range 0) x → 0 = x :=
-assume x,
-assume h1: has_size (range 0) x,
-have h2: bijects (range x) (range 0), from h1,
-have h3: bijects (range x) ∅, from eq.subst range_zero h2,
-have h4: range x = ∅, from bijects_empty (range x) h3,
-or.elim (em(x = 0))
- (assume: x = 0, this.symm)
- (assume h5: x ≠ 0,
-  have h6: x > 0, from bot_lt_iff_ne_bot.mpr h5,
-  have h7: (range x).nonempty, from range_nonempty x h6,
-  have h8: ¬ (range x).nonempty, from set.not_nonempty_iff_eq_empty.mpr h4,
-  absurd h7 h8)
 
 def remove (s: set ℕ) (a: ℕ) := {x | x ∈ s ∧ x ≠ a}
 
@@ -1232,19 +1223,44 @@ nat.rec_on n
     absurd h4 h1)
    (assume: ¬ overcovers (n+1), this))
 
+lemma suhelp (s: set ℕ) (a b: ℕ) (h1: has_size s a) (h2: has_size s b) (h3: a > b) : a = b :=
+have h4: bijects (range a) s, from h1,
+have h5: bijects (range b) s, from h2,
+have h6: bijects s (range b), from bijects_comm (range b) s h5,
+have h7: bijects (range a) (range b), from bijects_trans (range a) s (range b) h4 h6,
+have h8: b+1 ≤ a, from h3,
+have h9: range (b+1) ⊆ range a, from range_subset (b+1) a h8,
+have h10: covers (range a) (range (b+1)), from superset_covers (range a) (range (b+1)) h9,
+have h11: covers (range b) (range (b+1)),
+    from covers_trans (range b) (range a) (range (b+1)) h7.right h10,
+absurd h11 (noc_any b)
+
 theorem size_unique (s : set ℕ) (a b : ℕ) (h1: has_size s a) (h2: has_size s b) : a = b :=
+have h3: a < b ∨ ¬ (a < b), from em(a < b),
+or.elim h3
+ (assume h4: a < b,
+  have h6: b = a, from suhelp s b a h2 h1 h4,
+  h6.symm)
+ (assume h7: ¬ (a < b),
+  have h8: a = b ∨ a > b, from eq_or_lt_of_not_lt h7,
+  or.elim h8
+   (assume: a = b, this)
+   (assume h9: a > b,
+    suhelp s a b h1 h2 h9))
+
+theorem remove_size (s: set ℕ) (a n: ℕ) (h1: has_size s (n+1)) (h2: a ∈ s) :
+has_size (remove s a) n := sorry
+
+theorem subset_finite (s1 s2: set ℕ) (n2: ℕ) (h1: has_size s2 n2) : ∃ n1: ℕ, has_size s1 n :=
 sorry
+
+theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_size s2 n2)
+(h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) := sorry
 
 /-
 TODO:
 
-A set cannot have two different sizes. size_unique. How can we prove this?
-Prove the impossibility of covering a larger range
-The tricky part is the inductive part
-surj_dec should get us there, perhaps along with some mucking about with ranges
-
-If two sets don't intersect, the size of their union is the sum of their sizes.
-If a set has a size, its subsets have a size too. (Does this require classical logic?)
+More basic set theory stuff.
 
 I want to prove fermat's little theorem: x^p = x mod p .
 
