@@ -1198,8 +1198,39 @@ or.elim h1
   absurd h4 h7)
  (assume: ¬ overcovers 0, this)
 
-lemma oc_inducts (n: ℕ) (h1: overcovers (n+1)) : overcovers n :=
-sorry
+lemma ocai (n: ℕ) (h1: overcovers (n+1)) : overcovers n :=
+exists.elim h1
+ (assume f,
+  assume h2: ∀ x2: ℕ, x2 ∈ range ((n+1)+1) → ∃ x1: ℕ, x1 ∈ range (n+1) ∧ f x1 = x2,
+  have h3: n+1 ∈ range((n+1)+1), from lt_add_one (n+1),
+  have h4: ∃ x1: ℕ, x1 ∈ range (n+1) ∧ f x1 = (n+1), from h2 (n+1) h3,
+  exists.elim h4
+   (assume x1,
+    assume h5: x1 ∈ range (n+1) ∧ f x1 = (n+1),
+    have h6: surj (remove (range (n+1)) x1) (remove (range ((n+1)+1)) (f x1)) f,
+        from surj_dec x1 (range (n+1)) (range ((n+1)+1)) f h5.left h2,
+    have h7: range (n+1) = remove (range ((n+1)+1)) (f x1),
+        from eq.subst h5.right.symm (rrn (n+1)),
+    have h8: bijects (range n) (remove (range (n+1)) x1) , from range_remove x1 n h5.left,
+    have h9: covers (remove (range (n+1)) x1) (remove (range ((n+1)+1)) (f x1)),
+        from exists.intro f h6,
+    have h10: covers (range n) (remove (range ((n+1)+1)) (f x1)),
+        from covers_trans (range n) (remove (range (n+1)) x1)
+             (remove (range ((n+1)+1)) (f x1)) h8.left h9,
+    have h11: covers (range n) (range (n+1)), from eq.subst h7.symm h10,
+    h11))
+
+lemma noc_any (n: ℕ) : ¬ overcovers n :=
+nat.rec_on n
+ (noc_zero)
+ (assume n,
+  assume h1: ¬ overcovers n,
+  have h2: overcovers (n+1) ∨ ¬ overcovers (n+1), from em(overcovers (n+1)),
+  or.elim h2
+   (assume h3: overcovers (n+1),
+    have h4: overcovers n, from ocai n h3,
+    absurd h4 h1)
+   (assume: ¬ overcovers (n+1), this))
 
 theorem size_unique (s : set ℕ) (a b : ℕ) (h1: has_size s a) (h2: has_size s b) : a = b :=
 sorry
