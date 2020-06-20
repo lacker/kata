@@ -115,7 +115,8 @@ class ComputerPlayer():
 				
 	def guess(self):
 		answer = self.possibilities[0]
-		print("guessing:", answer)																																																											
+		print("guessing:", answer)
+		return answer																																																										
 def play(player):
 	print("let's play a game")
 	guesses = 0
