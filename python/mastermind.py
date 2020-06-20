@@ -122,6 +122,8 @@ def play(player):
 	target = generate()
 	while True:
 		guess = player.guess()
+		if guess is None:
+			raise Exception("guess is None")
 		guesses += 1
 		if check(target, guess):
 			print("you win with", guesses, "guesses")
