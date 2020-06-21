@@ -111,7 +111,8 @@ class ComputerPlayer():
 		for possibility in self.possibilities:
 			ta, ti, tp = info(guess, possibility)
 			if (ta, ti, tp) == (ra, ri, rp):
-				new_possibilities.append(possibility)	
+				new_possibilities.append(possibility)
+		self.possibilities = new_possibilities	
 				
 	def guess(self):
 		answer = self.possibilities[0]
