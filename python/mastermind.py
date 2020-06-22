@@ -133,4 +133,10 @@ def play(player):
 		ra, ri, rp = info(target, guess)
 		player.inform(guess, ra, ri, rp)
 
+def average(player, rounds):
+	total
+	for _ in range(rounds):
+		total += play(player)
+
+
 play(ComputerPlayer())
