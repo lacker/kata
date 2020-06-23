@@ -111,22 +111,32 @@ class ComputerPlayer():
 		for possibility in self.possibilities:
 			ta, ti, tp = info(guess, possibility)
 			if (ta, ti, tp) == (ra, ri, rp):
-				new_possibilities.append(possibility)	
+				new_possibilities.append(possibility)
+		self.possibilities = new_possibilities	
 				
 	def guess(self):
 		answer = self.possibilities[0]
-		print("guessing:", answer)																																																											
+		print("guessing:", answer)
+		return answer																																																										
 def play(player):
 	print("let's play a game")
 	guesses = 0
 	target = generate()
 	while True:
 		guess = player.guess()
+		if guess is None:
+			raise Exception("guess is None")
 		guesses += 1
 		if check(target, guess):
 			print("you win with", guesses, "guesses")
 			return guesses
 		ra, ri, rp = info(target, guess)
 		player.inform(guess, ra, ri, rp)
+
+def average(player, rounds):
+	total
+	for _ in range(rounds):
+		total += play(player)
+
 
 play(ComputerPlayer())
