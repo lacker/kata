@@ -1079,7 +1079,9 @@ bijects_nonempty s (range n) h3 h4
 
 def remove (s: set ℕ) (a: ℕ) := {x | x ∈ s ∧ x ≠ a}
 
-lemma surj_dec (a: ℕ) (s1 s2: set ℕ) (f: ℕ → ℕ) (h1: a ∈ s1) (h2: surj s1 s2 f):
+lemma remove_nmem (s: set ℕ) (a: ℕ) (h1: a ∉ s) : remove s a = s := set.diff_singleton_eq_self h1
+
+lemma surj_dec (a: ℕ) (s1 s2: set ℕ) (f: ℕ → ℕ) (h2: surj s1 s2 f):
 surj (remove s1 a) (remove s2 (f a)) f :=
 assume x2,
 assume h4: x2 ∈ (remove s2 (f a)),
@@ -1123,7 +1125,7 @@ have h3: swap a b c = (if b = c then a else c), from if_neg h1,
 have h4: (if b = c then a else c) = c, from if_neg h2,
 by rw [h3, h4]
 
-lemma surj_swap (a b : ℕ) (s : set ℕ) (h1: a ∈ s) (h2: b ∈ s) (h3: a ≠ b) :
+lemma surj_swap (a b : ℕ) (s : set ℕ) (h2: b ∈ s) (h3: a ≠ b) :
 surj (remove s a) (remove s b) (swap a b) :=
 assume x2,
 assume h4: x2 ∈ (remove s b),
@@ -1139,7 +1141,7 @@ or.elim h5
   have h12: (swap a b) x2 = x2, from swapne a b x2 h9.symm h11.symm,
   exists.intro x2 (and.intro h10 h12))
 
-lemma cover_swap (a b : ℕ) (s : set ℕ) (h1: a ∈ s) (h2: b ∈ s) :
+lemma covers_swap (a b : ℕ) (s : set ℕ) (h2: b ∈ s) :
 covers (remove s a) (remove s b) :=
 have h3: a = b ∨ a ≠ b, from em(a = b),
 or.elim h3
@@ -1149,11 +1151,11 @@ or.elim h3
   have h7: remove s b ⊆ remove s a, from (set.subset.antisymm_iff.mp h6).left,
   superset_covers (remove s a) (remove s b) h7)
  (assume h8: a ≠ b,
-  exists.intro (swap a b) (surj_swap a b s h1 h2 h8))
+  exists.intro (swap a b) (surj_swap a b s h2 h8))
 
 lemma bijects_swap (a b : ℕ) (s : set ℕ) (h1: a ∈ s) (h2: b ∈ s):
 bijects (remove s a) (remove s b) :=
-and.intro (cover_swap a b s h1 h2) (cover_swap b a s h2 h1)
+and.intro (covers_swap a b s h2) (covers_swap b a s h1)
 
 lemma rrn (n: ℕ) : range n = remove (range (n+1)) n :=
 set.eq_of_subset_of_subset
@@ -1199,7 +1201,7 @@ exists.elim h1
    (assume x1,
     assume h5: x1 ∈ range (n+1) ∧ f x1 = (n+1),
     have h6: surj (remove (range (n+1)) x1) (remove (range ((n+1)+1)) (f x1)) f,
-        from surj_dec x1 (range (n+1)) (range ((n+1)+1)) f h5.left h2,
+        from surj_dec x1 (range (n+1)) (range ((n+1)+1)) f h2,
     have h7: range (n+1) = remove (range ((n+1)+1)) (f x1),
         from eq.subst h5.right.symm (rrn (n+1)),
     have h8: bijects (range n) (remove (range (n+1)) x1) , from range_remove x1 n h5.left,
@@ -1248,10 +1250,132 @@ or.elim h3
    (assume h9: a > b,
     suhelp s a b h1 h2 h9))
 
-theorem remove_size (s: set ℕ) (a n: ℕ) (h1: has_size s (n+1)) (h2: a ∈ s) :
-has_size (remove s a) n := sorry
+theorem covers_remove (s1 s2: set ℕ) (x1 x2: ℕ) (h2: x2 ∈ s2) (h3: covers s1 s2) :
+covers (remove s1 x1) (remove s2 x2) :=
+exists.elim h3
+ (assume f,
+  assume h4: surj s1 s2 f,
+  have h5: surj (remove s1 x1) (remove s2 (f x1)) f, from surj_dec x1 s1 s2 f h4,
+  have h6: covers (remove s1 x1) (remove s2 (f x1)), from exists.intro f h5,
+  have h7: covers (remove s2 (f x1)) (remove s2 x2), from covers_swap (f x1) x2 s2 h2,
+  covers_trans (remove s1 x1) (remove s2 (f x1)) (remove s2 x2) h6 h7)
 
-theorem subset_finite (s1 s2: set ℕ) (n2: ℕ) (h1: has_size s2 n2) : ∃ n1: ℕ, has_size s1 n :=
+theorem bijects_remove (s1 s2: set ℕ) (x1 x2: ℕ) (h1: x1 ∈ s1) (h2: x2 ∈ s2) (h3: bijects s1 s2) :
+bijects (remove s1 x1) (remove s2 x2) :=
+and.intro (covers_remove s1 s2 x1 x2 h2 h3.left) (covers_remove s2 s1 x2 x1 h1 h3.right)
+
+theorem remove_size (s: set ℕ) (a n: ℕ) (h1: has_size s (n+1)) (h2: a ∈ s) :
+has_size (remove s a) n :=
+have h3: bijects (range (n+1)) s, from h1,
+have h4: n ∈ range (n+1), from lt_add_one n,
+have h5: bijects (remove (range (n+1)) n) (remove s a),
+    from bijects_remove (range (n+1)) s n a h4 h2 h3,
+have h6: bijects (range n) (remove s a), from eq.subst (rrn n).symm h5,
+h6
+
+def patch : (ℕ → ℕ) → ℕ → ℕ → ℕ → ℕ
+| f a b x :=
+if x = a then b else (f x)
+
+lemma patchl (f: ℕ → ℕ) (a b : ℕ) : patch f a b a = b := if_pos rfl
+lemma patchr (f: ℕ → ℕ) (a b x : ℕ) (h1: x ≠ a) : patch f a b x = f x := if_neg h1
+
+lemma surj_insert (a: ℕ) (s1 s2: set ℕ) (f: ℕ → ℕ) (h1: a ∈ s1)
+(h2: surj (remove s1 a) (remove s2 (f a)) f) :
+surj s1 s2 f :=
+assume x2,
+assume h3: x2 ∈ s2,
+have h4: x2 = (f a) ∨ x2 ≠ (f a), from em(x2 = (f a)),
+or.elim h4
+ (assume h5: x2 = (f a),
+  have h6: a ∈ s1 ∧ f a = x2, from and.intro h1 h5.symm,
+  exists.intro a h6)
+ (assume h7: x2 ≠ (f a),
+  have h8: x2 ∈ remove s2 (f a), from set.mem_sep h3 h7,
+  have h9: ∃ x1: ℕ, x1 ∈ (remove s1 a) ∧ f x1 = x2, from h2 x2 h8,
+  exists.elim h9
+   (assume x1,
+    assume h10: x1 ∈ (remove s1 a) ∧ f x1 = x2,
+    have h11: x1 ∈ s1, from h10.left.left,
+    exists.intro x1 (and.intro h11 h10.right)))
+
+lemma surj_patch (a b: ℕ) (s1 s2: set ℕ) (f: ℕ → ℕ) (h1: a ∉ s1) (h2: surj s1 s2 f) :
+surj s1 s2 (patch f a b) :=
+assume x2,
+assume h3: x2 ∈ s2,
+have h4: ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2, from h2 x2 h3,
+exists.elim h4
+ (assume x1,
+  assume h5: x1 ∈ s1 ∧ f x1 = x2,
+  have h6: x1 = a ∨ x1 ≠ a, from em(x1 = a),
+  or.elim h6
+   (assume h7: x1 = a,
+    have h8: x1 ∉ s1, from eq.subst h7.symm h1,
+    absurd h5.left h8)
+   (assume h9: x1 ≠ a,
+    have h10: (patch f a b) x1 = x2, from eq.subst h5.right (patchr f a b x1 h9),
+    exists.intro x1 (and.intro h5.left h10)))
+
+theorem covers_insert (s1 s2: set ℕ) (x1 x2: ℕ) (h1: x1 ∈ s1)
+(h2: covers (remove s1 x1) (remove s2 x2)) :
+covers s1 s2 :=
+exists.elim h2
+ (assume f,
+  assume h3: surj (remove s1 x1) (remove s2 x2) f,
+  show covers s1 s2, from sorry)
+
+theorem bijects_insert (s1 s2: set ℕ) (x1 x2: ℕ) (h1: x1 ∈ s1) (h2: x2 ∈ s2)
+(h3: bijects (remove s1 x1) (remove s2 x2)) :
+bijects s1 s2 :=
+and.intro (covers_insert s1 s2 x1 x2 h1 h3.left) (covers_insert s2 s1 x2 x1 h2 h3.right)
+
+theorem insert_size (s: set ℕ) (a n: ℕ) (h1: a ∈ s) (h2: has_size (remove s a) n) :
+has_size s (n+1) :=
+have h3: bijects (range n) (remove s a), from h2,
+have h4: n ∈ range (n+1), from lt_add_one n,
+have h5: bijects (remove (range (n+1)) n) (remove s a), from eq.subst (rrn n) h3,
+bijects_insert (range (n+1)) s n a h4 h1 h5
+
+def rcfn (n: ℕ) := ∀ s: set ℕ, covers (range n) s → ∃ a: ℕ, has_size s a
+
+lemma rcfz : rcfn 0 :=
+assume s,
+assume h1: covers (range 0) s,
+have h2: covers ∅ s, from eq.subst range_zero h1,
+have h3: s = ∅, from empty_covers s h2,
+have h4: has_size s 0, from eq.subst h3.symm empty_size,
+exists.intro 0 h4
+
+lemma range_covers_finite (n: ℕ) : rcfn n :=
+nat.rec_on n
+ (rcfz)
+ (assume n,
+  assume h1: rcfn n,
+  assume s,
+  assume h2: covers (range (n+1)) s,
+  exists.elim h2
+   (assume f,
+    assume h3: surj (range (n+1)) s f,
+    have h5: surj (remove (range (n+1)) n) (remove s (f n)) f, from surj_dec n (range (n+1)) s f h3,
+    have h6: surj (range n) (remove s (f n)) f, from eq.subst (rrn n).symm h5,
+    have h7: covers (range n) (remove s (f n)), from exists.intro f h6,
+    have h8: ∃ a: ℕ, has_size (remove s (f n)) a, from h1 (remove s (f n)) h7,
+    exists.elim h8
+     (assume a,
+      assume h9: has_size (remove s (f n)) a,
+      have h10: (f n) ∈ s ∨ (f n) ∉ s, from em((f n) ∈ s),
+      or.elim h10
+       (assume h11: (f n) ∈ s,
+        have h12: has_size s (a+1), from insert_size s (f n) a h11 h9,
+        exists.intro (a+1) h12)
+       (assume h13: (f n) ∉ s,
+        have h14: (remove s (f n)) = s, from remove_nmem s (f n) h13,
+        have h15: has_size s a, from eq.subst h14 h9,
+        exists.intro a h15))))
+
+
+theorem subset_finite (s1 s2: set ℕ) (n2: ℕ) (h1: s1 ⊆ s2) (h2: has_size s2 n2) :
+∃ n1: ℕ, has_size s1 n1 :=
 sorry
 
 theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_size s2 n2)
@@ -1261,10 +1385,15 @@ theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_siz
 TODO:
 
 More basic set theory stuff.
+covers_insert. use patch functions for this
+subset_finite
+size_sum
+
+Is there a simpler way to prove size_unique? Lots of apparatus for that one.
 
 I want to prove fermat's little theorem: x^p = x mod p .
 
-I could also define cosets. Like coset a b is (a * b^n) mod m.
+It helps to define cosets. Like coset a b m is (a * b^n) mod m.
 
 I should also check out the community. If there's a future, it's in there somewhere.
 -/
