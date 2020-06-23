@@ -1322,7 +1322,13 @@ covers s1 s2 :=
 exists.elim h2
  (assume f,
   assume h3: surj (remove s1 x1) (remove s2 x2) f,
-  show covers s1 s2, from sorry)
+  have h4: x1 ∉ (remove s1 x1), from not_and_not_right.mpr (congr_fun rfl),
+  have h5: surj (remove s1 x1) (remove s2 x2) (patch f x1 x2),
+      from surj_patch x1 x2 (remove s1 x1) (remove s2 x2) f h4 h3,
+  have h6: surj (remove s1 x1) (remove s2 ((patch f x1 x2) x1)) (patch f x1 x2),
+      from eq.subst (patchl f x1 x2).symm h5,
+  have h7: surj s1 s2 (patch f x1 x2), from surj_insert x1 s1 s2 (patch f x1 x2) h1 h6,
+  exists.intro (patch f x1 x2) h7)
 
 theorem bijects_insert (s1 s2: set ℕ) (x1 x2: ℕ) (h1: x1 ∈ s1) (h2: x2 ∈ s2)
 (h3: bijects (remove s1 x1) (remove s2 x2)) :
@@ -1376,7 +1382,11 @@ nat.rec_on n
 
 theorem subset_finite (s1 s2: set ℕ) (n2: ℕ) (h1: s1 ⊆ s2) (h2: has_size s2 n2) :
 ∃ n1: ℕ, has_size s1 n1 :=
-sorry
+have h3: covers (range n2) s2, from h2.left,
+have h4: covers s2 s1, from superset_covers s2 s1 h1,
+have h5: covers (range n2) s1, from covers_trans (range n2) s2 s1 h3 h4,
+range_covers_finite n2 s1 h5
+
 
 theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_size s2 n2)
 (h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) := sorry
@@ -1385,11 +1395,7 @@ theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_siz
 TODO:
 
 More basic set theory stuff.
-covers_insert. use patch functions for this
-subset_finite
-size_sum
-
-Is there a simpler way to prove size_unique? Lots of apparatus for that one.
+Should be able to do size_sum by inducting on one of the halves.
 
 I want to prove fermat's little theorem: x^p = x mod p .
 
