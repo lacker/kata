@@ -1054,6 +1054,11 @@ exists.elim h1
   assume h2: surj (∅: set ℕ) s f,
   empty_surj s f h2)
 
+theorem size_zero_empty (s: set ℕ) (h1: has_size s 0) : s = ∅ :=
+have h2: covers (range 0) s, from h1.left,
+have h3: covers ∅ s, from eq.subst range_zero h2,
+empty_covers s h3
+
 theorem covers_nonempty (s1 s2: set ℕ) (h1: covers s1 s2) (h2: s2.nonempty) :
 s1.nonempty :=
 exists.elim h1
@@ -1362,7 +1367,8 @@ nat.rec_on n
   exists.elim h2
    (assume f,
     assume h3: surj (range (n+1)) s f,
-    have h5: surj (remove (range (n+1)) n) (remove s (f n)) f, from surj_dec n (range (n+1)) s f h3,
+    have h5: surj (remove (range (n+1)) n) (remove s (f n)) f,
+        from surj_dec n (range (n+1)) s f h3,
     have h6: surj (range n) (remove s (f n)) f, from eq.subst (rrn n).symm h5,
     have h7: covers (range n) (remove s (f n)), from exists.intro f h6,
     have h8: ∃ a: ℕ, has_size (remove s (f n)) a, from h1 (remove s (f n)) h7,
@@ -1387,6 +1393,35 @@ have h4: covers s2 s1, from superset_covers s2 s1 h1,
 have h5: covers (range n2) s1, from covers_trans (range n2) s2 s1 h3 h4,
 range_covers_finite n2 s1 h5
 
+def ssn (n1: ℕ) := ∀ s1: set ℕ, ∀ s2: set ℕ, ∀ n2: ℕ,
+has_size s1 n1 ∧ has_size s2 n2 ∧ s1 ∩ s2 = ∅ → has_size (s1 ∪ s2) (n1 + n2)
+
+lemma ssnz : ssn 0 :=
+assume s1,
+assume s2,
+assume n2,
+assume h1: has_size s1 0 ∧ has_size s2 n2 ∧ s1 ∩ s2 = ∅,
+have h2: s1 = ∅, from size_zero_empty s1 h1.left,
+have h3: ∅ ∪ s2 = s2, from set.empty_union s2,
+have h4: s1 ∪ s2 = s2, from eq.subst h2.symm h3,
+have h5: 0 + n2 = n2, from mul_one n2,
+have h6: has_size (s1 ∪ s2) n2, from eq.subst h4.symm h1.right.left,
+eq.subst h5.symm h6
+
+lemma ssni (n1: ℕ) (h1: ssn n1) : ssn (n1+1) :=
+assume s1,
+assume s2,
+assume n2,
+assume h2: has_size s1 (n1+1) ∧ has_size s2 n2 ∧ s1 ∩ s2 = ∅,
+have h3: covers s1 (range (n1+1)), from h2.left.right,
+have h4: n1+1 > 0, from nat.succ_pos n1,
+have h5: (range (n1+1)).nonempty, from range_nonempty (n1+1) h4,
+have h6: s1.nonempty, from covers_nonempty s1 (range (n1+1)) h3 h5,
+have h7: ∃ x, x ∈ s1, from h6,
+exists.elim h7
+ (assume x,
+  assume h8: x ∈ s1,
+  show has_size (s1 ∪ s2) ((n1+1) + n2), from sorry)
 
 theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_size s2 n2)
 (h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) := sorry
