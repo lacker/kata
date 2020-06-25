@@ -1084,7 +1084,14 @@ bijects_nonempty s (range n) h3 h4
 
 def remove (s: set ℕ) (a: ℕ) := {x | x ∈ s ∧ x ≠ a}
 
-lemma remove_nmem (s: set ℕ) (a: ℕ) (h1: a ∉ s) : remove s a = s := set.diff_singleton_eq_self h1
+lemma remove_nmem (s: set ℕ) (a: ℕ) (h1: a ∉ s) : remove s a = s :=
+set.diff_singleton_eq_self h1
+
+theorem remove_subset (s: set ℕ) (a: ℕ) : (remove s a) ⊆ s :=
+set.sep_subset s (λ x: ℕ, x ≠ a)
+
+theorem remove_union (s1 s2: set ℕ) (x: ℕ) :
+remove (s1 ∪ s2) x = (remove s1 x) ∪ (remove s2 x) := set.union_diff_distrib
 
 lemma surj_dec (a: ℕ) (s1 s2: set ℕ) (f: ℕ → ℕ) (h2: surj s1 s2 f):
 surj (remove s1 a) (remove s2 (f a)) f :=
@@ -1230,7 +1237,8 @@ nat.rec_on n
     absurd h4 h1)
    (assume: ¬ overcovers (n+1), this))
 
-lemma suhelp (s: set ℕ) (a b: ℕ) (h1: has_size s a) (h2: has_size s b) (h3: a > b) : a = b :=
+lemma suhelp (s: set ℕ) (a b: ℕ) (h1: has_size s a) (h2: has_size s b) (h3: a > b) :
+a = b :=
 have h4: bijects (range a) s, from h1,
 have h5: bijects (range b) s, from h2,
 have h6: bijects s (range b), from bijects_comm (range b) s h5,
@@ -1265,7 +1273,8 @@ exists.elim h3
   have h7: covers (remove s2 (f x1)) (remove s2 x2), from covers_swap (f x1) x2 s2 h2,
   covers_trans (remove s1 x1) (remove s2 (f x1)) (remove s2 x2) h6 h7)
 
-theorem bijects_remove (s1 s2: set ℕ) (x1 x2: ℕ) (h1: x1 ∈ s1) (h2: x2 ∈ s2) (h3: bijects s1 s2) :
+theorem bijects_remove (s1 s2: set ℕ) (x1 x2: ℕ) (h1: x1 ∈ s1) (h2: x2 ∈ s2)
+(h3: bijects s1 s2) :
 bijects (remove s1 x1) (remove s2 x2) :=
 and.intro (covers_remove s1 s2 x1 x2 h2 h3.left) (covers_remove s2 s1 x2 x1 h1 h3.right)
 
@@ -1408,6 +1417,16 @@ have h5: 0 + n2 = n2, from mul_one n2,
 have h6: has_size (s1 ∪ s2) n2, from eq.subst h4.symm h1.right.left,
 eq.subst h5.symm h6
 
+lemma nmem_nonint (s1 s2: set ℕ) (x1: ℕ) (h1: x1 ∈ s1) (h2: s1 ∩ s2 = ∅) : x1 ∉ s2 :=
+have h3: x1 ∈ s2 ∨ x1 ∉ s2, from em(x1 ∈ s2),
+or.elim h3
+ (assume h4: x1 ∈ s2,
+  have h5: x1 ∈ s1 ∩ s2, from set.mem_sep h1 h4,
+  have h6: x1 ∉ ∅, from list.not_mem_nil x1,
+  have h7: x1 ∉ s1 ∩ s2, from eq.subst h2.symm h6,
+  absurd h5 h7)
+ (assume: x1 ∉ s2, this)
+
 lemma ssni (n1: ℕ) (h1: ssn n1) : ssn (n1+1) :=
 assume s1,
 assume s2,
@@ -1421,7 +1440,31 @@ have h7: ∃ x, x ∈ s1, from h6,
 exists.elim h7
  (assume x,
   assume h8: x ∈ s1,
-  show has_size (s1 ∪ s2) ((n1+1) + n2), from sorry)
+  have h9: has_size (remove s1 x) n1, from remove_size s1 x n1 h2.left h8,
+  have h10: (remove s1 x) ⊆ s1, from remove_subset s1 x,
+  have h11: (remove s1 x) ∩ s2 ⊆ s1 ∩ s2, from set.inter_subset_inter_left s2 h10,
+  have h12: (remove s1 x) ∩ s2 ⊆ ∅, from eq.subst h2.right.right h11,
+  have h13: (remove s1 x) ∩ s2 = ∅, from set.subset_eq_empty h12 rfl,
+  have h14: has_size ((remove s1 x) ∪ s2) (n1 + n2),
+      from h1 (remove s1 x) s2 n2 (and.intro h9 (and.intro h2.right.left h13)),
+  have h15: remove (s1 ∪ s2) x = (remove s1 x) ∪ (remove s2 x), from remove_union s1 s2 x,
+  have h16: x ∉ s2, from nmem_nonint s1 s2 x h8 h2.right.right,
+  have h17: (remove s2 x) = s2, from remove_nmem s2 x h16,
+  have h18: remove (s1 ∪ s2) x = (remove s1 x) ∪ s2,
+      from eq.trans h15 (congr_arg (has_union.union (remove s1 x)) h17),
+  have h19: has_size (remove (s1 ∪ s2) x) (n1 + n2), from eq.subst h18.symm h14,
+  have h20: x ∈ s1 ∪ s2, from set.mem_union_left s2 h8,
+  have h21: has_size (s1 ∪ s2) (n1 + n2 + 1),
+      from insert_size (s1 ∪ s2) x (n1 + n2) h20 h19,
+  have h22: (n1+1) + n2 = (n1 + n2 + 1), from nat.succ_add n1 n2,
+  eq.subst h22.symm h21)
+
+lemma ssn_any (n: ℕ) : ssn n :=
+nat.rec_on n
+ (ssnz)
+ (assume n,
+  assume h1: ssn n,
+  ssni n h1)
 
 theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_size s2 n2)
 (h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) := sorry
@@ -1429,8 +1472,7 @@ theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_siz
 /-
 TODO:
 
-More basic set theory stuff.
-Should be able to do size_sum by inducting on one of the halves.
+Finish up size_sup from ssn_any
 
 I want to prove fermat's little theorem: x^p = x mod p .
 
