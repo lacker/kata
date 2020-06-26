@@ -1467,7 +1467,8 @@ nat.rec_on n
   ssni n h1)
 
 theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_size s2 n2)
-(h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) := sorry
+(h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) :=
+ssn_any n1 s1 s2 n2 (and.intro h1 (and.intro h2 h3))
 
 /-
 TODO:
