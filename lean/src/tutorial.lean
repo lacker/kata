@@ -1470,14 +1470,15 @@ theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_siz
 (h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) :=
 ssn_any n1 s1 s2 n2 (and.intro h1 (and.intro h2 h3))
 
+def set_mod_mult (s: set ℕ) (a m: ℕ) := { c | ∃ b: ℕ, mod (a*b) m = c }
+
+def prange (n: ℕ) := remove (range n) 0
+
 /-
-TODO:
+TODO: Fermat's Little Theorem.
 
-Finish up size_sup from ssn_any
-
-I want to prove fermat's little theorem: x^p = x mod p .
-
-It helps to define cosets. Like coset a b m is (a * b^n) mod m.
+We need to prove that multiplying by a is a rearrangement of the numbers mod p.
+Then we need to calculate (p-1)! two ways, before and after multiplying by a.
 
 I should also check out the community. If there's a future, it's in there somewhere.
 -/
