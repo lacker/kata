@@ -1474,6 +1474,13 @@ def set_mod_mult (s: set ℕ) (a m: ℕ) := { c | ∃ b: ℕ, mod (a*b) m = c }
 
 def prange (n: ℕ) := remove (range n) 0
 
+theorem prange_coprime (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : coprime x p :=
+sorry
+
+theorem has_inverse (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+∃ y: ℕ, mod (x*y) p = 1 :=
+sorry
+
 /-
 TODO: Fermat's Little Theorem.
 
