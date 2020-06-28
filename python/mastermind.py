@@ -137,6 +137,7 @@ def average(player, rounds):
 	total
 	for _ in range(rounds):
 		total += play(player)
+	avg = total / rounds
+  print(f"average: {avg}")
 
-
-play(ComputerPlayer())
+average(ComputerPlayer(), 10)
