@@ -1475,7 +1475,11 @@ def set_mod_mult (s: set ℕ) (a m: ℕ) := { c | ∃ b: ℕ, mod (a*b) m = c }
 def prange (n: ℕ) := remove (range n) 0
 
 theorem prange_coprime (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : coprime x p :=
-sorry
+have h2: coprime x p ∨ ¬ coprime x p, from em(coprime x p),
+or.elim h2
+ (assume: coprime x p, this)
+ (assume h3: ¬ coprime x p, 
+  sorry)
 
 theorem has_inverse (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 ∃ y: ℕ, mod (x*y) p = 1 :=
