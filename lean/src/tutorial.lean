@@ -452,6 +452,23 @@ exists.elim h2
   have h4: divides a (b * e), from divides_mul a b e h1,
   show divides a c, from eq.subst h3 h4)
 
+theorem divides_le (a b : ℕ) (h1: divides a b) (h2: b > 0) : a ≤ b :=
+exists.elim h1
+ (assume c,
+  assume h3: a * c = b,
+  have h4: c = 0 ∨ c ≠ 0, from em(c = 0),
+  or.elim h4
+   (assume h5: c = 0,
+    have h6: a * 0 = 0, from rfl,
+    have h7: a * c = 0, from eq.subst h5.symm h6,
+    have h8: b = 0, from eq.subst h3 h7,
+    have h9: b ≠ 0, from ne_of_gt h2,
+    absurd h8 h9)
+   (assume h10: c ≠ 0,
+    have h11: 0 < c, from bot_lt_iff_ne_bot.mpr h10,
+    have h12: a ≤ a * c, from nat.le_mul_of_pos_right h11,
+    eq.subst h3 h12))
+
 def eset (p b : ℕ) (h: is_prime p) := { x : ℕ | x > 0 ∧ divides p (x*b) }
 
 theorem eset_nonempty (p b : ℕ) (h1: is_prime p) : (eset p b h1).nonempty :=
@@ -1475,11 +1492,24 @@ def set_mod_mult (s: set ℕ) (a m: ℕ) := { c | ∃ b: ℕ, mod (a*b) m = c }
 def prange (n: ℕ) := remove (range n) 0
 
 theorem prange_coprime (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : coprime x p :=
-have h2: coprime x p ∨ ¬ coprime x p, from em(coprime x p),
-or.elim h2
+have h3: coprime x p ∨ ¬ coprime x p, from em(coprime x p),
+or.elim h3
  (assume: coprime x p, this)
- (assume h3: ¬ coprime x p, 
-  sorry)
+ (assume: ¬ coprime x p, 
+  have h4: ∃ y, y > 1 ∧ divides y x ∧ divides y p, from not_coprime x p this,
+  exists.elim h4
+   (assume y,
+    assume h5: y > 1 ∧ divides y x ∧ divides y p,
+    have h6: y = 1 ∨ y = p, from prime_divisors y p h1 h5.right.right,
+    have h7: y ≠ 1, from ne_of_gt h5.left,
+    have h8: y = p, from or.resolve_left h6 h7,
+    have h9: divides p x, from eq.subst h8 h5.right.left,
+    have h10: x ≠ 0, from h2.right,
+    have h11: x > 0, from bot_lt_iff_ne_bot.mpr h10,
+    have h12: p ≤ x, from divides_le p x h9 h11,
+    have h13: x < p, from h2.left,
+    have h14: ¬ (x < p), from not_lt.mpr h12,
+    absurd h13 h14))
 
 theorem has_inverse (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 ∃ y: ℕ, mod (x*y) p = 1 :=
