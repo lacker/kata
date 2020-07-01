@@ -108,7 +108,7 @@ or.elim h7
 
 def is_prime (p : ℕ) := p > 1 ∧ ¬ (is_composite p)
 
-theorem prime_positive (p : ℕ) (h1: is_prime p) : p > 0 :=
+theorem prime_pos (p : ℕ) (h1: is_prime p) : p > 0 :=
 have p > 1, from h1.left,
 show p > 0, from nat.lt_of_succ_lt this
 
@@ -472,7 +472,7 @@ exists.elim h1
 def eset (p b : ℕ) (h: is_prime p) := { x : ℕ | x > 0 ∧ divides p (x*b) }
 
 theorem eset_nonempty (p b : ℕ) (h1: is_prime p) : (eset p b h1).nonempty :=
-have h2: p > 0, from prime_positive p h1,
+have h2: p > 0, from prime_pos p h1,
 have h3: divides p (p*b), from exists.intro b rfl,
 have h4: p ∈ (eset p b h1), from and.intro h2 h3,
 show (eset p b h1).nonempty, from set.nonempty_of_mem h4
@@ -525,7 +525,7 @@ or.elim h3
    (assume x0,
     assume h8: is_smallest x0 (eset p b h1),
     have h9: divides p (p * b), from exists.intro b rfl,
-    have h10: p ∈ eset p b h1, from and.intro (prime_positive p h1) h9,
+    have h10: p ∈ eset p b h1, from and.intro (prime_pos p h1) h9,
     have h11: a ≠ 0, from divides_nonzero p a h5,
     have h12: a > 0, from bot_lt_iff_ne_bot.mpr h11,
     have h13: a ∈ eset p b h1, from and.intro h12 h2,
@@ -1491,6 +1491,10 @@ def set_mod_mult (s: set ℕ) (a m: ℕ) := { c | ∃ b: ℕ, mod (a*b) m = c }
 
 def prange (n: ℕ) := remove (range n) 0
 
+theorem prange_pos (a b: ℕ) (h1: a ∈ prange b) : a > 0 :=
+have h2: a ≠ 0, from h1.right,
+bot_lt_iff_ne_bot.mpr h2
+
 theorem prange_coprime (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : coprime x p :=
 have h3: coprime x p ∨ ¬ coprime x p, from em(coprime x p),
 or.elim h3
@@ -1504,16 +1508,26 @@ or.elim h3
     have h7: y ≠ 1, from ne_of_gt h5.left,
     have h8: y = p, from or.resolve_left h6 h7,
     have h9: divides p x, from eq.subst h8 h5.right.left,
-    have h10: x ≠ 0, from h2.right,
-    have h11: x > 0, from bot_lt_iff_ne_bot.mpr h10,
+    have h11: x > 0, from prange_pos x p h2,
     have h12: p ≤ x, from divides_le p x h9 h11,
     have h13: x < p, from h2.left,
     have h14: ¬ (x < p), from not_lt.mpr h12,
     absurd h13 h14))
 
-theorem has_inverse (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+theorem right_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 ∃ y: ℕ, mod (x*y) p = 1 :=
-sorry
+have h3: coprime x p, from prange_coprime x p h1 h2,
+have h4: x > 0, from prange_pos x p h2,
+have h5: p > 0, from prime_pos p h1,
+have h6: 1 ∈ linear_combo x p, from bezout x p h4 h5 h3,
+exists.elim h6
+ (assume y,
+  assume: ∃ m:ℕ, x*y = p*m + 1,
+  exists.elim this
+   (assume m,
+    assume h7: x*y = p*m + 1,
+    have h8: mod (m*p + 1) p = mod 1 p, from mod_rem m p 1,
+    sorry))
 
 /-
 TODO: Fermat's Little Theorem.
