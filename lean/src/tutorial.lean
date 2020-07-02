@@ -905,6 +905,11 @@ nat.rec_on a
   have h4: mod (a*m + r + m) m = mod r m, from eq.subst h1 h3,
   eq.subst h4 h2)
 
+theorem mod_base (a m : ℕ) (h1: a < m) : mod a m = a :=
+have h2: ¬ (m ≤ a), from not_le.mpr h1,
+have h3: ¬ (m ≥ 1 ∧ m ≤ a), from not_and_of_not_right (m ≥ 1) h2,
+mdr a m h3
+
 def range (n : ℕ) := { x : ℕ | x < n }
 
 def surj (s1 s2 : set ℕ) (f : ℕ → ℕ) := ∀ x2: ℕ, x2 ∈ s2 → ∃ x1: ℕ, x1 ∈ s1 ∧ f x1 = x2
@@ -1527,7 +1532,15 @@ exists.elim h6
    (assume m,
     assume h7: x*y = p*m + 1,
     have h8: mod (m*p + 1) p = mod 1 p, from mod_rem m p 1,
-    sorry))
+    have h9: mod 1 p = 1, from mod_base 1 p h1.left,
+    have h10: mod (m*p + 1) p = 1, by rw [h8, h9],
+    have h11: m*p = p*m, from mul_comm m p,
+    have h12: x*y = m*p + 1, from eq.subst h11.symm h7,
+    have h13: mod (x*y) p = 1, from eq.subst h12.symm h10,
+    exists.intro y h13))
+
+theorem left_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+∃ y: ℕ, mod (y*x) p = 1 := sorry
 
 /-
 TODO: Fermat's Little Theorem.
