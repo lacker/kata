@@ -1540,7 +1540,12 @@ exists.elim h6
     exists.intro y h13))
 
 theorem left_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
-∃ y: ℕ, mod (y*x) p = 1 := sorry
+∃ y: ℕ, mod (y*x) p = 1 :=
+exists.elim (right_inv x p h1 h2)
+ (assume y,
+  assume h3: mod (x*y) p = 1,
+  have h4: x*y = y*x, from mul_comm x y,
+  exists.intro y (eq.subst h4 h3))
 
 /-
 TODO: Fermat's Little Theorem.
