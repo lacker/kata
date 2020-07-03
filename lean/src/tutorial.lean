@@ -1492,7 +1492,7 @@ theorem size_sum (s1 s2: set ℕ) (n1 n2: ℕ) (h1: has_size s1 n1) (h2: has_siz
 (h3: s1 ∩ s2 = ∅) : has_size (s1 ∪ s2) (n1 + n2) :=
 ssn_any n1 s1 s2 n2 (and.intro h1 (and.intro h2 h3))
 
-def set_mod_mult (s: set ℕ) (a m: ℕ) := { c | ∃ b: ℕ, mod (a*b) m = c }
+def set_mod_mult (s: set ℕ) (a m: ℕ) := { c | ∃ b: ℕ, b ∈ s ∧ mod (a*b) m = c }
 
 def prange (n: ℕ) := remove (range n) 0
 
@@ -1547,10 +1547,18 @@ exists.elim (right_inv x p h1 h2)
   have h4: x*y = y*x, from mul_comm x y,
   exists.intro y (eq.subst h4 h3))
 
+lemma smp_sub (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+set_mod_mult (prange p) x p ⊆ prange p :=
+sorry
+
 /-
 TODO: Fermat's Little Theorem.
 
 We need to prove that multiplying by a is a rearrangement of the numbers mod p.
+Ie smp is equal.
+
+Then we need to prove things about set-products. 
+
 Then we need to calculate (p-1)! two ways, before and after multiplying by a.
 
 I should also check out the community. If there's a future, it's in there somewhere.
