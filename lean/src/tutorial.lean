@@ -1549,7 +1549,9 @@ exists.elim (right_inv x p h1 h2)
 
 lemma smp_sub (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p ⊆ prange p :=
-sorry
+assume z,
+assume h3: z ∈ set_mod_mult (prange p) x p,
+show z ∈ prange p, from sorry
 
 /-
 TODO: Fermat's Little Theorem.
