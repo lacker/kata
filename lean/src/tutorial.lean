@@ -1547,17 +1547,24 @@ exists.elim (right_inv x p h1 h2)
   have h4: x*y = y*x, from mul_comm x y,
   exists.intro y (eq.subst h4 h3))
 
-lemma smp_sub (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+lemma smm_subset (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p ⊆ prange p :=
 assume z,
 assume h3: z ∈ set_mod_mult (prange p) x p,
-show z ∈ prange p, from sorry
+exists.elim h3
+ (assume y,
+  assume h4: y ∈ (prange p) ∧ mod (x*y) p = z,
+  show z ∈ prange p, from sorry)
 
 /-
 TODO: Fermat's Little Theorem.
 
+prange_closed - x and y in prange means that x*y mod p is, too
+finish smm_subset
+smm_assoc - that you can do x*y instead of x then y
+smm_one - that smm 1 is the same set
+
 We need to prove that multiplying by a is a rearrangement of the numbers mod p.
-Ie smp is equal.
 
 Then we need to prove things about set-products. 
 
