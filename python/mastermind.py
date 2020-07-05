@@ -134,10 +134,10 @@ def play(player):
 		player.inform(guess, ra, ri, rp)
 
 def average(player, rounds):
-	total
+	total = 0
 	for _ in range(rounds):
 		total += play(player)
 	avg = total / rounds
-  print(f"average: {avg}")
+	print(f"average: {avg}")
 
 average(ComputerPlayer(), 10)
