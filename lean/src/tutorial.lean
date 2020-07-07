@@ -911,6 +911,10 @@ lemma mdr (a m : ℕ) (h: ¬ (m ≥ 1 ∧ m ≤ a)) : mod a m = a := by rw [mod,
 
 def counterexamples_mod_less (m : ℕ) := { a : ℕ | mod a m ≥ m }
 
+theorem mod_zero (a: ℕ) : mod a 0 = a :=
+have h1: ¬ (0 ≥ 1 ∧ 0 ≤ a), from of_to_bool_ff rfl,
+mdr a 0 h1
+
 theorem mod_less (a m : ℕ) (h1: m > 0) : mod a m < m :=
 have h2: (mod a m < m) ∨ ¬ (mod a m < m), from em(mod a m < m),
 or.elim h2
@@ -969,7 +973,51 @@ have h2: ¬ (m ≤ a), from not_le.mpr h1,
 have h3: ¬ (m ≥ 1 ∧ m ≤ a), from not_and_of_not_right (m ≥ 1) h2,
 mdr a m h3
 
-theorem mod_nondivisor (a m: ℕ) (h1: ¬ divides m a) : mod a m > 0 := sorry
+lemma mod_div_pos (a m: ℕ) (h1: m > 0) : ∃ q, m*q + mod a m = a :=
+have h2: ∃ c, ∃ d, m*c + d = a ∧ d < m, from division a m h1,
+exists.elim h2
+ (assume c,
+  assume: ∃ d, m*c + d = a ∧ d < m, 
+  exists.elim this
+   (assume d,
+    assume h3: m*c + d = a ∧ d < m,
+    have h4: c*m + d = a, from eq.subst (mul_comm m c) h3.left,
+    have h5: mod (c*m + d) m = mod d m, from mod_rem c m d,
+    have h6: mod a m = mod d m, from eq.subst h4 h5,
+    have h7: mod d m = d, from mod_base d m h3.right,
+    have h8: mod a m = d, by rw [h6, h7],
+    have h9: m*c + mod a m = a, from eq.subst h8.symm h3.left,
+    exists.intro c h9))
+
+theorem mod_div (a m: ℕ) : ∃ q, m*q + mod a m = a :=
+have h1: m = 0 ∨ m ≠ 0, from em(m = 0),
+or.elim h1
+ (assume h2: m = 0,
+  have h3: mod a m = a, from eq.subst h2.symm (mod_zero a),
+  have h4: m*1 + a = a, from eq.subst h2.symm (mul_one a),
+  have h5: m*1 + mod a m = a, from eq.subst h3.symm h4,
+  exists.intro 1 h5)
+ (assume h6: m ≠ 0,
+  have h7: m > 0, from bot_lt_iff_ne_bot.mpr h6,
+  mod_div_pos a m h7)
+
+theorem zero_mod_divides (a m: ℕ) (h1: mod a m = 0) : divides m a :=
+have h2: ∃ q, m*q + mod a m = a, from mod_div a m,
+exists.elim h2
+ (assume q,
+  assume h3: m*q + mod a m = a,
+  have h4: m*q + 0 = a, from eq.subst h1 h3,
+  have h5: m*q = a, from h4,
+  exists.intro q h5)
+
+theorem mod_nondivisor (a m: ℕ) (h1: ¬ divides m a) : mod a m > 0 :=
+have h2: mod a m = 0 ∨ mod a m ≠ 0, from em(mod a m = 0),
+or.elim h2
+ (assume h3: mod a m = 0,
+  have h4: divides m a, from zero_mod_divides a m h3,
+  absurd h4 h1)
+ (assume: mod a m ≠ 0,
+  bot_lt_iff_ne_bot.mpr this)
 
 def range (n : ℕ) := { x : ℕ | x < n }
 
@@ -1631,8 +1679,9 @@ exists.elim h3
 /-
 TODO: Fermat's Little Theorem.
 
-mod_nondivisor
 prange_closed - x and y in prange means that x*y mod p is, too
+use mod_nondivisor and ask whether p divides x*y
+
 finish smm_subset
 smm_assoc - that you can do x*y instead of x then y
 smm_one - that smm 1 is the same set
