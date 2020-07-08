@@ -1697,12 +1697,12 @@ assume h3: z ∈ set_mod_mult (prange p) x p,
 exists.elim h3
  (assume y,
   assume h4: y ∈ (prange p) ∧ mod (x*y) p = z,
-  show z ∈ prange p, from sorry)
+  have h5: mod (x*y) p ∈ prange p, from prange_closed x y p h1 h2 h4.left,
+  eq.subst h4.right h5)
 
 /-
 TODO: Fermat's Little Theorem.
 
-finish smm_subset
 smm_assoc - that you can do x*y instead of x then y
 smm_one - that smm 1 is the same set
 
