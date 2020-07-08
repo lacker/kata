@@ -1628,6 +1628,16 @@ or.elim h3
     have h14: ¬ (x < p), from not_lt.mpr h12,
     absurd h13 h14))
 
+theorem prange_nondivisor (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : ¬ divides p x :=
+have h3: coprime x p, from prange_coprime x p h1 h2,
+have h4: divides p x ∨ ¬ divides p x, from em(divides p x),
+or.elim h4
+ (assume h5: divides p x,
+  have h6: divides p p, from divides_self p,
+  have h7: ¬ coprime x p, from div_not_coprime p x p h1 h5 h6,
+  absurd h3 h7)
+ (assume: ¬ divides p x, this)
+
 theorem right_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 ∃ y: ℕ, mod (x*y) p = 1 :=
 have h3: coprime x p, from prange_coprime x p h1 h2,
@@ -1665,7 +1675,20 @@ have h7: y > 0, from prange_pos y p h3,
 have h8: p > 0, from prime_pos p h1,
 have h9: coprime p (x*y), from coprime_mult p x y h8 h6 h7 (coprime_comm x p h4) (coprime_comm y p h5),
 have h10: coprime (x*y) p, from coprime_comm p (x*y) h9,
-sorry
+have h11: divides p (x*y) ∨ ¬ divides p (x*y), from em(divides p (x*y)),
+or.elim h11
+ (assume h12: divides p (x*y),
+  have h13: divides p x ∨ divides p y, from euclids_lemma p x y h1 h12,
+  or.elim h13
+   (assume: divides p x,
+    absurd this (prange_nondivisor x p h1 h2))
+   (assume: divides p y,
+    absurd this (prange_nondivisor y p h1 h3)))
+ (assume h14: ¬ divides p (x*y),
+  have h15: mod (x*y) p > 0, from mod_nondivisor (x*y) p h14,
+  have h16: mod (x*y) p < p, from mod_less (x*y) p h8,
+  have h17: mod (x*y) p ≠ 0, from ne_of_gt h15,
+  and.intro h16 h17)
 
 lemma smm_subset (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p ⊆ prange p :=
@@ -1678,9 +1701,6 @@ exists.elim h3
 
 /-
 TODO: Fermat's Little Theorem.
-
-prange_closed - x and y in prange means that x*y mod p is, too
-use mod_nondivisor and ask whether p divides x*y
 
 finish smm_subset
 smm_assoc - that you can do x*y instead of x then y
