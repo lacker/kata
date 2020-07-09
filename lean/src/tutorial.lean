@@ -1700,6 +1700,17 @@ exists.elim h3
   have h5: mod (x*y) p ∈ prange p, from prange_closed x y p h1 h2 h4.left,
   eq.subst h4.right h5)
 
+lemma mod_mult_mod (a b m: ℕ): mod (a * (mod b m)) m = mod (a*b) m :=
+have h1: ∃ q, m*q + mod b m = b, from mod_div b m,
+exists.elim h1
+ (assume q,
+  assume h2: m*q + mod b m = b,
+  have h3: mod (a*b) m = mod (a*(m*q + mod b m)) m, from eq.subst h2.symm rfl,
+  have h4: a*(m*q + mod b m) = (a*q)*m + a*(mod b m), by rw [mul_add, (mul_comm m q), mul_assoc],
+  have h5: mod ((a*q)*m + a*(mod b m)) m = mod (a*(mod b m)) m, from mod_rem (a*q) m (a*(mod b m)),
+  have h6: mod (a*b) m = mod (a*(mod b m)) m, by rw [h3, h4, h5],
+  h6.symm)
+
 lemma smm_assoc_sub (x y p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) (h3: y ∈ prange p) :
 set_mod_mult (set_mod_mult (prange p) x p) y p ⊆ set_mod_mult (prange p) (x*y) p :=
 assume z,
@@ -1710,6 +1721,7 @@ exists.elim h4
   exists.elim h5.left
    (assume b,
     assume h6: b ∈ prange p ∧ mod (x*b) p = a,
+    have h7: mod (y * (mod (x*b) p)) p = z, from eq.subst h6.right.symm h5.right,
     sorry))
 
 theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
@@ -1718,6 +1730,7 @@ sorry
 /-
 TODO: Fermat's Little Theorem.
 
+smm_mod - that set_mod_mult'ing by x is the same as x mod p
 smm_assoc - that you can do x*y instead of x then y
 smm_one - that smm 1 is the same set
 
