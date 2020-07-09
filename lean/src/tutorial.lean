@@ -1722,7 +1722,10 @@ exists.elim h4
    (assume b,
     assume h6: b ∈ prange p ∧ mod (x*b) p = a,
     have h7: mod (y * (mod (x*b) p)) p = z, from eq.subst h6.right.symm h5.right,
-    sorry))
+    have h8: mod (y*(x*b)) p = z, from eq.subst (mod_mult_mod y (x*b) p) h7,
+    have h9: (x*y)*b = y*(x*b), by rw [(mul_comm x y), mul_assoc],
+    have h10: mod ((x*y)*b) p = z, from eq.subst h9.symm h8,
+    exists.intro b (and.intro h6.left h10)))
 
 theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
 sorry
