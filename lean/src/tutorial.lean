@@ -1700,6 +1700,21 @@ exists.elim h3
   have h5: mod (x*y) p ∈ prange p, from prange_closed x y p h1 h2 h4.left,
   eq.subst h4.right h5)
 
+lemma smm_assoc_sub (x y p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) (h3: y ∈ prange p) :
+set_mod_mult (set_mod_mult (prange p) x p) y p ⊆ set_mod_mult (prange p) (x*y) p :=
+assume z,
+assume h4: z ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
+exists.elim h4
+ (assume a,
+  assume h5: a ∈ (set_mod_mult (prange p) x p) ∧ mod (y*a) p = z,
+  exists.elim h5.left
+   (assume b,
+    assume h6: b ∈ prange p ∧ mod (x*b) p = a,
+    sorry))
+
+theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
+sorry
+
 /-
 TODO: Fermat's Little Theorem.
 
