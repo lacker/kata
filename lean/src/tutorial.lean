@@ -1711,7 +1711,7 @@ exists.elim h1
   have h6: mod (a*b) m = mod (a*(mod b m)) m, by rw [h3, h4, h5],
   h6.symm)
 
-lemma smm_assoc_sub (x y p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) (h3: y ∈ prange p) :
+lemma smm_assoc_1 (x y p: ℕ) :
 set_mod_mult (set_mod_mult (prange p) x p) y p ⊆ set_mod_mult (prange p) (x*y) p :=
 assume z,
 assume h4: z ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
@@ -1727,6 +1727,25 @@ exists.elim h4
     have h10: mod ((x*y)*b) p = z, from eq.subst h9.symm h8,
     exists.intro b (and.intro h6.left h10)))
 
+lemma smm_assoc_2 (x y p: ℕ) :
+set_mod_mult (prange p) (x*y) p ⊆ set_mod_mult (set_mod_mult (prange p) x p) y p :=
+assume z,
+assume h4: z ∈ set_mod_mult (prange p) (x*y) p,
+exists.elim h4
+ (assume a,
+  assume h5: a ∈ (prange p) ∧ mod ((x*y)*a) p = z,
+  have h6: mod (x*a) p ∈ set_mod_mult (prange p) x p, from exists.intro a (and.intro h5.left rfl),
+  have h7: mod (y*(mod (x*a) p)) p ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
+      from exists.intro (mod (x*a) p) (and.intro h6 rfl),
+  have h8: mod (y*(mod (x*a) p)) p = mod (y*(x*a)) p, from mod_mult_mod y (x*a) p,
+  have h9: (x*y)*a = y*(x*a), by rw [(mul_comm x y), mul_assoc],
+  have h8: mod (y*(mod (x*a) p)) p = z, by rw [h8, h9.symm, h5.right],
+  eq.subst h8 h7)
+
+theorem smm_assoc (x y p: ℕ) :
+set_mod_mult (set_mod_mult (prange p) x p) y p = set_mod_mult (prange p) (x*y) p :=
+set.subset.antisymm (smm_assoc_1 x y p) (smm_assoc_2 x y p)
+
 theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
 sorry
 
@@ -1734,10 +1753,8 @@ sorry
 TODO: Fermat's Little Theorem.
 
 smm_mod - that set_mod_mult'ing by x is the same as x mod p
-smm_assoc - that you can do x*y instead of x then y
 smm_one - that smm 1 is the same set
-
-We need to prove that multiplying by a is a rearrangement of the numbers mod p.
+smm_eq
 
 Then we need to prove things about set-products. 
 
