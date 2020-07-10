@@ -112,6 +112,8 @@ class ComputerPlayer():
 			ta, ti, tp = info(guess, possibility)
 			if (ta, ti, tp) == (ra, ri, rp):
 				new_possibilities.append(possibility)
+		if not new_possibilities:
+			raise Exception("no possibilities left")
 		self.possibilities = new_possibilities	
 				
 	def guess(self):
