@@ -582,7 +582,19 @@ exists.elim h2
 
 def codivisors (a b : ℕ) := {d : ℕ | divides d a ∧ divides d b}
 
+theorem codivisors_comm (a b: ℕ) : codivisors a b = codivisors b a :=
+have h1: codivisors a b = divisors a ∩ divisors b, from rfl,
+have h2: divisors a ∩ divisors b = divisors b ∩ divisors a,
+    from set.inter_comm (divisors a) (divisors b),
+have h3: codivisors b a = divisors b ∩ divisors a, from rfl,
+by rw [h1, h2, h3.symm]
+
 def coprime (a b : ℕ) := upper_bound 1 (codivisors a b)
+
+theorem coprime_comm (a b: ℕ) (h1: coprime a b) : coprime b a :=
+have h2: upper_bound 1 (codivisors a b), from h1,
+have h3: upper_bound 1 (codivisors b a), from eq.subst (codivisors_comm a b) h2,
+h3
 
 lemma not_coprime (x y : ℕ) (h1: ¬ coprime x y) : ∃ z, z > 1 ∧ divides z x ∧ divides z y :=
 have h2: ∃ b : ℕ, ¬ (b ∈ codivisors x y → 1 ≥ b), from classical.not_forall.mp h1,
@@ -595,6 +607,18 @@ exists.elim h2
   have h8: b > 1, from not_le.mp h7,
   have h9: b > 1 ∧ divides b x ∧ divides b y, from and.intro h8 h6,
   exists.intro b h9)
+
+lemma div_not_coprime (p a b: ℕ) (h1: is_prime p) (h2: divides p a) (h3: divides p b) :
+¬ coprime a b :=
+have h4: p > 1, from h1.left,
+have h5: p ∈ codivisors a b, from set.mem_sep h2 h3,
+have h6: coprime a b ∨ ¬ coprime a b, from em(coprime a b),
+or.elim h6
+ (assume h7: coprime a b,
+  have h8: 1 ≥ p, from h7 p h5,
+  have h9: ¬ (p > 1), from not_lt.mpr h8,
+  absurd h4 h9)
+ (assume: ¬ coprime a b, this)
 
 theorem single_cofactor (a b : ℕ) (h1: a > 0) (h2: b > 0) :
 coprime a b ∨ ∃ p, is_prime p ∧ divides p a ∧ divides p b :=
@@ -614,6 +638,41 @@ or.elim h3
       have h10: divides p a, from divides_trans p d a h9.right h7.right.left,
       have h11: divides p b, from divides_trans p d b h9.right h7.right.right,
       or.inr (exists.intro p (and.intro h9.left (and.intro h10 h11))))))
+
+theorem coprime_mult (a b c: ℕ) (h1: a > 0) (h2: b > 0) (h3: c > 0)
+(h4: coprime a b) (h5: coprime a c) :
+coprime a (b*c) :=
+have h6: b*c > 0, from mul_pos h2 h3,
+have h7: coprime a (b*c) ∨ ∃ p, is_prime p ∧ divides p a ∧ divides p (b*c),
+    from single_cofactor a (b*c) h1 h6,
+or.elim h7
+ (assume: coprime a (b*c), this)
+ (assume h8: ∃ p, is_prime p ∧ divides p a ∧ divides p (b*c),
+  exists.elim h8
+   (assume p,
+    assume h9: is_prime p ∧ divides p a ∧ divides p (b*c),
+    have h10: divides p b ∨ divides p c, from euclids_lemma p b c h9.left h9.right.right,
+    or.elim h10
+     (assume h11: divides p b,
+      have h12: ¬ coprime a b, from div_not_coprime p a b h9.left h9.right.left h11,
+      absurd h4 h12)
+     (assume h13: divides p c,
+      have h14: ¬ coprime a c, from div_not_coprime p a c h9.left h9.right.left h13,
+      absurd h5 h14)))
+
+theorem coprime_nonzero (a b: ℕ) (h1: a > 1) (h2: coprime a b) : b > 0 :=
+have h3: b = 0 ∨ b ≠ 0, from em(b = 0),
+or.elim h3
+ (assume h4: b = 0, 
+  have h5: divides a 0, from divides_zero a,
+  have h6: divides a b, from eq.subst h4.symm h5,
+  have h7: divides a a, from divides_self a,
+  have h8: a ∈ codivisors a b, from set.mem_sep h7 h6,
+  have h9: 1 ≥ a, from h2 a h8,
+  have h10: ¬ (a > 1), from not_lt.mpr h9,
+  absurd h1 h10)
+ (assume h11: b ≠ 0,
+  bot_lt_iff_ne_bot.mpr h11)
 
 def linear_combo (a b : ℕ) := { e : ℕ | ∃ c : ℕ, ∃ d : ℕ, a * c = b * d + e }
 
@@ -852,6 +911,10 @@ lemma mdr (a m : ℕ) (h: ¬ (m ≥ 1 ∧ m ≤ a)) : mod a m = a := by rw [mod,
 
 def counterexamples_mod_less (m : ℕ) := { a : ℕ | mod a m ≥ m }
 
+theorem mod_zero (a: ℕ) : mod a 0 = a :=
+have h1: ¬ (0 ≥ 1 ∧ 0 ≤ a), from of_to_bool_ff rfl,
+mdr a 0 h1
+
 theorem mod_less (a m : ℕ) (h1: m > 0) : mod a m < m :=
 have h2: (mod a m < m) ∨ ¬ (mod a m < m), from em(mod a m < m),
 or.elim h2
@@ -909,6 +972,52 @@ theorem mod_base (a m : ℕ) (h1: a < m) : mod a m = a :=
 have h2: ¬ (m ≤ a), from not_le.mpr h1,
 have h3: ¬ (m ≥ 1 ∧ m ≤ a), from not_and_of_not_right (m ≥ 1) h2,
 mdr a m h3
+
+lemma mod_div_pos (a m: ℕ) (h1: m > 0) : ∃ q, m*q + mod a m = a :=
+have h2: ∃ c, ∃ d, m*c + d = a ∧ d < m, from division a m h1,
+exists.elim h2
+ (assume c,
+  assume: ∃ d, m*c + d = a ∧ d < m, 
+  exists.elim this
+   (assume d,
+    assume h3: m*c + d = a ∧ d < m,
+    have h4: c*m + d = a, from eq.subst (mul_comm m c) h3.left,
+    have h5: mod (c*m + d) m = mod d m, from mod_rem c m d,
+    have h6: mod a m = mod d m, from eq.subst h4 h5,
+    have h7: mod d m = d, from mod_base d m h3.right,
+    have h8: mod a m = d, by rw [h6, h7],
+    have h9: m*c + mod a m = a, from eq.subst h8.symm h3.left,
+    exists.intro c h9))
+
+theorem mod_div (a m: ℕ) : ∃ q, m*q + mod a m = a :=
+have h1: m = 0 ∨ m ≠ 0, from em(m = 0),
+or.elim h1
+ (assume h2: m = 0,
+  have h3: mod a m = a, from eq.subst h2.symm (mod_zero a),
+  have h4: m*1 + a = a, from eq.subst h2.symm (mul_one a),
+  have h5: m*1 + mod a m = a, from eq.subst h3.symm h4,
+  exists.intro 1 h5)
+ (assume h6: m ≠ 0,
+  have h7: m > 0, from bot_lt_iff_ne_bot.mpr h6,
+  mod_div_pos a m h7)
+
+theorem zero_mod_divides (a m: ℕ) (h1: mod a m = 0) : divides m a :=
+have h2: ∃ q, m*q + mod a m = a, from mod_div a m,
+exists.elim h2
+ (assume q,
+  assume h3: m*q + mod a m = a,
+  have h4: m*q + 0 = a, from eq.subst h1 h3,
+  have h5: m*q = a, from h4,
+  exists.intro q h5)
+
+theorem mod_nondivisor (a m: ℕ) (h1: ¬ divides m a) : mod a m > 0 :=
+have h2: mod a m = 0 ∨ mod a m ≠ 0, from em(mod a m = 0),
+or.elim h2
+ (assume h3: mod a m = 0,
+  have h4: divides m a, from zero_mod_divides a m h3,
+  absurd h4 h1)
+ (assume: mod a m ≠ 0,
+  bot_lt_iff_ne_bot.mpr this)
 
 def range (n : ℕ) := { x : ℕ | x < n }
 
@@ -1519,6 +1628,16 @@ or.elim h3
     have h14: ¬ (x < p), from not_lt.mpr h12,
     absurd h13 h14))
 
+theorem prange_nondivisor (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : ¬ divides p x :=
+have h3: coprime x p, from prange_coprime x p h1 h2,
+have h4: divides p x ∨ ¬ divides p x, from em(divides p x),
+or.elim h4
+ (assume h5: divides p x,
+  have h6: divides p p, from divides_self p,
+  have h7: ¬ coprime x p, from div_not_coprime p x p h1 h5 h6,
+  absurd h3 h7)
+ (assume: ¬ divides p x, this)
+
 theorem right_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 ∃ y: ℕ, mod (x*y) p = 1 :=
 have h3: coprime x p, from prange_coprime x p h1 h2,
@@ -1547,6 +1666,30 @@ exists.elim (right_inv x p h1 h2)
   have h4: x*y = y*x, from mul_comm x y,
   exists.intro y (eq.subst h4 h3))
 
+theorem prange_closed (x y p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) (h3: y ∈ prange p) :
+mod (x*y) p ∈ prange p :=
+have h4: coprime x p, from prange_coprime x p h1 h2,
+have h5: coprime y p, from prange_coprime y p h1 h3,
+have h6: x > 0, from prange_pos x p h2,
+have h7: y > 0, from prange_pos y p h3,
+have h8: p > 0, from prime_pos p h1,
+have h9: coprime p (x*y), from coprime_mult p x y h8 h6 h7 (coprime_comm x p h4) (coprime_comm y p h5),
+have h10: coprime (x*y) p, from coprime_comm p (x*y) h9,
+have h11: divides p (x*y) ∨ ¬ divides p (x*y), from em(divides p (x*y)),
+or.elim h11
+ (assume h12: divides p (x*y),
+  have h13: divides p x ∨ divides p y, from euclids_lemma p x y h1 h12,
+  or.elim h13
+   (assume: divides p x,
+    absurd this (prange_nondivisor x p h1 h2))
+   (assume: divides p y,
+    absurd this (prange_nondivisor y p h1 h3)))
+ (assume h14: ¬ divides p (x*y),
+  have h15: mod (x*y) p > 0, from mod_nondivisor (x*y) p h14,
+  have h16: mod (x*y) p < p, from mod_less (x*y) p h8,
+  have h17: mod (x*y) p ≠ 0, from ne_of_gt h15,
+  and.intro h16 h17)
+
 lemma smm_subset (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p ⊆ prange p :=
 assume z,
@@ -1554,17 +1697,64 @@ assume h3: z ∈ set_mod_mult (prange p) x p,
 exists.elim h3
  (assume y,
   assume h4: y ∈ (prange p) ∧ mod (x*y) p = z,
-  show z ∈ prange p, from sorry)
+  have h5: mod (x*y) p ∈ prange p, from prange_closed x y p h1 h2 h4.left,
+  eq.subst h4.right h5)
+
+lemma mod_mult_mod (a b m: ℕ): mod (a * (mod b m)) m = mod (a*b) m :=
+have h1: ∃ q, m*q + mod b m = b, from mod_div b m,
+exists.elim h1
+ (assume q,
+  assume h2: m*q + mod b m = b,
+  have h3: mod (a*b) m = mod (a*(m*q + mod b m)) m, from eq.subst h2.symm rfl,
+  have h4: a*(m*q + mod b m) = (a*q)*m + a*(mod b m), by rw [mul_add, (mul_comm m q), mul_assoc],
+  have h5: mod ((a*q)*m + a*(mod b m)) m = mod (a*(mod b m)) m, from mod_rem (a*q) m (a*(mod b m)),
+  have h6: mod (a*b) m = mod (a*(mod b m)) m, by rw [h3, h4, h5],
+  h6.symm)
+
+lemma smm_assoc_1 (x y p: ℕ) :
+set_mod_mult (set_mod_mult (prange p) x p) y p ⊆ set_mod_mult (prange p) (x*y) p :=
+assume z,
+assume h4: z ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
+exists.elim h4
+ (assume a,
+  assume h5: a ∈ (set_mod_mult (prange p) x p) ∧ mod (y*a) p = z,
+  exists.elim h5.left
+   (assume b,
+    assume h6: b ∈ prange p ∧ mod (x*b) p = a,
+    have h7: mod (y * (mod (x*b) p)) p = z, from eq.subst h6.right.symm h5.right,
+    have h8: mod (y*(x*b)) p = z, from eq.subst (mod_mult_mod y (x*b) p) h7,
+    have h9: (x*y)*b = y*(x*b), by rw [(mul_comm x y), mul_assoc],
+    have h10: mod ((x*y)*b) p = z, from eq.subst h9.symm h8,
+    exists.intro b (and.intro h6.left h10)))
+
+lemma smm_assoc_2 (x y p: ℕ) :
+set_mod_mult (prange p) (x*y) p ⊆ set_mod_mult (set_mod_mult (prange p) x p) y p :=
+assume z,
+assume h4: z ∈ set_mod_mult (prange p) (x*y) p,
+exists.elim h4
+ (assume a,
+  assume h5: a ∈ (prange p) ∧ mod ((x*y)*a) p = z,
+  have h6: mod (x*a) p ∈ set_mod_mult (prange p) x p, from exists.intro a (and.intro h5.left rfl),
+  have h7: mod (y*(mod (x*a) p)) p ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
+      from exists.intro (mod (x*a) p) (and.intro h6 rfl),
+  have h8: mod (y*(mod (x*a) p)) p = mod (y*(x*a)) p, from mod_mult_mod y (x*a) p,
+  have h9: (x*y)*a = y*(x*a), by rw [(mul_comm x y), mul_assoc],
+  have h8: mod (y*(mod (x*a) p)) p = z, by rw [h8, h9.symm, h5.right],
+  eq.subst h8 h7)
+
+theorem smm_assoc (x y p: ℕ) :
+set_mod_mult (set_mod_mult (prange p) x p) y p = set_mod_mult (prange p) (x*y) p :=
+set.subset.antisymm (smm_assoc_1 x y p) (smm_assoc_2 x y p)
+
+theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
+sorry
 
 /-
 TODO: Fermat's Little Theorem.
 
-prange_closed - x and y in prange means that x*y mod p is, too
-finish smm_subset
-smm_assoc - that you can do x*y instead of x then y
+smm_mod - that set_mod_mult'ing by x is the same as x mod p
 smm_one - that smm 1 is the same set
-
-We need to prove that multiplying by a is a rearrangement of the numbers mod p.
+smm_eq
 
 Then we need to prove things about set-products. 
 
