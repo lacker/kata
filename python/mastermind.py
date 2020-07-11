@@ -124,8 +124,10 @@ def play(player):
 	print("let's play a game")
 	guesses = 0
 	target = generate()
+	print("target:", target)
 	while True:
 		guess = player.guess()
+		print("guess:", guess)
 		if guess is None:
 			raise Exception("guess is None")
 		guesses += 1
