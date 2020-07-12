@@ -120,8 +120,9 @@ class ComputerPlayer():
 		answer = self.possibilities[0]
 		print("guessing:", answer)
 		return answer																																																										
-def play(player):
+def play(player_class):
 	print("let's play a game")
+	player = player_class()
 	guesses = 0
 	target = generate()
 	print("target:", target)
@@ -137,11 +138,11 @@ def play(player):
 		ra, ri, rp = info(target, guess)
 		player.inform(guess, ra, ri, rp)
 
-def average(player, rounds):
+def average(player_class, rounds):
 	total = 0
 	for _ in range(rounds):
-		total += play(player)
+		total += play(player_class)
 	avg = total / rounds
 	print(f"average: {avg}")
 
-average(ComputerPlayer(), 10)
+average(ComputerPlayer, 10)
