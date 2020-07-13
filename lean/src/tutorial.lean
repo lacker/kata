@@ -1746,6 +1746,19 @@ theorem smm_assoc (x y p: ℕ) :
 set_mod_mult (set_mod_mult (prange p) x p) y p = set_mod_mult (prange p) (x*y) p :=
 set.subset.antisymm (smm_assoc_1 x y p) (smm_assoc_2 x y p)
 
+lemma smm_mod_1 (x m: ℕ) (s: set ℕ): set_mod_mult s x m ⊆ set_mod_mult s (mod x m) m :=
+assume y,
+assume h1: y ∈ set_mod_mult s x m,
+show y ∈ set_mod_mult s (mod x m) m, from sorry
+
+lemma smm_mod_2 (x m: ℕ) (s: set ℕ): set_mod_mult s (mod x m) m ⊆ set_mod_mult s x m :=
+assume y,
+assume h1: y ∈ set_mod_mult s (mod x m) m,
+show y ∈ set_mod_mult s x m, from sorry
+
+theorem smm_mod (x m: ℕ) (s: set ℕ): set_mod_mult s x m = set_mod_mult s (mod x m) m :=
+set.subset.antisymm (smm_mod_1 x m s) (smm_mod_2 x m s)
+
 theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
 sorry
 
