@@ -1700,7 +1700,7 @@ exists.elim h3
   have h5: mod (x*y) p ∈ prange p, from prange_closed x y p h1 h2 h4.left,
   eq.subst h4.right h5)
 
-lemma mod_mult_mod (a b m: ℕ): mod (a * (mod b m)) m = mod (a*b) m :=
+theorem mod_rmult (a b m: ℕ): mod (a * (mod b m)) m = mod (a*b) m :=
 have h1: ∃ q, m*q + mod b m = b, from mod_div b m,
 exists.elim h1
  (assume q,
@@ -1710,6 +1710,9 @@ exists.elim h1
   have h5: mod ((a*q)*m + a*(mod b m)) m = mod (a*(mod b m)) m, from mod_rem (a*q) m (a*(mod b m)),
   have h6: mod (a*b) m = mod (a*(mod b m)) m, by rw [h3, h4, h5],
   h6.symm)
+
+theorem mod_lmult (a b m: ℕ): mod ((mod a m) * b) m = mod (a*b) m :=
+by rw [(mul_comm (mod a m) b), mod_rmult, (mul_comm b a)]
 
 lemma smm_assoc_1 (x y p: ℕ) :
 set_mod_mult (set_mod_mult (prange p) x p) y p ⊆ set_mod_mult (prange p) (x*y) p :=
@@ -1722,7 +1725,7 @@ exists.elim h4
    (assume b,
     assume h6: b ∈ prange p ∧ mod (x*b) p = a,
     have h7: mod (y * (mod (x*b) p)) p = z, from eq.subst h6.right.symm h5.right,
-    have h8: mod (y*(x*b)) p = z, from eq.subst (mod_mult_mod y (x*b) p) h7,
+    have h8: mod (y*(x*b)) p = z, from eq.subst (mod_rmult y (x*b) p) h7,
     have h9: (x*y)*b = y*(x*b), by rw [(mul_comm x y), mul_assoc],
     have h10: mod ((x*y)*b) p = z, from eq.subst h9.symm h8,
     exists.intro b (and.intro h6.left h10)))
@@ -1737,7 +1740,7 @@ exists.elim h4
   have h6: mod (x*a) p ∈ set_mod_mult (prange p) x p, from exists.intro a (and.intro h5.left rfl),
   have h7: mod (y*(mod (x*a) p)) p ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
       from exists.intro (mod (x*a) p) (and.intro h6 rfl),
-  have h8: mod (y*(mod (x*a) p)) p = mod (y*(x*a)) p, from mod_mult_mod y (x*a) p,
+  have h8: mod (y*(mod (x*a) p)) p = mod (y*(x*a)) p, from mod_rmult y (x*a) p,
   have h9: (x*y)*a = y*(x*a), by rw [(mul_comm x y), mul_assoc],
   have h8: mod (y*(mod (x*a) p)) p = z, by rw [h8, h9.symm, h5.right],
   eq.subst h8 h7)
@@ -1749,7 +1752,12 @@ set.subset.antisymm (smm_assoc_1 x y p) (smm_assoc_2 x y p)
 lemma smm_mod_1 (x m: ℕ) (s: set ℕ): set_mod_mult s x m ⊆ set_mod_mult s (mod x m) m :=
 assume y,
 assume h1: y ∈ set_mod_mult s x m,
-show y ∈ set_mod_mult s (mod x m) m, from sorry
+exists.elim h1
+ (assume a,
+  assume h2: a ∈ s ∧ mod (x*a) m = y,
+  have h3: mod ((mod x m)*a) m = mod (x*a) m, from mod_lmult x a m,
+  have h4: mod ((mod x m)*a) m = y, by rw [h3, h2.right],
+  show y ∈ set_mod_mult s (mod x m) m, from exists.intro a (and.intro h2.left h4))
 
 lemma smm_mod_2 (x m: ℕ) (s: set ℕ): set_mod_mult s (mod x m) m ⊆ set_mod_mult s x m :=
 assume y,
