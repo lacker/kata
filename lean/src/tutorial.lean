@@ -1762,7 +1762,12 @@ exists.elim h1
 lemma smm_mod_2 (x m: ℕ) (s: set ℕ): set_mod_mult s (mod x m) m ⊆ set_mod_mult s x m :=
 assume y,
 assume h1: y ∈ set_mod_mult s (mod x m) m,
-show y ∈ set_mod_mult s x m, from sorry
+exists.elim h1
+ (assume a,
+  assume h2: a ∈ s ∧ mod ((mod x m)*a) m = y,
+  have h3: mod ((mod x m)*a) m = mod (x*a) m, from mod_lmult x a m,
+  have h4: mod (x*a) m = y, by rw [h3.symm, h2.right],
+  show y ∈ set_mod_mult s x m, from exists.intro a (and.intro h2.left h4))
 
 theorem smm_mod (x m: ℕ) (s: set ℕ): set_mod_mult s x m = set_mod_mult s (mod x m) m :=
 set.subset.antisymm (smm_mod_1 x m s) (smm_mod_2 x m s)
