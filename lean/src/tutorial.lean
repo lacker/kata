@@ -1772,13 +1772,25 @@ exists.elim h1
 theorem smm_mod (x m: ℕ) (s: set ℕ): set_mod_mult s x m = set_mod_mult s (mod x m) m :=
 set.subset.antisymm (smm_mod_1 x m s) (smm_mod_2 x m s)
 
+lemma smm_one_left (p: ℕ): set_mod_mult (prange p) 1 p ⊆ prange p :=
+assume y,
+assume h1: y ∈ set_mod_mult (prange p) 1 p,
+show y ∈ prange p, from sorry
+
+lemma smm_one_right (p: ℕ): prange p ⊆ set_mod_mult (prange p) 1 p :=
+assume y,
+assume h1: y ∈ prange p,
+show y ∈ set_mod_mult (prange p) 1 p, from sorry
+
+theorem smm_one (p: ℕ): set_mod_mult (prange p) 1 p = prange p :=
+set.subset.antisymm (smm_one_left p) (smm_one_right p)
+
 theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
 sorry
 
 /-
 TODO: Fermat's Little Theorem.
 
-smm_mod - that set_mod_mult'ing by x is the same as x mod p
 smm_one - that smm 1 is the same set
 smm_eq
 
