@@ -1775,7 +1775,15 @@ set.subset.antisymm (smm_mod_1 x m s) (smm_mod_2 x m s)
 lemma smm_one_left (p: ℕ): set_mod_mult (prange p) 1 p ⊆ prange p :=
 assume y,
 assume h1: y ∈ set_mod_mult (prange p) 1 p,
-show y ∈ prange p, from sorry
+exists.elim h1
+ (assume a,
+  assume h2: a ∈ prange p ∧ mod (1*a) p = y,
+  have h3: 1*a = a, from one_mul a,
+  have h4: mod a p = y, from eq.subst h3 h2.right,
+  have h5: a < p, from h2.left.left,
+  have h6: mod a p = a, from mod_base a p h5,
+  have h7: a = y, by rw [h6.symm, h4],
+  show y ∈ prange p, from eq.subst h7 h2.left)
 
 lemma smm_one_right (p: ℕ): prange p ⊆ set_mod_mult (prange p) 1 p :=
 assume y,
