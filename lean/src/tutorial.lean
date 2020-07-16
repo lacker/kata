@@ -1788,7 +1788,11 @@ exists.elim h1
 lemma smm_one_right (p: ℕ): prange p ⊆ set_mod_mult (prange p) 1 p :=
 assume y,
 assume h1: y ∈ prange p,
-show y ∈ set_mod_mult (prange p) 1 p, from sorry
+have h2: y < p, from h1.left,
+have h3: mod y p = y, from mod_base y p h2,
+have h4: 1*y = y, from one_mul y,
+have h5: mod (1*y) p = y, from eq.subst h4.symm h3,
+show y ∈ set_mod_mult (prange p) 1 p, from exists.intro y (and.intro h1 h5)
 
 theorem smm_one (p: ℕ): set_mod_mult (prange p) 1 p = prange p :=
 set.subset.antisymm (smm_one_left p) (smm_one_right p)
