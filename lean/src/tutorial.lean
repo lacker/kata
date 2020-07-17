@@ -973,6 +973,16 @@ have h2: ¬ (m ≤ a), from not_le.mpr h1,
 have h3: ¬ (m ≥ 1 ∧ m ≤ a), from not_and_of_not_right (m ≥ 1) h2,
 mdr a m h3
 
+theorem zero_mod (m: ℕ) : mod 0 m = 0 :=
+have h1: m = 0 ∨ m ≠ 0, from em(m = 0),
+or.elim h1
+ (assume h2: m = 0,
+  have h3: mod 0 0 = 0, from mod_zero 0,
+  show mod 0 m = 0, from eq.subst h2.symm h3)
+ (assume h4: m ≠ 0,
+  have h5: 0 < m, from bot_lt_iff_ne_bot.mpr h4,
+  mod_base 0 m h5)
+
 lemma mod_div_pos (a m: ℕ) (h1: m > 0) : ∃ q, m*q + mod a m = a :=
 have h2: ∃ c, ∃ d, m*c + d = a ∧ d < m, from division a m h1,
 exists.elim h2
@@ -1677,7 +1687,7 @@ theorem mod_lmult (a b m: ℕ): mod ((mod a m) * b) m = mod (a*b) m :=
 by rw [(mul_comm (mod a m) b), mod_rmult, (mul_comm b a)]
 
 theorem right_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
-∃ y: ℕ, mod (x*y) p = 1 :=
+∃ y: ℕ, y ∈ prange p ∧ mod (x*y) p = 1 :=
 have h3: coprime x p, from prange_coprime x p h1 h2,
 have h4: x > 0, from prange_pos x p h2,
 have h5: p > 0, from prime_pos p h1,
@@ -1694,13 +1704,27 @@ exists.elim h6
     have h11: m*p = p*m, from mul_comm m p,
     have h12: x*y = m*p + 1, from eq.subst h11.symm h7,
     have h13: mod (x*y) p = 1, from eq.subst h12.symm h10,
-    exists.intro y h13))
+    have h14: mod (x * (mod y p)) p = mod (x*y) p, from mod_rmult x y p,
+    have h15: mod (x * (mod y p)) p = 1, from eq.subst h14.symm h13,
+    have h16: mod y p = 0 ∨ mod y p ≠ 0, from em(mod y p = 0),
+    or.elim h16
+     (assume h17: mod y p = 0,
+      have h18: x * 0 = 0, from rfl,
+      have h19: x * mod y p = 0, from eq.subst h17.symm h18,
+      have h20: mod 0 p = 1, from eq.subst h19 h15,
+      have h21: mod 0 p = 0, from zero_mod p,
+      have h22: 0 = 1, by rw [h21.symm, h20],
+      absurd h22 zero_ne_one)
+     (assume h23: mod y p ≠ 0,
+      have h24: mod y p ∈ range p, from mod_less y p h5,
+      have h25: mod y p ∈ prange p, from and.intro h24 h23,
+      exists.intro (mod y p) (and.intro h25 h15))))
 
 theorem left_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
-∃ y: ℕ, mod (y*x) p = 1 :=
+∃ y: ℕ, y ∈ prange p ∧ mod (y*x) p = 1 :=
 exists.elim (right_inv x p h1 h2)
  (assume y,
-  assume h3: mod (x*y) p = 1,
+  assume h3: y ∈ prange p ∧ mod (x*y) p = 1,
   have h4: x*y = y*x, from mul_comm x y,
   exists.intro y (eq.subst h4 h3))
 
@@ -1801,7 +1825,7 @@ lemma smm_eq_2 (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 prange p ⊆ set_mod_mult (prange p) x p :=
 assume y,
 assume h3: y ∈ prange p,
-have h4: ∃ z: ℕ, mod (z*x) p = 1, from left_inv x p h1 h2,
+have h4: ∃ z: ℕ, z ∈ prange p ∧ mod (z*x) p = 1, from left_inv x p h1 h2,
 show y ∈ set_mod_mult (prange p) x p, from sorry
 
 theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
@@ -1811,9 +1835,9 @@ set.subset.antisymm (smm_eq_1 x p h1 h2) (smm_eq_2 x p h1 h2)
 /-
 TODO: Fermat's Little Theorem.
 
-need to add to right_inv that y is in prange p
+work on smm_eq_2, using the improved left_inv
 
-smm_eq
+celebrate smm_eq
 
 Did I even need smm_assoc or smm_one? If those aren't used for smm_eq, consider ditching.
 
