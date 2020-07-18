@@ -1728,89 +1728,6 @@ exists.elim (right_inv x p h1 h2)
   have h4: x*y = y*x, from mul_comm x y,
   exists.intro y (eq.subst h4 h3))
 
-lemma smm_assoc_1 (x y p: ℕ) :
-set_mod_mult (set_mod_mult (prange p) x p) y p ⊆ set_mod_mult (prange p) (x*y) p :=
-assume z,
-assume h4: z ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
-exists.elim h4
- (assume a,
-  assume h5: a ∈ (set_mod_mult (prange p) x p) ∧ mod (y*a) p = z,
-  exists.elim h5.left
-   (assume b,
-    assume h6: b ∈ prange p ∧ mod (x*b) p = a,
-    have h7: mod (y * (mod (x*b) p)) p = z, from eq.subst h6.right.symm h5.right,
-    have h8: mod (y*(x*b)) p = z, from eq.subst (mod_rmult y (x*b) p) h7,
-    have h9: (x*y)*b = y*(x*b), by rw [(mul_comm x y), mul_assoc],
-    have h10: mod ((x*y)*b) p = z, from eq.subst h9.symm h8,
-    exists.intro b (and.intro h6.left h10)))
-
-lemma smm_assoc_2 (x y p: ℕ) :
-set_mod_mult (prange p) (x*y) p ⊆ set_mod_mult (set_mod_mult (prange p) x p) y p :=
-assume z,
-assume h4: z ∈ set_mod_mult (prange p) (x*y) p,
-exists.elim h4
- (assume a,
-  assume h5: a ∈ (prange p) ∧ mod ((x*y)*a) p = z,
-  have h6: mod (x*a) p ∈ set_mod_mult (prange p) x p, from exists.intro a (and.intro h5.left rfl),
-  have h7: mod (y*(mod (x*a) p)) p ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
-      from exists.intro (mod (x*a) p) (and.intro h6 rfl),
-  have h8: mod (y*(mod (x*a) p)) p = mod (y*(x*a)) p, from mod_rmult y (x*a) p,
-  have h9: (x*y)*a = y*(x*a), by rw [(mul_comm x y), mul_assoc],
-  have h8: mod (y*(mod (x*a) p)) p = z, by rw [h8, h9.symm, h5.right],
-  eq.subst h8 h7)
-
-theorem smm_assoc (x y p: ℕ) :
-set_mod_mult (set_mod_mult (prange p) x p) y p = set_mod_mult (prange p) (x*y) p :=
-set.subset.antisymm (smm_assoc_1 x y p) (smm_assoc_2 x y p)
-
-lemma smm_mod_1 (x m: ℕ) (s: set ℕ): set_mod_mult s x m ⊆ set_mod_mult s (mod x m) m :=
-assume y,
-assume h1: y ∈ set_mod_mult s x m,
-exists.elim h1
- (assume a,
-  assume h2: a ∈ s ∧ mod (x*a) m = y,
-  have h3: mod ((mod x m)*a) m = mod (x*a) m, from mod_lmult x a m,
-  have h4: mod ((mod x m)*a) m = y, by rw [h3, h2.right],
-  show y ∈ set_mod_mult s (mod x m) m, from exists.intro a (and.intro h2.left h4))
-
-lemma smm_mod_2 (x m: ℕ) (s: set ℕ): set_mod_mult s (mod x m) m ⊆ set_mod_mult s x m :=
-assume y,
-assume h1: y ∈ set_mod_mult s (mod x m) m,
-exists.elim h1
- (assume a,
-  assume h2: a ∈ s ∧ mod ((mod x m)*a) m = y,
-  have h3: mod ((mod x m)*a) m = mod (x*a) m, from mod_lmult x a m,
-  have h4: mod (x*a) m = y, by rw [h3.symm, h2.right],
-  show y ∈ set_mod_mult s x m, from exists.intro a (and.intro h2.left h4))
-
-theorem smm_mod (x m: ℕ) (s: set ℕ): set_mod_mult s x m = set_mod_mult s (mod x m) m :=
-set.subset.antisymm (smm_mod_1 x m s) (smm_mod_2 x m s)
-
-lemma smm_one_left (p: ℕ): set_mod_mult (prange p) 1 p ⊆ prange p :=
-assume y,
-assume h1: y ∈ set_mod_mult (prange p) 1 p,
-exists.elim h1
- (assume a,
-  assume h2: a ∈ prange p ∧ mod (1*a) p = y,
-  have h3: 1*a = a, from one_mul a,
-  have h4: mod a p = y, from eq.subst h3 h2.right,
-  have h5: a < p, from h2.left.left,
-  have h6: mod a p = a, from mod_base a p h5,
-  have h7: a = y, by rw [h6.symm, h4],
-  show y ∈ prange p, from eq.subst h7 h2.left)
-
-lemma smm_one_right (p: ℕ): prange p ⊆ set_mod_mult (prange p) 1 p :=
-assume y,
-assume h1: y ∈ prange p,
-have h2: y < p, from h1.left,
-have h3: mod y p = y, from mod_base y p h2,
-have h4: 1*y = y, from one_mul y,
-have h5: mod (1*y) p = y, from eq.subst h4.symm h3,
-show y ∈ set_mod_mult (prange p) 1 p, from exists.intro y (and.intro h1 h5)
-
-theorem smm_one (p: ℕ): set_mod_mult (prange p) 1 p = prange p :=
-set.subset.antisymm (smm_one_left p) (smm_one_right p)
-
 lemma smm_eq_1 (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p ⊆ prange p :=
 assume z,
@@ -1826,7 +1743,19 @@ prange p ⊆ set_mod_mult (prange p) x p :=
 assume y,
 assume h3: y ∈ prange p,
 have h4: ∃ z: ℕ, z ∈ prange p ∧ mod (z*x) p = 1, from left_inv x p h1 h2,
-show y ∈ set_mod_mult (prange p) x p, from sorry
+exists.elim h4
+ (assume z,
+  assume h5: z ∈ prange p ∧ mod (z*x) p = 1,
+  have h6: mod ((mod (z*x) p) * y) p = mod ((z*x)*y) p, from mod_lmult (z*x) y p,
+  have h7: mod (1*y) p = mod ((z*x)*y) p, from eq.subst h5.right h6,
+  have h8: mod (1*y) p = mod y p, by rw [(one_mul y)],
+  have h9: mod y p = y, from mod_base y p h3.left,
+  have h10: mod ((z*x)*y) p = mod (x*(z*y)) p, by rw [(mul_comm z x), (mul_assoc x z y)],
+  have h11: mod (z*y) p ∈ prange p, from prange_closed z y p h1 h5.left h3,
+  have h12: mod (x * (mod (z*y) p)) p = mod (x*(z*y)) p, from mod_rmult x (z*y) p,
+  have h13: mod (x * (mod (z*y) p)) p = y, by rw [h12, h10.symm, h7.symm, h8, h9],
+  have h14: mod (z*y) p ∈ prange p ∧ mod (x * (mod (z*y) p)) p = y, from and.intro h11 h13,
+  exists.intro (mod (z*y) p) h14)
 
 theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p = prange p :=
@@ -1835,13 +1764,11 @@ set.subset.antisymm (smm_eq_1 x p h1 h2) (smm_eq_2 x p h1 h2)
 /-
 TODO: Fermat's Little Theorem.
 
-work on smm_eq_2, using the improved left_inv
+We need to prove things about set-products. 
+Like we could define what it is.
+Then prove it commutes with mod.
 
-celebrate smm_eq
-
-Did I even need smm_assoc or smm_one? If those aren't used for smm_eq, consider ditching.
-
-Then we need to prove things about set-products. 
+Then let's define set_mult, and prove what a set_product of a set_mult is.
 
 Then we need to calculate (p-1)! two ways, before and after multiplying by a.
 
