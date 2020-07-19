@@ -973,6 +973,16 @@ have h2: ¬ (m ≤ a), from not_le.mpr h1,
 have h3: ¬ (m ≥ 1 ∧ m ≤ a), from not_and_of_not_right (m ≥ 1) h2,
 mdr a m h3
 
+theorem zero_mod (m: ℕ) : mod 0 m = 0 :=
+have h1: m = 0 ∨ m ≠ 0, from em(m = 0),
+or.elim h1
+ (assume h2: m = 0,
+  have h3: mod 0 0 = 0, from mod_zero 0,
+  show mod 0 m = 0, from eq.subst h2.symm h3)
+ (assume h4: m ≠ 0,
+  have h5: 0 < m, from bot_lt_iff_ne_bot.mpr h4,
+  mod_base 0 m h5)
+
 lemma mod_div_pos (a m: ℕ) (h1: m > 0) : ∃ q, m*q + mod a m = a :=
 have h2: ∃ c, ∃ d, m*c + d = a ∧ d < m, from division a m h1,
 exists.elim h2
@@ -1638,34 +1648,6 @@ or.elim h4
   absurd h3 h7)
  (assume: ¬ divides p x, this)
 
-theorem right_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
-∃ y: ℕ, mod (x*y) p = 1 :=
-have h3: coprime x p, from prange_coprime x p h1 h2,
-have h4: x > 0, from prange_pos x p h2,
-have h5: p > 0, from prime_pos p h1,
-have h6: 1 ∈ linear_combo x p, from bezout x p h4 h5 h3,
-exists.elim h6
- (assume y,
-  assume: ∃ m:ℕ, x*y = p*m + 1,
-  exists.elim this
-   (assume m,
-    assume h7: x*y = p*m + 1,
-    have h8: mod (m*p + 1) p = mod 1 p, from mod_rem m p 1,
-    have h9: mod 1 p = 1, from mod_base 1 p h1.left,
-    have h10: mod (m*p + 1) p = 1, by rw [h8, h9],
-    have h11: m*p = p*m, from mul_comm m p,
-    have h12: x*y = m*p + 1, from eq.subst h11.symm h7,
-    have h13: mod (x*y) p = 1, from eq.subst h12.symm h10,
-    exists.intro y h13))
-
-theorem left_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
-∃ y: ℕ, mod (y*x) p = 1 :=
-exists.elim (right_inv x p h1 h2)
- (assume y,
-  assume h3: mod (x*y) p = 1,
-  have h4: x*y = y*x, from mul_comm x y,
-  exists.intro y (eq.subst h4 h3))
-
 theorem prange_closed (x y p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) (h3: y ∈ prange p) :
 mod (x*y) p ∈ prange p :=
 have h4: coprime x p, from prange_coprime x p h1 h2,
@@ -1690,17 +1672,7 @@ or.elim h11
   have h17: mod (x*y) p ≠ 0, from ne_of_gt h15,
   and.intro h16 h17)
 
-lemma smm_subset (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
-set_mod_mult (prange p) x p ⊆ prange p :=
-assume z,
-assume h3: z ∈ set_mod_mult (prange p) x p,
-exists.elim h3
- (assume y,
-  assume h4: y ∈ (prange p) ∧ mod (x*y) p = z,
-  have h5: mod (x*y) p ∈ prange p, from prange_closed x y p h1 h2 h4.left,
-  eq.subst h4.right h5)
-
-lemma mod_mult_mod (a b m: ℕ): mod (a * (mod b m)) m = mod (a*b) m :=
+theorem mod_rmult (a b m: ℕ): mod (a * (mod b m)) m = mod (a*b) m :=
 have h1: ∃ q, m*q + mod b m = b, from mod_div b m,
 exists.elim h1
  (assume q,
@@ -1711,52 +1683,92 @@ exists.elim h1
   have h6: mod (a*b) m = mod (a*(mod b m)) m, by rw [h3, h4, h5],
   h6.symm)
 
-lemma smm_assoc_1 (x y p: ℕ) :
-set_mod_mult (set_mod_mult (prange p) x p) y p ⊆ set_mod_mult (prange p) (x*y) p :=
+theorem mod_lmult (a b m: ℕ): mod ((mod a m) * b) m = mod (a*b) m :=
+by rw [(mul_comm (mod a m) b), mod_rmult, (mul_comm b a)]
+
+theorem right_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+∃ y: ℕ, y ∈ prange p ∧ mod (x*y) p = 1 :=
+have h3: coprime x p, from prange_coprime x p h1 h2,
+have h4: x > 0, from prange_pos x p h2,
+have h5: p > 0, from prime_pos p h1,
+have h6: 1 ∈ linear_combo x p, from bezout x p h4 h5 h3,
+exists.elim h6
+ (assume y,
+  assume: ∃ m:ℕ, x*y = p*m + 1,
+  exists.elim this
+   (assume m,
+    assume h7: x*y = p*m + 1,
+    have h8: mod (m*p + 1) p = mod 1 p, from mod_rem m p 1,
+    have h9: mod 1 p = 1, from mod_base 1 p h1.left,
+    have h10: mod (m*p + 1) p = 1, by rw [h8, h9],
+    have h11: m*p = p*m, from mul_comm m p,
+    have h12: x*y = m*p + 1, from eq.subst h11.symm h7,
+    have h13: mod (x*y) p = 1, from eq.subst h12.symm h10,
+    have h14: mod (x * (mod y p)) p = mod (x*y) p, from mod_rmult x y p,
+    have h15: mod (x * (mod y p)) p = 1, from eq.subst h14.symm h13,
+    have h16: mod y p = 0 ∨ mod y p ≠ 0, from em(mod y p = 0),
+    or.elim h16
+     (assume h17: mod y p = 0,
+      have h18: x * 0 = 0, from rfl,
+      have h19: x * mod y p = 0, from eq.subst h17.symm h18,
+      have h20: mod 0 p = 1, from eq.subst h19 h15,
+      have h21: mod 0 p = 0, from zero_mod p,
+      have h22: 0 = 1, by rw [h21.symm, h20],
+      absurd h22 zero_ne_one)
+     (assume h23: mod y p ≠ 0,
+      have h24: mod y p ∈ range p, from mod_less y p h5,
+      have h25: mod y p ∈ prange p, from and.intro h24 h23,
+      exists.intro (mod y p) (and.intro h25 h15))))
+
+theorem left_inv (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+∃ y: ℕ, y ∈ prange p ∧ mod (y*x) p = 1 :=
+exists.elim (right_inv x p h1 h2)
+ (assume y,
+  assume h3: y ∈ prange p ∧ mod (x*y) p = 1,
+  have h4: x*y = y*x, from mul_comm x y,
+  exists.intro y (eq.subst h4 h3))
+
+lemma smm_eq_1 (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+set_mod_mult (prange p) x p ⊆ prange p :=
 assume z,
-assume h4: z ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
+assume h3: z ∈ set_mod_mult (prange p) x p,
+exists.elim h3
+ (assume y,
+  assume h4: y ∈ (prange p) ∧ mod (x*y) p = z,
+  have h5: mod (x*y) p ∈ prange p, from prange_closed x y p h1 h2 h4.left,
+  eq.subst h4.right h5)
+
+lemma smm_eq_2 (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+prange p ⊆ set_mod_mult (prange p) x p :=
+assume y,
+assume h3: y ∈ prange p,
+have h4: ∃ z: ℕ, z ∈ prange p ∧ mod (z*x) p = 1, from left_inv x p h1 h2,
 exists.elim h4
- (assume a,
-  assume h5: a ∈ (set_mod_mult (prange p) x p) ∧ mod (y*a) p = z,
-  exists.elim h5.left
-   (assume b,
-    assume h6: b ∈ prange p ∧ mod (x*b) p = a,
-    have h7: mod (y * (mod (x*b) p)) p = z, from eq.subst h6.right.symm h5.right,
-    have h8: mod (y*(x*b)) p = z, from eq.subst (mod_mult_mod y (x*b) p) h7,
-    have h9: (x*y)*b = y*(x*b), by rw [(mul_comm x y), mul_assoc],
-    have h10: mod ((x*y)*b) p = z, from eq.subst h9.symm h8,
-    exists.intro b (and.intro h6.left h10)))
+ (assume z,
+  assume h5: z ∈ prange p ∧ mod (z*x) p = 1,
+  have h6: mod ((mod (z*x) p) * y) p = mod ((z*x)*y) p, from mod_lmult (z*x) y p,
+  have h7: mod (1*y) p = mod ((z*x)*y) p, from eq.subst h5.right h6,
+  have h8: mod (1*y) p = mod y p, by rw [(one_mul y)],
+  have h9: mod y p = y, from mod_base y p h3.left,
+  have h10: mod ((z*x)*y) p = mod (x*(z*y)) p, by rw [(mul_comm z x), (mul_assoc x z y)],
+  have h11: mod (z*y) p ∈ prange p, from prange_closed z y p h1 h5.left h3,
+  have h12: mod (x * (mod (z*y) p)) p = mod (x*(z*y)) p, from mod_rmult x (z*y) p,
+  have h13: mod (x * (mod (z*y) p)) p = y, by rw [h12, h10.symm, h7.symm, h8, h9],
+  have h14: mod (z*y) p ∈ prange p ∧ mod (x * (mod (z*y) p)) p = y, from and.intro h11 h13,
+  exists.intro (mod (z*y) p) h14)
 
-lemma smm_assoc_2 (x y p: ℕ) :
-set_mod_mult (prange p) (x*y) p ⊆ set_mod_mult (set_mod_mult (prange p) x p) y p :=
-assume z,
-assume h4: z ∈ set_mod_mult (prange p) (x*y) p,
-exists.elim h4
- (assume a,
-  assume h5: a ∈ (prange p) ∧ mod ((x*y)*a) p = z,
-  have h6: mod (x*a) p ∈ set_mod_mult (prange p) x p, from exists.intro a (and.intro h5.left rfl),
-  have h7: mod (y*(mod (x*a) p)) p ∈ set_mod_mult (set_mod_mult (prange p) x p) y p,
-      from exists.intro (mod (x*a) p) (and.intro h6 rfl),
-  have h8: mod (y*(mod (x*a) p)) p = mod (y*(x*a)) p, from mod_mult_mod y (x*a) p,
-  have h9: (x*y)*a = y*(x*a), by rw [(mul_comm x y), mul_assoc],
-  have h8: mod (y*(mod (x*a) p)) p = z, by rw [h8, h9.symm, h5.right],
-  eq.subst h8 h7)
-
-theorem smm_assoc (x y p: ℕ) :
-set_mod_mult (set_mod_mult (prange p) x p) y p = set_mod_mult (prange p) (x*y) p :=
-set.subset.antisymm (smm_assoc_1 x y p) (smm_assoc_2 x y p)
-
-theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) : set_mod_mult (prange p) x p = prange p :=
-sorry
+theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
+set_mod_mult (prange p) x p = prange p :=
+set.subset.antisymm (smm_eq_1 x p h1 h2) (smm_eq_2 x p h1 h2)
 
 /-
 TODO: Fermat's Little Theorem.
 
-smm_mod - that set_mod_mult'ing by x is the same as x mod p
-smm_one - that smm 1 is the same set
-smm_eq
+We need to prove things about set-products. 
+Like we could define what it is.
+Then prove it commutes with mod.
 
-Then we need to prove things about set-products. 
+Then let's define set_mult, and prove what a set_product of a set_mult is.
 
 Then we need to calculate (p-1)! two ways, before and after multiplying by a.
 
