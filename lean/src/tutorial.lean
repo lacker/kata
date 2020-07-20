@@ -1768,11 +1768,8 @@ def prange_prod: ℕ → (ℕ → ℕ) → ℕ
 /-
 TODO: Fermat's Little Theorem.
 
-We need to prove things about set-products. 
-Like we could define what it is.
-Then prove it commutes with mod.
-
-Then let's define set_mult, and prove what a set_product of a set_mult is.
+Prove that prange_prod commutes with mod.
+Prove that prange_prod commutes with multiplication.
 
 Then we need to calculate (p-1)! two ways, before and after multiplying by a.
 
