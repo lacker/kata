@@ -1761,6 +1761,10 @@ theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p = prange p :=
 set.subset.antisymm (smm_eq_1 x p h1 h2) (smm_eq_2 x p h1 h2)
 
+def prange_prod: ℕ → (ℕ → ℕ) → ℕ
+| 0 f := 1
+| (x+1) f := (f (x+1)) * (prange_prod x f)
+
 /-
 TODO: Fermat's Little Theorem.
 
