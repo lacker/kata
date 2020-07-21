@@ -1765,6 +1765,10 @@ def prange_prod: ℕ → (ℕ → ℕ) → ℕ
 | 0 f := 1
 | (x+1) f := (f (x+1)) * (prange_prod x f)
 
+theorem pp_comm_mult (n: ℕ) (f g: ℕ → ℕ) :
+(prange_prod n f) * (prange_prod n g) = prange_prod n (λ x: ℕ, (f x) * (g x)) :=
+sorry
+
 /-
 TODO: Fermat's Little Theorem.
 
