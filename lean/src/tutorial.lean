@@ -1765,6 +1765,13 @@ def prange_prod: ℕ → (ℕ → ℕ) → ℕ
 | 0 f := 1
 | (x+1) f := (f (x+1)) * (prange_prod x f)
 
+lemma pp_base (f: ℕ → ℕ) : prange_prod 0 f = 1 := rfl
+
+lemma pp_comm_mult_zero (f g: ℕ → ℕ) :
+(prange_prod 0 f) * (prange_prod 0 g) = prange_prod 0 (λ x: ℕ, (f x) * (g x)) :=
+have h1: 1 * 1 = 1, from rfl,
+by rw [(pp_base f), (pp_base g), h1, (pp_base (λ x: ℕ, (f x) * (g x))).symm]
+
 theorem pp_comm_mult (n: ℕ) (f g: ℕ → ℕ) :
 (prange_prod n f) * (prange_prod n g) = prange_prod n (λ x: ℕ, (f x) * (g x)) :=
 sorry
