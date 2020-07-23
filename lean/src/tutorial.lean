@@ -1774,7 +1774,11 @@ by rw [(pp_base f), (pp_base g), h1, (pp_base (λ x: ℕ, (f x) * (g x))).symm]
 
 theorem pp_comm_mult (n: ℕ) (f g: ℕ → ℕ) :
 (prange_prod n f) * (prange_prod n g) = prange_prod n (λ x: ℕ, (f x) * (g x)) :=
-sorry
+nat.rec_on n
+ (pp_comm_mult_zero f g)
+ (assume y,
+  assume h1: (prange_prod y f) * (prange_prod y g) = prange_prod y (λ x: ℕ, (f x) * (g x)),
+  show (prange_prod (y+1) f) * (prange_prod (y+1) g) = prange_prod (y+1) (λ x: ℕ, (f x) * (g x)), from sorry)
 
 /-
 TODO: Fermat's Little Theorem.
