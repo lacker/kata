@@ -1767,24 +1767,37 @@ def prange_prod: ℕ → (ℕ → ℕ) → ℕ
 
 lemma pp_base (f: ℕ → ℕ) : prange_prod 0 f = 1 := rfl
 
+def mulf: (ℕ → ℕ) → (ℕ → ℕ) → ℕ → ℕ
+| f g x := (f x) * (g x)
+
 lemma pp_comm_mult_zero (f g: ℕ → ℕ) :
-(prange_prod 0 f) * (prange_prod 0 g) = prange_prod 0 (λ x: ℕ, (f x) * (g x)) :=
+(prange_prod 0 f) * (prange_prod 0 g) = prange_prod 0 (mulf f g) :=
 have h1: 1 * 1 = 1, from rfl,
-by rw [(pp_base f), (pp_base g), h1, (pp_base (λ x: ℕ, (f x) * (g x))).symm]
+by rw [(pp_base f), (pp_base g), h1, (pp_base (mulf f g)).symm]
 
 theorem pp_comm_mult (n: ℕ) (f g: ℕ → ℕ) :
-(prange_prod n f) * (prange_prod n g) = prange_prod n (λ x: ℕ, (f x) * (g x)) :=
+(prange_prod n f) * (prange_prod n g) = prange_prod n (mulf f g) :=
 nat.rec_on n
  (pp_comm_mult_zero f g)
  (assume y,
-  assume h1: (prange_prod y f) * (prange_prod y g) = prange_prod y (λ x: ℕ, (f x) * (g x)),
-  show (prange_prod (y+1) f) * (prange_prod (y+1) g) = prange_prod (y+1) (λ x: ℕ, (f x) * (g x)), from sorry)
+  assume h1: (prange_prod y f) * (prange_prod y g) = prange_prod y (mulf f g),
+  have h2: prange_prod (y+1) (mulf f g) = (mulf f g (y+1)) * (prange_prod y (mulf f g)), from rfl,
+  have h3: mulf f g (y+1) = (f (y+1)) * (g (y+1)), from rfl,
+  have h4: prange_prod (y+1) (mulf f g) = ((f (y+1)) * (prange_prod y f)) * ((g (y+1)) * (prange_prod y g)),
+      by rw [h2, h1.symm, h3, mul_mul_mul_comm],
+  show (prange_prod (y+1) f) * (prange_prod (y+1) g) = prange_prod (y+1) (mulf f g), from h4.symm)
+
+def modf: (ℕ → ℕ) → ℕ → ℕ → ℕ
+| f m x := mod (f x) m
+
+theorem pp_comm_mod (m n: ℕ) (f: ℕ → ℕ) :
+mod (prange_prod n (modf f m)) m = mod (prange_prod n f) m :=
+sorry
 
 /-
 TODO: Fermat's Little Theorem.
 
 Prove that prange_prod commutes with mod.
-Prove that prange_prod commutes with multiplication.
 
 Then we need to calculate (p-1)! two ways, before and after multiplying by a.
 
