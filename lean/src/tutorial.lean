@@ -1790,9 +1790,16 @@ nat.rec_on n
 def modf: (ℕ → ℕ) → ℕ → ℕ → ℕ
 | f m x := mod (f x) m
 
+lemma pp_comm_mod_zero (m: ℕ) (f: ℕ → ℕ) : mod (prange_prod 0 (modf f m)) m = mod (prange_prod 0 f) m :=
+have h1: prange_prod 0 (modf f m) = 1, from rfl,
+have h2: prange_prod 0 f = 1, from rfl,
+by rw [h1, h2.symm]
+
 theorem pp_comm_mod (m n: ℕ) (f: ℕ → ℕ) :
 mod (prange_prod n (modf f m)) m = mod (prange_prod n f) m :=
-sorry
+nat.rec_on n
+ (pp_comm_mod_zero m f)
+ (sorry)
 
 /-
 TODO: Fermat's Little Theorem.
