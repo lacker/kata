@@ -1799,7 +1799,9 @@ theorem pp_comm_mod (m n: ℕ) (f: ℕ → ℕ) :
 mod (prange_prod n (modf f m)) m = mod (prange_prod n f) m :=
 nat.rec_on n
  (pp_comm_mod_zero m f)
- (sorry)
+ (assume x,
+  assume h1: mod (prange_prod x (modf f m)) m = mod (prange_prod x f) m,
+  show mod (prange_prod (x+1) (modf f m)) m = mod (prange_prod (x+1) f) m, from sorry)
 
 /-
 TODO: Fermat's Little Theorem.
