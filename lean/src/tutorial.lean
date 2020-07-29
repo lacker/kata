@@ -1801,6 +1801,7 @@ nat.rec_on n
  (pp_comm_mod_zero m f)
  (assume x,
   assume h1: mod (prange_prod x (modf f m)) m = mod (prange_prod x f) m,
+  have h2: prange_prod (x+1) (modf f m) = (modf f m (x+1)) * (prange_prod x (modf f m)), from rfl,
   show mod (prange_prod (x+1) (modf f m)) m = mod (prange_prod (x+1) f) m, from sorry)
 
 /-
