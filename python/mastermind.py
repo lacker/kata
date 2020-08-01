@@ -141,13 +141,16 @@ def play(player_class):
 def average(player_class, rounds):
 	total = 0
 	worst = 0
+	played = 0
 	for _ in range(rounds):
 		n = play(player_class)
 		total += n
+		played += 1
 		worst = max(worst, n)
-		
-	avg = total / rounds
-	print("average:", avg)
-	print("wordt")
+		print()
+		avg = total / played
+		print("average:", avg)
+		print("worst:", worst)
+		print()
 
-average(ComputerPlayer, 10)
+average(ComputerPlayer, 1000)
