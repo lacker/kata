@@ -1761,45 +1761,71 @@ theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p = prange p :=
 set.subset.antisymm (smm_eq_1 x p h1 h2) (smm_eq_2 x p h1 h2)
 
-def prange_prod: ℕ → (ℕ → ℕ) → ℕ
+def fprod: ℕ → (ℕ → ℕ) → ℕ
 | 0 f := 1
-| (x+1) f := (f (x+1)) * (prange_prod x f)
+| (x+1) f := (f (x+1)) * (fprod x f)
 
-lemma pp_base (f: ℕ → ℕ) : prange_prod 0 f = 1 := rfl
+lemma pp_base (f: ℕ → ℕ) : fprod 0 f = 1 := rfl
 
 def mulf: (ℕ → ℕ) → (ℕ → ℕ) → ℕ → ℕ
 | f g x := (f x) * (g x)
 
 lemma pp_comm_mult_zero (f g: ℕ → ℕ) :
-(prange_prod 0 f) * (prange_prod 0 g) = prange_prod 0 (mulf f g) :=
+(fprod 0 f) * (fprod 0 g) = fprod 0 (mulf f g) :=
 have h1: 1 * 1 = 1, from rfl,
 by rw [(pp_base f), (pp_base g), h1, (pp_base (mulf f g)).symm]
 
 theorem pp_comm_mult (n: ℕ) (f g: ℕ → ℕ) :
-(prange_prod n f) * (prange_prod n g) = prange_prod n (mulf f g) :=
+(fprod n f) * (fprod n g) = fprod n (mulf f g) :=
 nat.rec_on n
  (pp_comm_mult_zero f g)
  (assume y,
-  assume h1: (prange_prod y f) * (prange_prod y g) = prange_prod y (mulf f g),
-  have h2: prange_prod (y+1) (mulf f g) = (mulf f g (y+1)) * (prange_prod y (mulf f g)), from rfl,
+  assume h1: (fprod y f) * (fprod y g) = fprod y (mulf f g),
+  have h2: fprod (y+1) (mulf f g) = (mulf f g (y+1)) * (fprod y (mulf f g)), from rfl,
   have h3: mulf f g (y+1) = (f (y+1)) * (g (y+1)), from rfl,
-  have h4: prange_prod (y+1) (mulf f g) = ((f (y+1)) * (prange_prod y f)) * ((g (y+1)) * (prange_prod y g)),
+  have h4: fprod (y+1) (mulf f g) = ((f (y+1)) * (fprod y f)) * ((g (y+1)) * (fprod y g)),
       by rw [h2, h1.symm, h3, mul_mul_mul_comm],
-  show (prange_prod (y+1) f) * (prange_prod (y+1) g) = prange_prod (y+1) (mulf f g), from h4.symm)
+  show (fprod (y+1) f) * (fprod (y+1) g) = fprod (y+1) (mulf f g), from h4.symm)
 
 def modf: (ℕ → ℕ) → ℕ → ℕ → ℕ
 | f m x := mod (f x) m
 
+lemma pp_comm_mod_zero (m: ℕ) (f: ℕ → ℕ) : mod (fprod 0 (modf f m)) m = mod (fprod 0 f) m :=
+have h1: fprod 0 (modf f m) = 1, from rfl,
+have h2: fprod 0 f = 1, from rfl,
+by rw [h1, h2.symm]
+
 theorem pp_comm_mod (m n: ℕ) (f: ℕ → ℕ) :
-mod (prange_prod n (modf f m)) m = mod (prange_prod n f) m :=
-sorry
+mod (fprod n (modf f m)) m = mod (fprod n f) m :=
+nat.rec_on n
+ (pp_comm_mod_zero m f)
+ (assume x,
+  assume h1: mod (fprod x (modf f m)) m = mod (fprod x f) m,
+  have h2: fprod (x+1) (modf f m) = (modf f m (x+1)) * (fprod x (modf f m)), from rfl,
+  have h3: mod (fprod (x+1) (modf f m)) m = mod ((modf f m (x+1)) * mod (fprod x (modf f m)) m) m,
+      by rw [h2, mod_rmult],
+  have h4: modf f m (x+1) = mod (f (x+1)) m, from rfl,
+  have h5: mod (fprod (x+1) (modf f m)) m = mod ((f (x+1)) * (fprod x f)) m,
+      by rw [h3, h1, mod_rmult, h4, mod_lmult],
+  have h6: (f (x+1)) * (fprod x f) = fprod (x+1) f, from rfl,
+  show mod (fprod (x+1) (modf f m)) m = mod (fprod (x+1) f) m, from eq.subst h6 h5)
+
+def constf: ℕ → ℕ → ℕ
+| a b := a
+
+def exp: ℕ → ℕ → ℕ
+| a b := fprod b (constf a)
+
+theorem flt (a p: ℕ) (h1: is_prime p) (h2: a ∈ prange p) : mod (exp a (p - 1)) p = a := sorry
 
 /-
+
 TODO: Fermat's Little Theorem.
 
-Prove that prange_prod commutes with mod.
+It seems like we need something like, if two sets are bijective, their product is the same.
 
-Then we need to calculate (p-1)! two ways, before and after multiplying by a.
+We need to calculate (p-1)! two ways, before and after multiplying by a.
+They're equal mod p, because it's the same set of numbers.
 
 I should also check out the community. If there's a future, it's in there somewhere.
 -/
