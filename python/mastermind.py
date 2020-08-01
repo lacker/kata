@@ -148,5 +148,6 @@ def average(player_class, rounds):
 		
 	avg = total / rounds
 	print("average:", avg)
+	print("wordt")
 
 average(ComputerPlayer, 10)
