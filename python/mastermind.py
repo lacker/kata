@@ -148,6 +148,8 @@ def average(player_class, rounds):
 		total += n
 		played += 1
 		worst = max(worst, n)
+		if worst == n:
+			worst_target = target
 		print()
 		avg = total / played
 		print("average:", avg)
