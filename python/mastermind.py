@@ -134,7 +134,7 @@ def play(player_class):
 		guesses += 1
 		if check(target, guess):
 			print("you win with", guesses, "guesses")
-			return guesses
+			return guesses, target
 		ra, ri, rp = info(target, guess)
 		player.inform(guess, ra, ri, rp)
 
