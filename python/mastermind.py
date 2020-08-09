@@ -144,7 +144,7 @@ def average(player_class, rounds):
 	worst_target = None
 	played = 0
 	for _ in range(rounds):
-		n = play(player_class)
+		n, target = play(player_class)
 		total += n
 		played += 1
 		worst = max(worst, n)
