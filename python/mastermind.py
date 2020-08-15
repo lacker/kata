@@ -121,19 +121,19 @@ class ComputerPlayer():
 		print("guessing:", answer)
 		return answer																																																										
 def play(player_class):
-	print("let's play a game")
+	# print("let's play a game")
 	player = player_class()
 	guesses = 0
 	target = generate()
-	print("target:", target)
+	# print("target:", target)
 	while True:
 		guess = player.guess()
-		print("guess:", guess)
+		# print("guess:", guess)
 		if guess is None:
 			raise Exception("guess is None")
 		guesses += 1
 		if check(target, guess):
-			print("you win with", guesses, "guesses")
+			# print("you win with", guesses, "guesses")
 			return guesses, target
 		ra, ri, rp = info(target, guess)
 		player.inform(guess, ra, ri, rp)
@@ -150,7 +150,7 @@ def average(player_class, rounds):
 		worst = max(worst, n)
 		if worst == n:
 			worst_target = target
-		print()
+		
 		avg = total / played
 		print("average:", avg)
 		print("worst:", worst)
