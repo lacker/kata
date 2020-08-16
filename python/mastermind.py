@@ -152,8 +152,9 @@ def average(player_class, rounds):
 			worst_target = target
 		
 		avg = total / played
-		print("average:", avg)
-		print("worst:", worst)
-		print()
+		if played % 100 == 0:
+			print("average:", avg)
+			print("worst:", worst)
+			print()
 
 average(ComputerPlayer, 1000)
