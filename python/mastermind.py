@@ -70,10 +70,10 @@ def info(list1, list2):
 def check(list1, list2):
 	ra, ri, rp = info(list1, list2)
 	if ra:
-		print("correct!")
+		# print("correct!")
 		return True
-	print(rp, "in the right place")
-	print(ri - rp, "in the wrong place")
+	# print(rp, "in the right place")
+	# print(ri - rp, "in the wrong place")
 	return False		
 
 def read():
@@ -118,7 +118,7 @@ class ComputerPlayer():
 				
 	def guess(self):
 		answer = self.possibilities[0]
-		print("guessing:", answer)
+		# print("guessing:", answer)
 		return answer																																																										
 def play(player_class):
 	# print("let's play a game")
@@ -152,7 +152,8 @@ def average(player_class, rounds):
 			worst_target = target
 		
 		avg = total / played
-		if played % 100 == 0:
+		if played % 10 == 0:
+			print(f"{played} runs")
 			print("average:", avg)
 			print("worst:", worst)
 			print()
