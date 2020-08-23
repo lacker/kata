@@ -1761,6 +1761,7 @@ theorem smm_eq (x p: ℕ) (h1: is_prime p) (h2: x ∈ prange p) :
 set_mod_mult (prange p) x p = prange p :=
 set.subset.antisymm (smm_eq_1 x p h1 h2) (smm_eq_2 x p h1 h2)
 
+/- (fprod n f) is the product of f(x) from 1 to n -/
 def fprod: ℕ → (ℕ → ℕ) → ℕ
 | 0 f := 1
 | (x+1) f := (f (x+1)) * (fprod x f)
@@ -1816,13 +1817,18 @@ def constf: ℕ → ℕ → ℕ
 def exp: ℕ → ℕ → ℕ
 | a b := fprod b (constf a)
 
-theorem flt (a p: ℕ) (h1: is_prime p) (h2: a ∈ prange p) : mod (exp a (p - 1)) p = a := sorry
+def prangemap: ℕ → (ℕ → ℕ) → (set ℕ)
+| n f := {b: ℕ | ∃ a: ℕ, a ∈ prange n ∧ f a = b}
+
+theorem flt (a p: ℕ) (h1: is_prime p) (h2: a ∈ prange p) : mod (exp a (p-1)) p = 1 := sorry
 
 /-
 
 TODO: Fermat's Little Theorem.
 
-It seems like we need something like, if two sets are bijective, their product is the same.
+We need to prove that (p-1)! is equal, no matter what order we multiply it in.
+Maybe we can do this with prangemaps - can we prove that if two functions have equal prangemaps,
+their fprods are the same?
 
 We need to calculate (p-1)! two ways, before and after multiplying by a.
 They're equal mod p, because it's the same set of numbers.
