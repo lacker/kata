@@ -43,6 +43,7 @@ def evaluate(expr, local={}):
 	args = map(evaluate, args)
 	return op(*args)
 	
+@expose
 def add(*args):
 	answer = 0
 	for arg in args:
@@ -59,4 +60,5 @@ def do(exprs):
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
 assert evaluate([add, 1, 2, 3]) == 6
+assert evaluate(["add", 1, 2, 3]) == 6
 print("ok")
