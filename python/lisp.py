@@ -43,6 +43,11 @@ def evaluate(expr, local={}):
 	args = map(evaluate, args)
 	return op(*args)
 	
+def let(varname, value, expr):
+	local = {}
+	local[varname] = value
+	return evaluate(expr, local=local)
+	
 @expose
 def add(*args):
 	answer = 0
