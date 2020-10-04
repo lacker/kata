@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b7a5804ed7aae0a7afaff660a5d1c302c595361cd076fe025242446e29612a60
+-- hash: 7b4383e147014a136b0227a20898831be937fbaf9107c8076ea3be6a14742216
 
 name:           hs
 version:        0.1.0.0
@@ -15,7 +15,6 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2020 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
