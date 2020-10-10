@@ -11,4 +11,4 @@ helper n
     | otherwise = show n
 
 someFunc :: IO ()
-someFunc = putStrLn "Hello Haskell World!"
+someFunc = map (putStrLn helper) [1..100]
