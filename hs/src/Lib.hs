@@ -1,5 +1,5 @@
 module Lib
-    ( someFunc
+    ( foo
     ) where
 
 helper :: Int -> String
@@ -10,5 +10,7 @@ helper n
     | n `mod` 3 == 0 = "Fizz"
     | otherwise = show n
 
-someFunc :: IO ()
-someFunc = map (putStrLn helper) [1..100]
+
+
+foo :: IO ()
+foo = sequence_ (map (putStrLn . helper) [1..20])
