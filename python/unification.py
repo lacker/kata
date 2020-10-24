@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
+class Constant:
+	def __init__(self, token):
+		self.token = token
 
-class Expression:
-    def __init__(self, variable_id=None):
-        self.variable_id = variable_id
+class Variable:
+	sef __init__(self, variable_id):
+		self.variable_id = variable_id
