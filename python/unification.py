@@ -7,3 +7,9 @@ class Constant:
 class Variable:
 	sef __init__(self, variable_id):
 		self.variable_id = variable_id
+		
+V = Variable
+C = Constant
+
+def unify(lhs, rhs):
+	pass
