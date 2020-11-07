@@ -7,20 +7,19 @@ class Expression:
 		self.left = left
 		self.right = right
 		self.variable_id = variable_id
+		
+		self.h = 0
+		for x in [token, left, right, variable_id]:
+			self.h = 2 * self.h + hash(x)
 
-class Constant:
-	def __init__(self, token):
-		self.token =
-
-class Variable:
-	def __init__(self, variable_id):
-		self.variable_id = variable_id
-	
-class Tree:
-	def __init__(self, left, right):
-		self.left = left
-		self.right = right
-			
+	def unify(self, other):
+		"""
+		Returns a map of variable id to expression, or raises a ValueError if we can't unify.
+		"""
+		pass
+		
+	def __hash__(self):
+		return self.h
 				
 V = Variable
 C = Constant
