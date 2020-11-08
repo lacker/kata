@@ -16,7 +16,8 @@ class Expression:
 		"""
 		Returns a map of variable id to expression, or raises a ValueError if we can't unify.
 		"""
-		pass
+		if self.h == other.h:
+			return {}
 		
 	def __hash__(self):
 		return self.h
