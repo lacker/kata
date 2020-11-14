@@ -26,4 +26,7 @@ V = Variable
 C = Constant
 
 def unify(lhs, rhs):
-	pass
+	if lhs.h == rhs.h:
+		return {}
+	
+	raise NotImplementedError
