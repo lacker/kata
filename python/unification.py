@@ -21,6 +21,11 @@ class Expression:
 		
 	def __hash__(self):
 		return self.h
+		
+	def contains(self, h):
+		if self.h == h:
+			return True
+		raise NotImplementedError
 				
 V = Variable
 C = Constant
