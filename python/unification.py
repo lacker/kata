@@ -25,6 +25,9 @@ class Expression:
 	def contains(self, h):
 		if self.h == h:
 			return True
+		for sub in [self.left, self.right]:
+			if sub and sub.contains(h):
+				return True
 		raise NotImplementedError
 				
 V = Variable
