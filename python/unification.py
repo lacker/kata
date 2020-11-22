@@ -28,7 +28,7 @@ class Expression:
 		for sub in [self.left, self.right]:
 			if sub and sub.contains(h):
 				return True
-		raise NotImplementedError
+		return False
 				
 V = Variable
 C = Constant
