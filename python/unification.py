@@ -12,6 +12,9 @@ class Expression:
 		for x in [token, left, right, variable_id]:
 			self.h = 2 * self.h + hash(x)
 
+	def is_variable(self):
+		return self.variable_id is not None
+
 	def unify(self, other):
 		"""
 		Returns a map of variable id to expression, or raises a ValueError if we can't unify.
@@ -36,5 +39,7 @@ C = Constant
 def unify(lhs, rhs):
 	if lhs.h == rhs.h:
 		return {}
+		
+	
 	
 	raise NotImplementedError
