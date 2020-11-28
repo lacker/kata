@@ -14,13 +14,6 @@ class Expression:
 
 	def is_variable(self):
 		return self.variable_id is not None
-
-	def unify(self, other):
-		"""
-		Returns a map of variable id to expression, or raises a ValueError if we can't unify.
-		"""
-		if self.h == other.h:
-			return {}
 		
 	def __hash__(self):
 		return self.h
@@ -39,6 +32,9 @@ C = Constant
 def unify(lhs, rhs):
 	if lhs.h == rhs.h:
 		return {}
+	if lhs.is_variable():
+		if rhs.contains(lhs.h):
+			raise ValueError("cannot unify with subtree")
 		
 	
 	
