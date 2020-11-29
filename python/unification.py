@@ -35,6 +35,9 @@ def unify(lhs, rhs):
 	if lhs.is_variable():
 		if rhs.contains(lhs.h):
 			raise ValueError("cannot unify with subtree")
+		answer = {}
+		answer[lhs.variable_id] = rhs
+		return answer
 		
 	
 	
