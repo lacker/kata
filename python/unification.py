@@ -26,6 +26,9 @@ class Expression:
 				return True
 		return False
 				
+	def replace(self, v, expr):
+		pass 
+				
 V = Variable
 C = Constant
 
