@@ -27,7 +27,9 @@ class Expression:
 		return False
 				
 	def replace(self, v, expr):
-		pass 
+		if self.variable_id == v:
+			return expr
+		# xxx
 				
 V = Variable
 C = Constant
