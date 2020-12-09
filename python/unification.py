@@ -29,6 +29,10 @@ class Expression:
 	def replace(self, v, expr):
 		if self.variable_id == v:
 			return expr
+		if self.left is None:
+			new_left = None
+		else:
+			new_left = Xxx
 		# xxx
 				
 V = Variable
