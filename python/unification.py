@@ -32,7 +32,7 @@ class Expression:
 		if self.left is None:
 			new_left = None
 		else:
-			new_left = Xxx
+			new_left = self.left.replace(v, expr)
 		# xxx
 				
 V = Variable
