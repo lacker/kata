@@ -33,7 +33,8 @@ class Expression:
 			new_left = None
 		else:
 			new_left = self.left.replace(v, expr)
-		# xxx
+		if self.right is None:
+			new_right = None
 				
 V = Variable
 C = Constant
