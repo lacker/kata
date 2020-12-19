@@ -35,6 +35,8 @@ class Expression:
 			new_left = self.left.replace(v, expr)
 		if self.right is None:
 			new_right = None
+		else:
+			new_right = self.right.replace(v, expr)
 				
 V = Variable
 C = Constant
