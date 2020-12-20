@@ -37,6 +37,7 @@ class Expression:
 			new_right = None
 		else:
 			new_right = self.right.replace(v, expr)
+		return Expression(left=new_left, right=new_right, variable_id=self.variable_id, token=self.token)
 				
 V = Variable
 C = Constant
