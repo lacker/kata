@@ -15,6 +15,11 @@ class Expression:
 	def is_variable(self):
 		return self.variable_id is not None
 		
+	def any(self, f):
+		if f(self):
+			return True
+		xxx
+		
 	def __hash__(self):
 		return self.h
 		
