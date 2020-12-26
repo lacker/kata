@@ -24,12 +24,7 @@ class Expression:
 		return self.h
 		
 	def contains(self, h):
-		if self.h == h:
-			return True
-		for sub in [self.left, self.right]:
-			if sub and sub.contains(h):
-				return True
-		return False
+		return self.any(lambda x: x.h == self.h)
 				
 	def replace(self, v, expr):
 		if self.variable_id == v:
