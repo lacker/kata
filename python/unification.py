@@ -24,7 +24,10 @@ class Expression:
 		return self.h
 		
 	def contains(self, h):
-		return self.any(lambda x: x.h == self.h)
+		return self.any(lambda x: x.h == h)
+				
+	def has_var(self, v):
+		return self.any(lambda x: x.variable_id == v)	
 				
 	def replace(self, v, expr):
 		if self.variable_id == v:
