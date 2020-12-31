@@ -49,12 +49,14 @@ def unify(lhs, rhs):
 	if lhs.h == rhs.h:
 		return {}
 	if lhs.is_variable():
-		if rhs.contains(lhs.h):
+		if rhs.has_var(lhs.variable_id):
 			raise ValueError("cannot unify with subtree")
 		answer = {}
 		answer[lhs.variable_id] = rhs
 		return answer
-		
+	if rhs.is_variable():
+		if lhs.contains(rhs.h):
+			pass # xxx
 	
 	
 	raise NotImplementedError
