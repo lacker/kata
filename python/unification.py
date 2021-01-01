@@ -55,8 +55,8 @@ def unify(lhs, rhs):
 		answer[lhs.variable_id] = rhs
 		return answer
 	if rhs.is_variable():
-		if lhs.contains(rhs.h):
-			pass # xxx
+		if lhs.has_var(rhs.variable_id):
+			raise ValueError("cannot unify with subtree")
 	
 	
 	raise NotImplementedError
