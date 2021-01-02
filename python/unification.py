@@ -41,6 +41,13 @@ class Expression:
 		else:
 			new_right = self.right.replace(v, expr)
 		return Expression(left=new_left, right=new_right, variable_id=self.variable_id, token=self.token)
+		
+	def sub(self, varmap):
+		answer = self
+		for v, expr in varmap:
+			answer = answer.replace(v, expr)
+		return answer
+			
 				
 V = Variable
 C = Constant
