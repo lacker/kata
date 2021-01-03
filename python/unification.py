@@ -53,6 +53,13 @@ V = Variable
 C = Constant
 
 def unify(lhs, rhs):
+	if lhs is None:
+		if rhs is None:
+			return {}
+		raise ValueError("cannot unify None")
+	if rhs is None:
+		raise ValueError("cannot unify None")
+		
 	if lhs.h == rhs.h:
 		return {}
 	if lhs.is_variable():
