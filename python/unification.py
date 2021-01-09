@@ -71,6 +71,8 @@ def unify(lhs, rhs):
 	if rhs.is_variable():
 		if lhs.has_var(rhs.variable_id):
 			raise ValueError("cannot unify with subtree")
+			
+	lsubs = lhs.left.unify(rhs.left)
 	
 	
 	raise NotImplementedError
