@@ -73,6 +73,7 @@ def unify(lhs, rhs):
 			raise ValueError("cannot unify with subtree")
 			
 	lsubs = lhs.left.unify(rhs.left)
+	new_lhs = lhs.subs(lsubs)
 	
 	
 	raise NotImplementedError
