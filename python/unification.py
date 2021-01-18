@@ -77,5 +77,6 @@ def unify(lhs, rhs):
 	new_rhs = rhs.subs(lsubs)
 	
 	rsubs = new_lhs.right.unify(new_rhs.right)
+	final_lhs = new_lhs.subs(rsubs)
 	
 	raise NotImplementedError
