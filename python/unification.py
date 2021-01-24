@@ -60,6 +60,9 @@ def unify(lhs, rhs):
 	if rhs is None:
 		raise ValueError("cannot unify None")
 		
+	if lhs.token != rhs.token:
+		raise ValueError("token mismatch")
+		
 	if lhs.h == rhs.h:
 		return {}
 	if lhs.is_variable():
