@@ -83,4 +83,4 @@ def unify(lhs, rhs):
 	final_lhs = new_lhs.subs(rsubs)
 	final_rhs = new_rhs.subs(rsubs)
 	
-	raise NotImplementedError
+	return Expression(token=lhs.token, right=final_rhs, left=final_lhs)
