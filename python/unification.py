@@ -84,3 +84,6 @@ def unify(lhs, rhs):
 	final_rhs = new_rhs.subs(rsubs)
 	
 	return Expression(token=lhs.token, right=final_rhs, left=final_lhs)
+	
+def add(left, right):
+	return Expression(token="+", left=left, right=right)
