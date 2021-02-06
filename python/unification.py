@@ -47,6 +47,10 @@ class Expression:
 		for v, expr in varmap:
 			answer = answer.replace(v, expr)
 		return answer
+		
+	def __eq__(self, other):
+		if self.token != other.token:
+			return False
 			
 				
 V = Variable
