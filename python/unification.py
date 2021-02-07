@@ -51,6 +51,8 @@ class Expression:
 	def __eq__(self, other):
 		if self.token != other.token:
 			return False
+		if self.left != other.left:
+			return False
 			
 				
 V = Variable
