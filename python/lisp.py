@@ -43,10 +43,10 @@ def evaluate(expr, local={}):
 	args = map(evaluate, args)
 	return op(*args)
 	
-def let(varname, value, expr):
-	local = {}
-	local[varname] = value
-	return evaluate(expr, local=local)
+def let(varname, value, expr, local={}):
+	new_local = dict(local)
+	new_local[varname] = value
+	return evaluate(expr, local=new_local)
 	
 @expose
 def add(*args):
