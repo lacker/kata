@@ -55,12 +55,14 @@ def add(*args):
 		answer += arg
 	return answer
 	
-def func(vars, expr):
+def lamb(vars, expr):
 	raise Exception("TODO")
 	
-def do(exprs):
+def seq(exprs):
+	res = None
 	for expr in exprs:
-		evaluate(expr)
+		res = evaluate(expr)
+	return res
 	
 assert evaluate(1) == 1
 assert evaluate(1.25) == 1.25
