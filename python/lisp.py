@@ -55,7 +55,7 @@ def add(*args):
 		answer += arg
 	return answer
 	
-def lamb(vars, expr):
+def monolamb(expr):
 	raise Exception("TODO")
 	
 def seq(exprs):
