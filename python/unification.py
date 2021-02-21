@@ -95,6 +95,7 @@ def add(left, right):
 	return Expression(token="+", left=left, right=right)
 	
 def test():
-	left = add(C(1), C(2))
+	left = add(V(1), C(2))
+	right = add(C(1), V(2))
 	
 test()
