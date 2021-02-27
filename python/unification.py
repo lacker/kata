@@ -97,5 +97,6 @@ def add(left, right):
 def test():
 	left = add(V(1), C(2))
 	right = add(C(1), V(2))
+	u = unify(left, right)
 	
 test()
