@@ -55,7 +55,9 @@ class Expression:
 			return False
 			
 				
-V = Variable
+def V(id):
+	return Expression(variable_id=id)
+	
 C = Constant
 
 def unify(lhs, rhs):
