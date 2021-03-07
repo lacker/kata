@@ -58,7 +58,8 @@ class Expression:
 def V(id):
 	return Expression(variable_id=id)
 	
-C = Constant
+def C(id):
+	return Expression(token=id)
 
 def unify(lhs, rhs):
 	if lhs is None:
