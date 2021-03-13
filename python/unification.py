@@ -84,7 +84,7 @@ def unify(lhs, rhs):
 		if lhs.has_var(rhs.variable_id):
 			raise ValueError("cannot unify with subtree")
 			
-	lsubs = lhs.left.unify(rhs.left)
+	lsubs = unify(lhs.left, rhs.left)
 	new_lhs = lhs.subs(lsubs)
 	new_rhs = rhs.subs(lsubs)
 	
