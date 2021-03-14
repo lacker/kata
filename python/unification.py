@@ -70,7 +70,7 @@ def unify(lhs, rhs):
 		raise ValueError("cannot unify None")
 		
 	if lhs.token != rhs.token:
-		raise ValueError("token mismatch")
+		raise ValueError(f"token mismatch: {lhs.token} != {rhs.token}")
 		
 	if lhs.h == rhs.h:
 		return {}
