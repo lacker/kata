@@ -69,9 +69,6 @@ def unify(lhs, rhs):
 	if rhs is None:
 		raise ValueError("cannot unify None")
 		
-	if lhs.token != rhs.token:
-		raise ValueError(f"token mismatch: {lhs.token} != {rhs.token}")
-		
 	if lhs.h == rhs.h:
 		return {}
 	if lhs.is_variable():
@@ -83,6 +80,9 @@ def unify(lhs, rhs):
 	if rhs.is_variable():
 		if lhs.has_var(rhs.variable_id):
 			raise ValueError("cannot unify with subtree")
+			
+	if lhs.token != rhs.token:
+		raise ValueError(f"token mismatch: {lhs.token} != {rhs.token}")
 			
 	lsubs = unify(lhs.left, rhs.left)
 	new_lhs = lhs.subs(lsubs)
