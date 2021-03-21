@@ -18,7 +18,9 @@ class Expression:
 	def any(self, f):
 		if f(self):
 			return True
-		return f(self.left) or f(self.right)
+		if self.left and f(self.left):
+			return True
+		return self.right and f(self.right)
 		
 	def __hash__(self):
 		return self.h
