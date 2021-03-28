@@ -64,24 +64,30 @@ def C(id):
 	return Expression(token=id)
 
 def unify(lhs, rhs):
+	"""
+	Returns a tuple of the varmap and the unified expression. 
+	"""
 	if lhs is None:
 		if rhs is None:
-			return {}
+			return {}, None
 		raise ValueError("cannot unify None")
 	if rhs is None:
 		raise ValueError("cannot unify None")
 		
 	if lhs.h == rhs.h:
-		return {}
+		return {}, lhs
 	if lhs.is_variable():
 		if rhs.has_var(lhs.variable_id):
 			raise ValueError("cannot unify with subtree")
 		answer = {}
 		answer[lhs.variable_id] = rhs
-		return answer
+		return answer, rhs
 	if rhs.is_variable():
 		if lhs.has_var(rhs.variable_id):
 			raise ValueError("cannot unify with subtree")
+		answer = {}
+		answer[rhs.variable_id] = lhs
+		return answer, lhs
 			
 	if lhs.token != rhs.token:
 		raise ValueError(f"token mismatch: {lhs.token} != {rhs.token}")
@@ -93,6 +99,8 @@ def unify(lhs, rhs):
 	rsubs = new_lhs.right.unify(new_rhs.right)
 	final_lhs = new_lhs.subs(rsubs)
 	final_rhs = new_rhs.subs(rsubs)
+	
+	# todo: merge lsubs, rsubs
 	
 	return Expression(token=lhs.token, right=final_rhs, left=final_lhs)
 	
