@@ -46,7 +46,7 @@ class Expression:
 		
 	def sub(self, varmap):
 		answer = self
-		for v, expr in varmap:
+		for v, expr in varmap.items():
 			answer = answer.replace(v, expr)
 		return answer
 		
