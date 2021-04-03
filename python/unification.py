@@ -92,17 +92,18 @@ def unify(lhs, rhs):
 	if lhs.token != rhs.token:
 		raise ValueError(f"token mismatch: {lhs.token} != {rhs.token}")
 			
-	lsubs = unify(lhs.left, rhs.left)
-	new_lhs = lhs.sub(lsubs)
+	lsubs, new_lhs = unify(lhs.left, rhs.left)
 	new_rhs = rhs.sub(lsubs)
 	
-	rsubs = new_lhs.right.unify(new_rhs.right)
+	rsubs, final_rhs = new_lhs.right.unify(new_rhs.right)
 	final_lhs = new_lhs.subs(rsubs)
-	final_rhs = new_rhs.subs(rsubs)
 	
-	# todo: merge lsubs, rsubs
+	subs = dict(lsubs)
+	for k, v in rsubs:
+		# todo: fail on mismatch
+		subs[k] = v
 	
-	return Expression(token=lhs.token, right=final_rhs, left=final_lhs)
+	return Expression(token=lhs.token, right=final_rhs, left=final_lhs), subs
 	
 def add(left, right):
 	return Expression(token="+", left=left, right=right)
