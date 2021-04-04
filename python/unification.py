@@ -95,7 +95,7 @@ def unify(lhs, rhs):
 	lsubs, new_lhs = unify(lhs.left, rhs.left)
 	new_rhs = rhs.sub(lsubs)
 	
-	rsubs, final_rhs = new_lhs.right.unify(new_rhs.right)
+	rsubs, final_rhs = unify(new_lhs.right, new_rhs.right)
 	final_lhs = new_lhs.subs(rsubs)
 	
 	subs = dict(lsubs)
