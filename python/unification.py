@@ -12,6 +12,9 @@ class Expression:
 		for x in [token, left, right, variable_id]:
 			self.h = 2 * self.h + hash(x)
 
+  def __str__(self):
+  	return f"({self.left} {self.token} {self.right})"
+
 	def is_variable(self):
 		return self.variable_id is not None
 		
