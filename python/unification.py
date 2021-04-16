@@ -13,7 +13,8 @@ class Expression:
 			self.h = 2 * self.h + hash(x)
 
 	def __str__(self):
-		#todo vars
+		if self.variable_id is not None:
+			return f"V{self.variable_id}"
 		if self.left is None and self.right is None:
 			return str(self.token)
 		return f"({self.left} {self.token} {self.right})"
