@@ -100,8 +100,9 @@ def unify(lhs, rhs):
 	if lhs.token != rhs.token:
 		raise ValueError(f"token mismatch: {lhs.token} != {rhs.token}")
 			
-	lsubs, new_lhs = unify(lhs.left, rhs.left)
+	lsubs, _ = unify(lhs.left, rhs.left)
 	print("lsubs:", lsubs)
+	new_lhs = lhs.sub(lsubs)
 	print("new lhs:", new_lhs)
 	new_rhs = rhs.sub(lsubs)
 	print("new rhs:", new_rhs)
