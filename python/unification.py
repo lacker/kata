@@ -102,13 +102,13 @@ def unify(lhs, rhs):
 			
 	lsubs, _ = unify(lhs.left, rhs.left)
 	print("lsubs:", lsubs)
-	new_lhs = lhs.sub(lsubs)
+	new_lhs = lhs and lhs.sub(lsubs)
 	print("new lhs:", new_lhs)
-	new_rhs = rhs.sub(lsubs)
+	new_rhs = rhs and rhs.sub(lsubs)
 	print("new rhs:", new_rhs)
 	
 	rsubs, final_rhs = unify(new_lhs.right, new_rhs.right)
-	final_lhs = new_lhs.subs(rsubs)
+	final_lhs = new_lhs.sub(rsubs)
 	
 	subs = dict(lsubs)
 	for k, v in rsubs:
