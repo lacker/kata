@@ -108,10 +108,11 @@ def unify(lhs, rhs):
 	print("new rhs:", new_rhs)
 	
 	rsubs, final_rhs = unify(new_lhs.right, new_rhs.right)
+	print("rsubs:", rsubs)
 	final_lhs = new_lhs.sub(rsubs)
 	
 	subs = dict(lsubs)
-	for k, v in rsubs:
+	for k, v in rsubs.items():
 		# todo: fail on mismatch
 		subs[k] = v
 	
