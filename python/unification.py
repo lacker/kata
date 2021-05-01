@@ -116,7 +116,7 @@ def unify(lhs, rhs):
 		# todo: fail on mismatch
 		subs[k] = v
 	
-	return Expression(token=lhs.token, right=final_rhs, left=final_lhs), subs
+	return subs, Expression(token=lhs.token, right=final_rhs, left=final_lhs)
 	
 def add(left, right):
 	return Expression(token="+", left=left, right=right)
@@ -124,7 +124,7 @@ def add(left, right):
 def test():
 	left = add(V(1), C(2))
 	right = add(C(1), V(2))
-	u = unify(left, right)
-	print(u)
+	varmap, expr = unify(left, right)
+	print(expr)
 	
 test()
