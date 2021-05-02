@@ -107,16 +107,15 @@ def unify(lhs, rhs):
 	new_rhs = rhs and rhs.sub(lsubs)
 	print("new rhs:", new_rhs)
 	
-	rsubs, final_rhs = unify(new_lhs.right, new_rhs.right)
-	print("rsubs:", rsubs)
-	final_lhs = new_lhs.sub(rsubs)
+	rsubs, final_right = unify(new_lhs.right, new_rhs.right)
+	final_left = new_lhs.left.sub(rsubs)
 	
 	subs = dict(lsubs)
 	for k, v in rsubs.items():
 		# todo: fail on mismatch
 		subs[k] = v
 	
-	return subs, Expression(token=lhs.token, right=final_rhs, left=final_lhs)
+	return subs, Expression(token=lhs.token, right=final_right, left=final_lhs)
 	
 def add(left, right):
 	return Expression(token="+", left=left, right=right)
