@@ -124,6 +124,6 @@ def test():
 	left = add(V(1), C(2))
 	right = add(C(1), V(2))
 	varmap, expr = unify(left, right)
-	print(expr)
+	assert str(expr) == "(1 + 2)"
 	
 test()
