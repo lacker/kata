@@ -120,10 +120,14 @@ def unify(lhs, rhs):
 def add(left, right):
 	return Expression(token="+", left=left, right=right)
 	
-def test():
+def test1():
 	left = add(V(1), C(2))
 	right = add(C(1), V(2))
 	varmap, expr = unify(left, right)
 	assert str(expr) == "(1 + 2)"
 	
-test()
+def test2():
+	left = add(V(1), add(V(1), C(1)))
+	
+test1()
+test2()
