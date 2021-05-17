@@ -129,6 +129,7 @@ def test1():
 def test2():
 	left = add(V(1), add(V(1), C(1)))
 	right = add(add(C(2), V(2)), add(V(3), V(2)))
+	varmap, expr = unify(left, right)
 	
 test1()
 test2()
