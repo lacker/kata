@@ -120,6 +120,9 @@ def unify(lhs, rhs):
 def add(left, right):
 	return Expression(token="+", left=left, right=right)
 	
+def mul(left, right):
+	return Expression(token="*", left=left, right=right)
+	
 def test1():
 	left = add(V(1), C(2))
 	right = add(C(1), V(2))
