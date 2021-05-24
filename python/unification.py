@@ -135,5 +135,8 @@ def test2():
 	varmap, expr = unify(left, right)
 	assert str(expr) == "((2 + 1) + ((2 + 1) + 1))"
 	
+def test3():
+	pass	
+	
 test1()
 test2()
