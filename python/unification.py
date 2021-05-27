@@ -136,7 +136,8 @@ def test2():
 	assert str(expr) == "((2 + 1) + ((2 + 1) + 1))"
 	
 def test3():
-	pass	
+	left = add(V(1), V(2))
+	#right = add(C
 	
 test1()
 test2()
