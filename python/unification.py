@@ -137,7 +137,7 @@ def test2():
 	
 def test3():
 	left = add(V(1), V(2))
-	#right = add(C
+	right = add(C(1), C(2))
 	
 test1()
 test2()
