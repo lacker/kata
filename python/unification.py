@@ -140,5 +140,6 @@ def test3():
 	right = add(C(1), C(2))
 	unify(left, right)
 	
-test1()
-test2()
+#test1()
+#test2()
+test3()
