@@ -136,7 +136,7 @@ def test2():
 	assert str(expr) == "((2 + 1) + ((2 + 1) + 1))"
 	
 def test3():
-	left = add(V(1), V(2))
+	left = add(V(1), V(1))
 	right = add(C(1), C(2))
 	unify(left, right)
 	
