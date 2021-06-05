@@ -138,7 +138,12 @@ def test2():
 def test3():
 	left = add(V(1), V(1))
 	right = add(C(1), C(2))
-	unify(left, right)
+	try:
+		unify(left, right)
+		raise RuntimeError("expected fail")
+	except ValueError:
+		pass
+		
 	
 #test1()
 #test2()
