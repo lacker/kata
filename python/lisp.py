@@ -55,6 +55,10 @@ def add(*args):
 		answer += arg
 	return answer
 	
+@expose
+def mul(*args):
+	pass
+	
 def monolamb(expr):
 	raise Exception("TODO")
 	
