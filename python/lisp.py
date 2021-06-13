@@ -57,7 +57,7 @@ def add(*args):
 	
 @expose
 def mul(*args):
-	pass
+	answer = 1
 	
 def monolamb(expr):
 	raise Exception("TODO")
