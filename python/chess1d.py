@@ -11,5 +11,6 @@ def legal_moves(board):
 	"""
 	moves = []
 	for i, piece in enumerate(board):
-		pass
+		if piece == ".":
+			continue
 
