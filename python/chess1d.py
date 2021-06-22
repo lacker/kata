@@ -9,7 +9,8 @@ WHITE = "WHITE"
 BLACK = "BLACK"
 
 def color(char):
-	pass
+	if "A" <= char <= "Z":
+		return WHITE
 
 def legal_moves(board):
 	"""
