@@ -11,6 +11,8 @@ BLACK = "BLACK"
 def color(char):
 	if "A" <= char <= "Z":
 		return WHITE
+	if "a" <= char <= "z":
+		return BLACK
 
 def legal_moves(board):
 	"""
