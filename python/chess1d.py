@@ -13,7 +13,8 @@ def color(char):
 		return WHITE
 	if "a" <= char <= "z":
 		return BLACK
-	return None
+	if char == ".":
+		return None
 
 def legal_moves(board):
 	"""
