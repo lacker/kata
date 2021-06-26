@@ -16,6 +16,9 @@ def color(char):
 	if char == ".":
 		return None
 
+def empty(board, i):
+	pass
+
 def legal_moves(board):
 	"""
 	Moves are represented as a (i, j) tuple, where the piece is moving from board[i] to board[j].
@@ -24,4 +27,8 @@ def legal_moves(board):
 	for i, piece in enumerate(board):
 		if piece == ".":
 			continue
+		if piece == "P":
+			pass
+			
+		
 
