@@ -19,6 +19,8 @@ def color(char):
 def empty(board, i):
 	if i < 0:
 		return False
+	if i >= len(board):
+		return False
 
 def legal_moves(board):
 	"""
