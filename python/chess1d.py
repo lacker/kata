@@ -21,6 +21,7 @@ def empty(board, i):
 		return False
 	if i >= len(board):
 		return False
+	return True
 
 def legal_moves(board):
 	"""
