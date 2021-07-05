@@ -32,6 +32,8 @@ def legal_moves(board):
 		if piece == ".":
 			continue
 		if piece == "P":
+			if empty(i+1):
+				moves.append(i, i+1)
 			pass
 			
 		
