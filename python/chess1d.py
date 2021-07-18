@@ -37,7 +37,8 @@ def legal_moves(board):
 			if i == 5 and empty(6) and empty(7):
 				moves.append(5, 7)
 		elif piece == "p":
-			pass
+			if empty(i-1):
+				pass
 			
 		
 
