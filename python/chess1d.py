@@ -39,6 +39,9 @@ def legal_moves(board):
 		elif piece == "p":
 			if empty(i-1):
 				moves.append(i, i-1)
+			if i == 10 and empty(board, 9) and empty(board, 8):
+				pass
+				
 			
 		
 
