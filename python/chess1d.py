@@ -32,7 +32,7 @@ def legal_moves(board):
 		if piece == ".":
 			continue
 		if piece == "P":
-			if empty(i+1):
+			if empty(board, i+1):
 				moves.append(i, i+1)
 			if i == 5 and empty(6) and empty(7):
 				moves.append(5, 7)
