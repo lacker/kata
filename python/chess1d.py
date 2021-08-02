@@ -43,7 +43,8 @@ def legal_moves(board):
 				moves.append(10, 8)
 		elif piece == "N":
 			for delta in (-3, -2, 2, 3):
-				pass
+				if empty(i + delta):
+					pass
 				
 			
 		
