@@ -46,7 +46,8 @@ def legal_moves(board):
 				if empty(i + delta):
 					moves.append(i, i + delta)
 		elif piece in "Bb":
-			pass
+			for delta in (-2, 2):
+				pass
 				
 			
 		
