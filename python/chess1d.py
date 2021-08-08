@@ -48,6 +48,8 @@ def legal_moves(board):
 		elif piece in "Bb":
 			for step in (-2, 2):
 				delta = step
+				while empty(board, i + delta):
+					pass
 				
 			
 		
