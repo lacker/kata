@@ -49,7 +49,7 @@ def legal_moves(board):
 			for step in (-2, 2):
 				delta = step
 				while empty(board, i + delta):
-					pass
+					moves.append(i, i + delta)
 				
 			
 		
