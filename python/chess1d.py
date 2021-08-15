@@ -50,6 +50,7 @@ def legal_moves(board):
 				delta = step
 				while empty(board, i + delta):
 					moves.append(i, i + delta)
+					delta += step
 				
 			
 		
