@@ -51,6 +51,8 @@ def legal_moves(board):
 				while empty(board, i + delta):
 					moves.append(i, i + delta)
 					delta += step
+		elif piece in "Rr":
+			pass
 				
 			
 		
