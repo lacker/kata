@@ -53,7 +53,7 @@ def legal_moves(board):
 					delta += step
 		elif piece in "Rr":
 			for step in (-1, 1):
-				pass
+				delta = step
 				
 			
 		
