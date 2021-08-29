@@ -54,6 +54,9 @@ def legal_moves(board):
 		elif piece in "Rr":
 			for step in (-1, 1):
 				delta = step
+				while empty(board, i + delta):
+					pass
+				
 				
 			
 		
