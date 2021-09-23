@@ -44,7 +44,7 @@ def legal_moves(board):
 		elif piece in "Nn":
 			for delta in (-3, -2, 2, 3):
 				if empty(i + delta):
-					moves.append(i, i + delta)
+					moves.append((i, i + delta))
 		elif piece in "Bb":
 			for step in (-2, 2):
 				delta = step
