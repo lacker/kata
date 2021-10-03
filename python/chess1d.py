@@ -23,6 +23,9 @@ def empty(board, i):
 		return False
 	return True
 
+def step_helper(board, i, deltas):
+	pass
+
 def legal_moves(board):
 	"""
 	Moves are represented as a (i, j) tuple, where the piece is moving from board[i] to board[j].
