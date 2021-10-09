@@ -24,7 +24,7 @@ def empty(board, i):
 	return True
 
 def step_helper(board, i, deltas):
-	pass
+	answer = []
 
 def legal_moves(board):
 	"""
