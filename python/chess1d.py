@@ -23,7 +23,7 @@ def empty(board, i):
 		return False
 	return True
 
-def step_helper(board, i, deltas):
+def step_helper(board, i, steps):
 	answer = []
 	for delta in deltas:
 		if empty(board, i + delta):
