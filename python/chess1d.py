@@ -25,7 +25,7 @@ def empty(board, i):
 
 def step_helper(board, i, steps):
 	answer = []
-	for delta in deltas:
+	for step in steps:
 		if empty(board, i + delta):
 			pass
 
