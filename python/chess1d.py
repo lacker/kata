@@ -27,7 +27,7 @@ def step_helper(board, i, steps):
 	answer = []
 	for step in steps:
 		while empty(board, i + delta):
-			moves.append((i, i + delta))
+			answer.append((i, i + delta))
 
 def legal_moves(board):
 	"""
