@@ -56,11 +56,7 @@ def legal_moves(board):
 		elif piece in "Bb":
 			moves += step_helper(board, i, (-2, 2))
 		elif piece in "Rr":
-			for step in (-1, 1):
-				delta = step
-				while empty(board, i + delta):
-					moves.append((i, i + delta))
-					delta += step
+			moves += step_helper(board, i, (-1, 1))
 		elif piece in "Qq":
 			pass
 				
