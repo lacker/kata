@@ -58,7 +58,7 @@ def legal_moves(board):
 		elif piece in "Rr":
 			moves += step_helper(board, i, (-1, 1))
 		elif piece in "Qq":
-			pass
+			moves += step_helper(board, i, (-2, -1, 1, 2))
 				
 				
 			
