@@ -60,7 +60,8 @@ def legal_moves(board):
 		elif piece in "Qq":
 			moves += step_helper(board, i, (-2, -1, 1, 2))
 		elif piece in "Kk":
-			pass
+			for delta in (-1, 1):
+				pass
 				
 			
 		
