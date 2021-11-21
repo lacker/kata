@@ -62,7 +62,7 @@ def legal_moves(board):
 		elif piece in "Kk":
 			for delta in (-1, 1):
 				if empty(i + delta):
-					pass
+					moves.append((i, i + delta))
 				
 			
 		
