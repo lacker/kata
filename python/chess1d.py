@@ -63,6 +63,7 @@ def legal_moves(board):
 			for delta in (-1, 1):
 				if empty(i + delta):
 					moves.append((i, i + delta))
+	return moves
 				
 			
 		
