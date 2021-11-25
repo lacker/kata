@@ -66,5 +66,6 @@ def legal_moves(board):
 	return moves
 				
 			
+print(legal_moves(START))
 		
 
