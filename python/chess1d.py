@@ -61,7 +61,7 @@ def legal_moves(board):
 			moves += step_helper(board, i, (-2, -1, 1, 2))
 		elif piece in "Kk":
 			for delta in (-1, 1):
-				if empty(i + delta):
+				if empty(board, i + delta):
 					moves.append((i, i + delta))
 	return moves
 				
