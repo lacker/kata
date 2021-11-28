@@ -26,6 +26,7 @@ def empty(board, i):
 def step_helper(board, i, steps):
 	answer = []
 	for step in steps:
+		delta = step
 		while empty(board, i + delta):
 			answer.append((i, i + delta))
 			delta += step
