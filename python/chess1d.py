@@ -21,7 +21,7 @@ def empty(board, i):
 		return False
 	if i >= len(board):
 		return False
-	return True
+	return board[i] == "."
 
 def step_helper(board, i, steps):
 	answer = []
@@ -32,7 +32,7 @@ def step_helper(board, i, steps):
 			delta += step
 	return answer
 
-def legal_moves(board):
+def legal_moves(board, color):
 	"""
 	Moves are represented as a (i, j) tuple, where the piece is moving from board[i] to board[j].
 	"""
