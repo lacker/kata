@@ -67,6 +67,6 @@ def legal_moves(board, color):
 	return moves
 				
 			
-print(legal_moves(START))
+print(legal_moves(START, WHITE))
 		
 
