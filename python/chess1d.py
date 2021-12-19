@@ -23,7 +23,7 @@ def empty(board, i):
 		return False
 	return board[i] == "."
 
-def step_helper(board, i, steps):
+def step_helper(board, color, i, steps):
 	answer = []
 	for step in steps:
 		delta = step
