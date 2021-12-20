@@ -8,7 +8,7 @@ START = "KQRBNP....pnbrqk"
 WHITE = "WHITE"
 BLACK = "BLACK"
 
-def color(char):
+def get_color(char):
 	if "A" <= char <= "Z":
 		return WHITE
 	if "a" <= char <= "z":
