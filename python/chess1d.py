@@ -17,7 +17,8 @@ def get_color(char):
 		return None
 
 def opposite_color(c):
-	pass
+	if c == WHITE:
+		return BLACK
 
 def empty(board, i):
 	if i < 0:
