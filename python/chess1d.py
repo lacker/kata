@@ -21,6 +21,8 @@ def opposite_color(c):
 		return BLACK
 	elif c == BLACK:
 		return WHITE
+	else:
+		raise RuntimeError("oc of " + str(c))
 
 def empty(board, i):
 	if i < 0:
