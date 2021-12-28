@@ -32,7 +32,8 @@ def empty(board, i):
 	return board[i] == "."
 
 def movable(board, color, i):
-	pass
+	if empty(board, i):
+		return True
 
 def step_helper(board, color, i, steps):
 	answer = []
