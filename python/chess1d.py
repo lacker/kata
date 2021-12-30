@@ -43,7 +43,7 @@ def step_helper(board, color, i, steps):
 		while empty(board, i + delta):
 			answer.append((i, i + delta))
 			delta += step
-		if get_color(board, i + delta) != color:
+		if movable(board, color, i + delta):
 			answer.append((i, i + delta))
 	return answer
 
