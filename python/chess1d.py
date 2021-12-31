@@ -56,7 +56,7 @@ def legal_moves(board, color):
 		if get_color(board, i) != color:
 			continue
 		if piece == "P":
-			if empty(board, i+1):
+			if movable(board, WHITE, i+1):
 				moves.append((i, i+1))
 			if i == 5 and empty(board, 6) and empty(board, 7):
 				moves.append((5, 7))
