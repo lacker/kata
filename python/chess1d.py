@@ -70,7 +70,7 @@ def legal_moves(board, color):
 				if movable(board, color, i + delta):
 					moves.append((i, i + delta))
 		elif piece in "Bb":
-			moves += step_helper(board, i, (-2, 2))
+			moves += step_helper(board, color, i, (-2, 2))
 		elif piece in "Rr":
 			moves += step_helper(board, i, (-1, 1))
 		elif piece in "Qq":
