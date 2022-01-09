@@ -74,7 +74,7 @@ def legal_moves(board, color):
 		elif piece in "Rr":
 			moves += step_helper(board, color, i, (-1, 1))
 		elif piece in "Qq":
-			moves += step_helper(board, i, (-2, -1, 1, 2))
+			moves += step_helper(board, color, i, (-2, -1, 1, 2))
 		elif piece in "Kk":
 			for delta in (-1, 1):
 				if empty(board, i + delta):
