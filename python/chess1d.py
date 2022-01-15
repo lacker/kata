@@ -53,7 +53,7 @@ def legal_moves(board, color):
 	"""
 	moves = []
 	for i, piece in enumerate(board):
-		if get_color(board, i) != color:
+		if get_color(board[i]) != color:
 			continue
 		if piece == "P":
 			if movable(board, WHITE, i+1):
