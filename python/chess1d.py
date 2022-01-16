@@ -34,7 +34,7 @@ def empty(board, i):
 def movable(board, color, i):
 	if empty(board, i):
 		return True
-	return get_color(board, i) == opposite_color(color)
+	return get_color(board[i]) == opposite_color(color)
 
 def step_helper(board, color, i, steps):
 	answer = []
