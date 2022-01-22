@@ -80,6 +80,9 @@ def legal_moves(board, color):
 				if movable(board, color, i + delta):
 					moves.append((i, i + delta))
 	return moves
+	
+def make_move(board, move):
+	pass
 				
 			
 print(legal_moves(START, WHITE))
