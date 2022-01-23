@@ -82,7 +82,7 @@ def legal_moves(board, color):
 	return moves
 	
 def make_move(board, move):
-	pass
+	pre, post = move
 				
 			
 print(legal_moves(START, WHITE))
