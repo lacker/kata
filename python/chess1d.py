@@ -83,6 +83,7 @@ def legal_moves(board, color):
 	
 def make_move(board, move):
 	pre, post = move
+	new_board = list(board)
 				
 			
 print(legal_moves(START, WHITE))
