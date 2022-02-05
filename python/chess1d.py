@@ -86,6 +86,7 @@ def make_move(board, move):
 	assert board[post] == "."
 	new_board = list(board)
 	new_board[post] = new_board[pre]
+	new_board[pre] = "."
 				
 			
 print(legal_moves(START, WHITE))
