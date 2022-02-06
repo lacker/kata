@@ -87,6 +87,7 @@ def make_move(board, move):
 	new_board = list(board)
 	new_board[post] = new_board[pre]
 	new_board[pre] = "."
+	return "".join(new_board)
 				
 			
 print(legal_moves(START, WHITE))
