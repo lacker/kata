@@ -90,6 +90,8 @@ def make_move(board, move):
 	return "".join(new_board)
 				
 			
-print(legal_moves(START, WHITE))
+for move in legal_moves(START, WHITE):
+	board = make_move(START, move)
+	print(board)
 		
 
