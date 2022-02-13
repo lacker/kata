@@ -32,6 +32,8 @@ def empty(board, i):
 	return board[i] == "."
 
 def movable(board, color, i):
+	if i < 0 or i > len(board):
+		return False
 	if empty(board, i):
 		return True
 	return get_color(board[i]) == opposite_color(color)
@@ -91,6 +93,7 @@ def make_move(board, move):
 				
 			
 for move in legal_moves(START, WHITE):
+	print(move)
 	board = make_move(START, move)
 	print(board)
 		
