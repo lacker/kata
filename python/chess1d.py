@@ -91,6 +91,9 @@ def make_move(board, move):
 	new_board[pre] = "."
 	return "".join(new_board)
 				
+def invert(board):
+	chars = list(board)
+	inverted_chars = []
 			
 for move in legal_moves(START, WHITE):
 	print(move)
