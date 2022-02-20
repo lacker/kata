@@ -94,10 +94,13 @@ def make_move(board, move):
 def invert(board):
 	chars = list(board)
 	inverted_chars = []
+	for char in chars:
+		if char.islower():
+			pass
 			
 for move in legal_moves(START, WHITE):
 	print(move)
 	board = make_move(START, move)
 	print(board)
-		
+	print(invert(board))
 
