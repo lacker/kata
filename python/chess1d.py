@@ -96,7 +96,7 @@ def invert(board):
 	inverted_chars = []
 	for char in chars:
 		if char.islower():
-			pass
+			inverted_chars.append(char.upper())
 			
 for move in legal_moves(START, WHITE):
 	print(move)
