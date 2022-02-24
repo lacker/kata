@@ -103,6 +103,9 @@ def invert(board):
 			inverted_chars.append(char)
 	return "".join(reversed(inverted_chars))
 			
+def winner(board):
+	pass
+			
 for move in legal_moves(START, WHITE):
 	print(move)
 	board = make_move(START, move)
