@@ -104,7 +104,8 @@ def invert(board):
 	return "".join(reversed(inverted_chars))
 			
 def winner(board):
-	pass
+	if "K" not in board:
+		return BLACK
 			
 for move in legal_moves(START, WHITE):
 	print(move)
