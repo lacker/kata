@@ -106,6 +106,8 @@ def invert(board):
 def winner(board):
 	if "K" not in board:
 		return BLACK
+	if "k" not in board:
+		return WHITE
 			
 for move in legal_moves(START, WHITE):
 	print(move)
