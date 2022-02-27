@@ -108,6 +108,7 @@ def winner(board):
 		return BLACK
 	if "k" not in board:
 		return WHITE
+	return None
 			
 for move in legal_moves(START, WHITE):
 	print(move)
