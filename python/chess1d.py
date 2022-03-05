@@ -115,4 +115,6 @@ for move in legal_moves(START, WHITE):
 	board = make_move(START, move)
 	print(board)
 	print(invert(board))
+	
+SCORE_MAP = {}
 
