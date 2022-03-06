@@ -116,5 +116,8 @@ for move in legal_moves(START, WHITE):
 	print(board)
 	print(invert(board))
 	
-SCORE_MAP = {}
+SCORE_MAP = {
+	"K": 100,
+	"k": -100,
+}
 
