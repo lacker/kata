@@ -119,5 +119,6 @@ for move in legal_moves(START, WHITE):
 SCORE_MAP = {
 	"K": 100,
 	"k": -100,
+	"Q": 9,
 }
 
