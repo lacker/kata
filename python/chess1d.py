@@ -131,3 +131,5 @@ SCORE_MAP = {
 	"p": -1,
 }
 
+def get_score(board):
+	pass
