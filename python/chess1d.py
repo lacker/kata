@@ -132,4 +132,4 @@ SCORE_MAP = {
 }
 
 def get_score(board):
-	pass
+	answer = 0
