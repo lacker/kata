@@ -133,3 +133,5 @@ SCORE_MAP = {
 
 def get_score(board):
 	answer = 0
+	for ch in board:
+		pass
