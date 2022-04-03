@@ -129,6 +129,7 @@ SCORE_MAP = {
 	"n": -3,
 	"P": 1,
 	"p": -1,
+	".": 0,
 }
 
 def get_score(board):
