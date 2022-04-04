@@ -136,3 +136,4 @@ def get_score(board):
 	answer = 0
 	for ch in board:
 		answer += SCORE_MAP[ch]
+	return answer
