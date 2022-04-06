@@ -137,3 +137,6 @@ def get_score(board):
 	for ch in board:
 		answer += SCORE_MAP[ch]
 	return answer
+	
+def tree_score(board, depth):
+	pass
