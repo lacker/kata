@@ -139,4 +139,5 @@ def get_score(board):
 	return answer
 	
 def tree_score(board, depth):
-	pass
+	if depth = 0:
+		pass
