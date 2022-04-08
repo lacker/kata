@@ -138,6 +138,9 @@ def get_score(board):
 		answer += SCORE_MAP[ch]
 	return answer
 	
-def tree_score(board, depth):
+def tree_search(board, depth):
+	"""
+	Return (score, move)
+	"""
 	if depth = 0:
-		pass
+		return get_score(board), None
