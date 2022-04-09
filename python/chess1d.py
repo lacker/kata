@@ -138,9 +138,14 @@ def get_score(board):
 		answer += SCORE_MAP[ch]
 	return answer
 	
+def invert_move(move):
+	answer = []
+	
+	
 def tree_search(board, depth):
 	"""
-	Return (score, move)
+	Return (score, move) for White to move. 
 	"""
 	if depth = 0:
 		return get_score(board), None
+	
