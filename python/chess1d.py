@@ -139,8 +139,7 @@ def get_score(board):
 	return answer
 	
 def invert_move(move):
-	answer = []
-	
+	return tuple(len(START) - 1 - i for i in move)
 	
 def tree_search(board, depth):
 	"""
