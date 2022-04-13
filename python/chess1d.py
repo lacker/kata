@@ -149,5 +149,6 @@ def tree_search(board, depth):
 		return get_score(board), None
 	possible = []
 	for move in legal_moves(board, WHITE):
-		new_board = make_move(board, move)
+		post_move = make_move(board, move)
+		new_board = invert(post_move)
 		subscore, submove = tree_search()
