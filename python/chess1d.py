@@ -151,4 +151,4 @@ def tree_search(board, depth):
 	for move in legal_moves(board, WHITE):
 		post_move = make_move(board, move)
 		new_board = invert(post_move)
-		subscore, submove = tree_search()
+		subscore, submove = tree_search(new_board, depth - 1)
