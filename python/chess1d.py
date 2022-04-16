@@ -153,4 +153,6 @@ def tree_search(board, depth):
 		post_move = make_move(board, move)
 		new_board = invert(post_move)
 		subscore, submove = tree_search(new_board, depth - 1)
-		possible.append((subscore, submove))
+		possible.append((-subscore, submove))
+	possible.sort()
+	return possible[-1]
