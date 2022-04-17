@@ -3,6 +3,8 @@
 One-dimensional chess. See https://gumroad.com/l/1DChess
 """
 
+import sys
+
 START = "KQRBNP....pnbrqk"
 
 WHITE = "WHITE"
@@ -156,3 +158,6 @@ def tree_search(board, depth):
 		possible.append((-subscore, submove))
 	possible.sort()
 	return possible[-1]
+	
+for i in range(4):
+	pass
