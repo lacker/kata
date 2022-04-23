@@ -159,5 +159,6 @@ def tree_search(board, depth):
 	possible.sort()
 	return possible[-1]
 	
+board = START
 for i in range(4):
 	pass
