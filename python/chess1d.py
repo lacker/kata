@@ -144,12 +144,18 @@ def get_score(board):
 def invert_move(move):
 	return tuple(len(START) - 1 - i for i in move)
 	
-def tree_search(board, depth):
+def tree_search(board, depth, player):
 	"""
-	Return (score, move) for White to move. 
+	Return (score, move) for the player to move.
+	Positive scores are better.
 	"""
 	if depth = 0:
 		return get_score(board), None
+	if player == BLACK:
+		score, move = tree_search(
+			invert(board), depth, WHITE)
+		return score, invert_move(move)
+	
 	possible = []
 	for move in legal_moves(board, WHITE):
 		post_move = make_move(board, move)
