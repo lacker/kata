@@ -168,3 +168,4 @@ def tree_search(board, depth, player):
 board = START
 for i in range(4):
 	move = tree_search(board, 4, WHITE)
+	new_board = make_move(board, move)
