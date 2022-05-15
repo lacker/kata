@@ -171,4 +171,5 @@ for i in range(4):
 	print("white move:", move)
 	new_board = make_move(board, move)
 	print("board:", new_board)
+	move = tree_search(board, 4, BLACK)
 	
