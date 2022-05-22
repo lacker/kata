@@ -169,8 +169,9 @@ board = START
 for i in range(4):
 	move = tree_search(board, 4, WHITE)
 	print("white move:", move)
-	new_board = make_move(board, move)
-	print("board:", new_board)
+	board = make_move(board, move)
+	print("board:", board)
 	move = tree_search(board, 4, BLACK)
 	print("black move:", move)
+	
 	
