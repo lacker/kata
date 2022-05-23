@@ -173,5 +173,6 @@ for i in range(4):
 	print("board:", board)
 	move = tree_search(board, 4, BLACK)
 	print("black move:", move)
+	board = make_move(board, move)
 	
 	
