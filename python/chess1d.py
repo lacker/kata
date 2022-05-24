@@ -149,7 +149,7 @@ def tree_search(board, depth, player):
 	Return (score, move) for the player to move.
 	Positive scores are better.
 	"""
-	if depth = 0:
+	if depth == 0:
 		return get_score(board), None
 	if player == BLACK:
 		score, move = tree_search(
