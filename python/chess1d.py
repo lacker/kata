@@ -112,12 +112,7 @@ def winner(board):
 		return WHITE
 	return None
 			
-for move in legal_moves(START, WHITE):
-	print(move)
-	board = make_move(START, move)
-	print(board)
-	print(invert(board))
-	
+
 SCORE_MAP = {
 	"K": 100,
 	"k": -100,
@@ -142,6 +137,8 @@ def get_score(board):
 	return answer
 	
 def invert_move(move):
+	if move is None:
+		return None
 	return tuple(len(START) - 1 - i for i in move)
 	
 def tree_search(board, depth, player):
