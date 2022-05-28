@@ -34,7 +34,7 @@ def empty(board, i):
 	return board[i] == "."
 
 def movable(board, color, i):
-	if i < 0 or i > len(board):
+	if i < 0 or i >= len(board):
 		return False
 	if empty(board, i):
 		return True
@@ -87,7 +87,6 @@ def legal_moves(board, color):
 	
 def make_move(board, move):
 	pre, post = move
-	assert board[post] == "."
 	new_board = list(board)
 	new_board[post] = new_board[pre]
 	new_board[pre] = "."
