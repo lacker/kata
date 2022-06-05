@@ -168,7 +168,7 @@ for i in range(4):
 	board = make_move(board, move)
 	print("board:", board)
 	score, move = tree_search(board, 4, BLACK)
-	print("black move:", move)
+	print("black score:", score, "move:", move)
 	board = make_move(board, move)
 	
 	
