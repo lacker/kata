@@ -92,6 +92,9 @@ def make_move(board, move):
 	new_board[pre] = "."
 	return "".join(new_board)
 				
+def is_capture(board, move):
+	pass
+				
 def invert(board):
 	chars = list(board)
 	inverted_chars = []
