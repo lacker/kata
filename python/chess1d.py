@@ -160,7 +160,8 @@ def tree_search(board, depth, player):
 	for move in legal_moves(board, WHITE):
 		post_move = make_move(board, move)
 		new_board = invert(post_move)
-		subscore, submove = tree_search(new_board, depth - 1, opposite_color(player))
+		subdepth = depth - 1
+		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
 		possible.append((-subscore, move))
 	possible.sort()
 	return possible[-1]
