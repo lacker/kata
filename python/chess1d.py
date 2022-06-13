@@ -161,6 +161,8 @@ def tree_search(board, depth, player):
 		post_move = make_move(board, move)
 		new_board = invert(post_move)
 		subdepth = depth - 1
+		if is_capture(board, move):
+			pass
 		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
 		possible.append((-subscore, move))
 	possible.sort()
