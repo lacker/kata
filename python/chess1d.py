@@ -165,11 +165,13 @@ def tree_search(board, depth, player):
 			subdepth += 1
 		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
 		possible.append((-subscore, move))
+	if not possible:
+		pass
 	possible.sort()
 	return possible[-1]
 	
 board = START
-depth = 4
+depth = 2
 for i in range(10):
 	score, move = tree_search(board, depth, WHITE)
 	print("white score:", score, "move:", move)
