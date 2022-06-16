@@ -166,7 +166,7 @@ def tree_search(board, depth, player):
 		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
 		possible.append((-subscore, move))
 	if not possible:
-		pass
+		raise ValueError("game is over")
 	possible.sort()
 	return possible[-1]
 	
