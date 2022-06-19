@@ -181,9 +181,9 @@ for i in range(10):
 		break
 	score, move = tree_search(board, depth, BLACK)
 	print("black score:", score, "move:", move)
-	if move is None:
-		break
 	board = make_move(board, move)
 	print("board:", board)
+	if winner(board):
+		break
 	
 	
