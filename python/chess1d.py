@@ -132,8 +132,8 @@ SCORE_MAP = {
 	".": 0,
 }
 
-def get_score(board):
-	"Returns a score for White"
+def get_score(board, player):
+	"Returns a score for the given player"
 	answer = 0
 	for ch in board:
 		answer += SCORE_MAP[ch]
