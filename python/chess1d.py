@@ -137,7 +137,8 @@ def get_score(board, player):
 	answer = 0
 	for ch in board:
 		answer += SCORE_MAP[ch]
-	return answer
+	if player == WHITE:
+		return answer
 	
 def invert_move(move):
 	if move is None:
