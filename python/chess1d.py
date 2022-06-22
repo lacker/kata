@@ -139,6 +139,9 @@ def get_score(board, player):
 		answer += SCORE_MAP[ch]
 	if player == WHITE:
 		return answer
+	if player == BLACK:
+		return -answer
+	raise ValueError("bad player value")
 	
 def invert_move(move):
 	if move is None:
