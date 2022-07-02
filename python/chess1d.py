@@ -188,6 +188,7 @@ for i in range(10):
 	board = make_move(board, move)
 	print("board:", board)
 	if winner(board):
+		print("black wins")
 		break
 	
 	
