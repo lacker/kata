@@ -176,12 +176,14 @@ def tree_search(board, depth, player):
 	
 board = START
 depth = 2
-for i in range(10):
+print()
+for i in range(20):
 	score, move = tree_search(board, depth, WHITE)
 	print("white score:", score, "move:", move)
 	board = make_move(board, move)
 	print("board:", board)
 	if winner(board):
+		print("white wins")
 		break
 	score, move = tree_search(board, depth, BLACK)
 	print("black score:", score, "move:", move)
