@@ -174,23 +174,24 @@ def tree_search(board, depth, player):
 	possible.sort()
 	return possible[-1]
 	
-board = START
-depth = 2
-print()
-for i in range(20):
-	score, move = tree_search(board, depth, WHITE)
-	print("white score:", score, "move:", move)
-	board = make_move(board, move)
-	print("board:", board)
-	if winner(board):
-		print("white wins")
-		break
-	score, move = tree_search(board, depth, BLACK)
-	print("black score:", score, "move:", move)
-	board = make_move(board, move)
-	print("board:", board)
-	if winner(board):
-		print("black wins")
-		break
-	
+def play_game():
+	board = START
+	depth = 1
+	print()
+	for i in range(20):
+		score, move = tree_search(board, depth, WHITE)
+		print("white score:", score, "move:", move)
+		board = make_move(board, move)
+		print("board:", board)
+		if winner(board):
+			print("white wins")
+			break
+		score, move = tree_search(board, depth, BLACK)
+		print("black score:", score, "move:", move)
+		board = make_move(board, move)
+		print("board:", board)
+		if winner(board):
+			print("black wins")
+			break
+		
 	
