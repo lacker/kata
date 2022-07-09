@@ -176,7 +176,7 @@ def tree_search(board, depth, player):
 	
 def play_game():
 	board = START
-	depth = 1
+	depth = 2
 	print()
 	for i in range(20):
 		score, move = tree_search(board, depth, WHITE)
@@ -193,5 +193,11 @@ def play_game():
 		if winner(board):
 			print("black wins")
 			break
-		
+
+def test():
+	# Black to move should have good moves
+	board = "KQ...n...B..brqk"
+	
+						
+play_game()
 	
