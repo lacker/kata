@@ -195,8 +195,10 @@ def play_game():
 			break
 
 def test():
-	# Black to move should have good moves
+	# Black to move should win
 	board = "KQ...n...B..brqk"
+	print("staring board:", board)
+	score, move = tree_search(board, 1, BLACK)
 	
 						
 play_game()
