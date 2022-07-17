@@ -198,6 +198,7 @@ def test():
 	# Black to move should win
 	board = "KQ...n...B..brqk"
 	print("starting board:", board)
+	print("legal:", legal_moves(board, BLACK))
 	score, move = tree_search(board, 1, BLACK)
 	print("best move:", move, "with score", score)
 						
