@@ -200,6 +200,9 @@ def test():
 	print("starting board:", board)
 	legal = legal_moves(board, BLACK)
 	print("legal:", legal)
+	for move in legal:
+		pass
+
 	score, move = tree_search(board, 1, BLACK)
 	print("best move:", move, "with score", score)
 						
