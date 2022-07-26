@@ -153,25 +153,22 @@ def tree_search(board, depth, player):
 	Return (score, move) for the player to move.
 	Positive scores are better.
 	"""
-	if depth == 0:
-		return get_score(board, player), None
-	if player == BLACK:
-		score, move = tree_search(
-			invert(board), depth, WHITE)
-		return score, invert_move(move)
+	if depth == 0:		
+		s = get_score(board, player)
+		return s, None
 	
 	possible = []
-	for move in legal_moves(board, WHITE):
-		post_move = make_move(board, move)
-		new_board = invert(post_move)
+	for move in legal_moves(board, player):
+		new_board = make_move(board, move)
 		subdepth = depth - 1
-		if is_capture(board, move):
-			subdepth += 1
+		#if is_capture(board, move):
+		#	subdepth += 1
 		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
 		possible.append((-subscore, move))
 	if not possible:
 		raise ValueError("game is over")
 	possible.sort()
+	print(possible)
 	return possible[-1]
 	
 def play_game():
@@ -199,9 +196,11 @@ def test():
 	board = "KQ...n...B..brqk"
 	print("starting board:", board)
 	legal = legal_moves(board, BLACK)
-	print("legal:", legal)
+	# print("legal:", legal)
 	for move in legal:
-		score = get_score(move, BLACK)
+		new_board = make_move(board, move)
+		score = get_score(new_board, BLACK)
+		print(move, score)
 
 	score, move = tree_search(board, 1, BLACK)
 	print("best move:", move, "with score", score)
