@@ -168,7 +168,6 @@ def tree_search(board, depth, player):
 	if not possible:
 		raise ValueError("game is over")
 	possible.sort()
-	print(possible)
 	return possible[-1]
 	
 def play_game():
@@ -205,6 +204,6 @@ def test():
 	score, move = tree_search(board, 1, BLACK)
 	print("best move:", move, "with score", score)
 						
-# play_game()
-test()
+play_game()
+# test()
 	
