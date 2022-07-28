@@ -55,6 +55,8 @@ def legal_moves(board, color):
 	"""
 	Moves are represented as a (i, j) tuple, where the piece is moving from board[i] to board[j].
 	"""
+	if winner(board):
+		return []
 	moves = []
 	for i, piece in enumerate(board):
 		if get_color(board[i]) != color:
@@ -161,8 +163,8 @@ def tree_search(board, depth, player):
 	for move in legal_moves(board, player):
 		new_board = make_move(board, move)
 		subdepth = depth - 1
-		#if is_capture(board, move):
-		#	subdepth += 1
+		if is_capture(board, move):
+			subdepth += 1
 		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
 		possible.append((-subscore, move))
 	if not possible:
