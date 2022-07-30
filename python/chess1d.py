@@ -158,8 +158,8 @@ def tree_search(board, depth, player):
 	w = winner(board)
 	if w:
 		if w == player:
-			return 1000
-		return -1000
+			return 1000, None
+		return -1000, None
 	
 	if depth == 0:		
 		s = get_score(board, player)
