@@ -175,6 +175,7 @@ def tree_search(board, depth, player):
 		possible.append((-subscore, move))
 	if not possible:
 		raise ValueError("game is over")
+	best_score = max(s for s, _ in possible)
 	possible.sort()
 	return possible[-1]
 	
