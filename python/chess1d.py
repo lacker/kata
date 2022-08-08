@@ -179,8 +179,8 @@ def tree_search(board, depth, player):
 	best_score = max(s for s, _ in possible)
 	candidates = [move for s, move in possible
 								if s == best_score]
-	possible.sort()
-	return possible[-1]
+	return best_score, random.choice(candidates)
+	
 	
 def play_game():
 	board = START
