@@ -137,13 +137,17 @@ SCORE_MAP = {
 
 def get_score(board, player):
 	"Returns a score for the given player"
-	answer = 0
+	# classic chess material, knight = 3 etc
+	material = 0
+	# non-king oieces total, to see if it's endgame
+	nonking = 0
+	
 	for ch in board:
-		answer += SCORE_MAP[ch]
+		material += SCORE_MAP[ch]
 	if player == WHITE:
-		return answer
+		return material
 	if player == BLACK:
-		return -answer
+		return -material
 	raise ValueError("bad player value")
 	
 def invert_move(move):
