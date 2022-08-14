@@ -139,11 +139,13 @@ def get_score(board, player):
 	"Returns a score for the given player"
 	# classic chess material, knight = 3 etc
 	material = 0
-	# non-king oieces total, to see if it's endgame
+	# non-king pieces total, to see if it's endgame
 	nonking = 0
 	
 	for ch in board:
 		material += SCORE_MAP[ch]
+		if ch not in ".kK":
+			nonking += 1
 	if player == WHITE:
 		return material
 	if player == BLACK:
