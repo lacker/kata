@@ -146,6 +146,11 @@ def get_score(board, player):
 		material += SCORE_MAP[ch]
 		if ch not in ".kK":
 			nonking += 1
+			
+	if nonking == 0:
+		# endgame
+		pass		
+			
 	if player == WHITE:
 		return material
 	if player == BLACK:
