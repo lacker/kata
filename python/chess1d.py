@@ -204,7 +204,7 @@ def play_game():
 		print("board:", board)
 		if winner(board):
 			print("white wins")
-			break
+			return WHITE
 		score, move = tree_search(board, depth, BLACK)
 		print("black score:", score, "move:", move)
 		board = make_move(board, move)
