@@ -211,7 +211,7 @@ def play_game():
 		print("board:", board)
 		if winner(board):
 			print("black wins")
-			break
+			return BLACK
 
 def test():
 	# Black to move should win
