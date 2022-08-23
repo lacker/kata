@@ -149,7 +149,7 @@ def get_score(board, player):
 			
 	if nonking == 0:
 		# endgame
-		pass		
+		wk_pos = board.index("K")
 			
 	if player == WHITE:
 		return material
