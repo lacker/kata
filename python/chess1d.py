@@ -151,6 +151,8 @@ def get_score(board, player):
 		# endgame
 		wk_pos = board.index("K")
 		bk_pos = board.index("k")
+		diff + abs(wk_pos - bk_pos)
+		
 			
 	if player == WHITE:
 		return material
