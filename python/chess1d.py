@@ -135,7 +135,7 @@ SCORE_MAP = {
 	".": 0,
 }
 
-def get_score(board, player):
+def get_score(board, player, to_move):
 	"Returns a score for the given player"
 	# classic chess material, knight = 3 etc
 	material = 0
@@ -152,6 +152,8 @@ def get_score(board, player):
 		wk_pos = board.index("K")
 		bk_pos = board.index("k")
 		diff = abs(wk_pos - bk_pos)
+		if diff % 2 == 0:
+			pass
 		
 			
 	if player == WHITE:
