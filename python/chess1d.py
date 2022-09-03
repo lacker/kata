@@ -152,9 +152,7 @@ def get_score(board, player, to_move):
 		wk_pos = board.index("K")
 		bk_pos = board.index("k")
 		diff = abs(wk_pos - bk_pos)
-		if diff % 2 == 0:
-			pass
-		
+		zugzwang = (diff % 2 == 0)		
 			
 	if player == WHITE:
 		return material
