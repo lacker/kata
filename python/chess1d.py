@@ -153,10 +153,12 @@ def get_score(board, player, to_move):
 		bk_pos = board.index("k")
 		diff = abs(wk_pos - bk_pos)
 		zugzwang = (diff % 2 == 0)
+		# incentivize forcing the win
+		value = 1000 - 10 * diff
 		if zugwang == (player == to_move):
 			# we lose in zugzwang
-			return -100
-			
+			return -value
+
 			
 	if player == WHITE:
 		return material
