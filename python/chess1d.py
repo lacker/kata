@@ -158,6 +158,8 @@ def get_score(board, player, to_move):
 		if zugwang == (player == to_move):
 			# we lose in zugzwang
 			return -value
+		else:
+			return value
 
 			
 	if player == WHITE:
