@@ -185,7 +185,7 @@ def tree_search(board, depth, player):
 		return -1000, None
 	
 	if depth == 0:		
-		s = get_score(board, player)
+		s = get_score(board, player, player)
 		return s, None
 	
 	possible = []
