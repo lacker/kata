@@ -206,7 +206,7 @@ def tree_search(board, depth, player):
 	
 def play_game():
 	board = START
-	depth = 2
+	depth = 3
 	print()
 	for i in range(100):
 		score, move = tree_search(board, depth, WHITE)
