@@ -154,7 +154,7 @@ def get_score(board, player, to_move):
 		diff = abs(wk_pos - bk_pos)
 		zugzwang = (diff % 2 == 0)
 		# incentivize forcing the win
-		value = 1000 - 10 * diff
+		value = 900 - 10 * diff
 		if zugzwang == (player == to_move):
 			# we lose in zugzwang
 			return -value
