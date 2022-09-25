@@ -201,6 +201,9 @@ def tree_search(board, depth, player):
 	best_score = max(s for s, _ in possible)
 	candidates = [move for s, move in possible
 								if s == best_score]
+	if best_score > 900:
+		# Incentivize not stalling forever
+		best_score -= 1
 	return best_score, random.choice(candidates)
 	
 	
