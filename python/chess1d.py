@@ -136,7 +136,9 @@ SCORE_MAP = {
 }
 
 def get_score(board, player, to_move):
-	"Returns a score for the given player"
+	"""
+	Returns a score for the given player.
+	"""
 	# classic chess material, knight = 3 etc
 	material = 0
 	# non-king pieces total, to see if it's endgame
@@ -173,10 +175,11 @@ def invert_move(move):
 		return None
 	return tuple(len(START) - 1 - i for i in move)
 	
-def tree_search(board, depth, player):
+def tree_search(board, depth, player, alpha, beta):
 	"""
 	Return (score, move) for the player to move.
 	Positive scores are better.
+	Score can be truncated to the (alpha, beta) range
 	"""
 	w = winner(board)
 	if w:
@@ -195,7 +198,8 @@ def tree_search(board, depth, player):
 		if is_capture(board, move):
 			subdepth += 1
 		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
-		possible.append((-subscore, move))
+		possible_score = -subscore
+		possible.append((possible_score, move))
 	if not possible:
 		raise ValueError("game is over")
 	best_score = max(s for s, _ in possible)
