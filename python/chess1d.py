@@ -197,17 +197,22 @@ def tree_search(board, depth, player, alpha, beta):
 		subdepth = depth - 1
 		if is_capture(board, move):
 			subdepth += 1
+			
 		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
 		possible_score = -subscore
+		# Incentivize not stalling forever
+		if possible_score > 900:
+			possible_score -= 1
+			
 		possible.append((possible_score, move))
+		
 	if not possible:
 		raise ValueError("game is over")
+		
 	best_score = max(s for s, _ in possible)
 	candidates = [move for s, move in possible
 								if s == best_score]
-	if best_score > 900:
-		# Incentivize not stalling forever
-		best_score -= 1
+
 	return best_score, random.choice(candidates)
 	
 	
