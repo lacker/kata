@@ -198,7 +198,7 @@ def tree_search(board, depth, player, alpha, beta):
 		if is_capture(board, move):
 			subdepth += 1
 			
-		subscore, submove = tree_search(new_board, subdepth, opposite_color(player))
+		subscore, submove = tree_search(new_board, subdepth, opposite_color(player), -beta, -alpha)
 		possible_score = -subscore
 		# Incentivize not stalling forever
 		if possible_score > 900:
