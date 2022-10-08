@@ -117,7 +117,8 @@ def winner(board):
 	if "k" not in board:
 		return WHITE
 	return None
-			
+
+MAX_SCORE = 2000			
 
 SCORE_MAP = {
 	"K": 100,
