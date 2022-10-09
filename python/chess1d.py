@@ -222,7 +222,7 @@ def play_game():
 	depth = 3
 	print()
 	for i in range(100):
-		score, move = tree_search(board, depth, WHITE)
+		score, move = tree_search(board, depth, WHITE, -MAX_SCORE, MAX_SCORE)
 		print("white score:", score, "move:", move)
 		board = make_move(board, move)
 		print("board:", board)
