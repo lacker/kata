@@ -229,7 +229,7 @@ def play_game():
 		if winner(board):
 			print("white wins")
 			return WHITE
-		score, move = tree_search(board, depth, BLACK)
+		score, move = tree_search(board, depth, BLACK, -MAX_SCORE, MAX_SCORE)
 		print("black score:", score, "move:", move)
 		board = make_move(board, move)
 		print("board:", board)
