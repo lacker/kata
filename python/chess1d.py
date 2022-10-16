@@ -205,6 +205,9 @@ def tree_search(board, depth, player, alpha, beta):
 		if possible_score > 900:
 			possible_score -= 1
 			
+		if possible_score >= beta:
+			return possible_score, move
+			
 		possible.append((possible_score, move))
 		
 	if not possible:
