@@ -193,6 +193,7 @@ def tree_search(board, depth, player, alpha, beta):
 		return s, None
 	
 	possible = []
+	best_score = alpha
 	for move in legal_moves(board, player):
 		new_board = make_move(board, move)
 		subdepth = depth - 1
