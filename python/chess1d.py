@@ -192,8 +192,9 @@ def tree_search(board, depth, player, alpha, beta):
 		s = get_score(board, player, player)
 		return s, None
 	
-	possible = []
+	possible = [] # deprecate
 	best_score = alpha
+	best_moves = []
 	for move in legal_moves(board, player):
 		new_board = make_move(board, move)
 		subdepth = depth - 1
@@ -211,7 +212,7 @@ def tree_search(board, depth, player, alpha, beta):
 			
 		if possible_score > best_score:
 			best_score = possible_score
-			#
+			
 			
 		possible.append((possible_score, move))
 		
