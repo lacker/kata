@@ -220,12 +220,8 @@ def tree_search(board, depth, player, alpha, beta):
 		
 	if not best_moves:
 		raise ValueError("game is over")
-		
-	best_score = max(s for s, _ in possible)
-	candidates = [move for s, move in possible
-								if s == best_score]
 
-	return best_score, random.choice(candidates)
+	return best_score, random.choice(best_moves)
 	
 	
 def play_game():
