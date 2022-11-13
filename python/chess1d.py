@@ -192,7 +192,6 @@ def tree_search(board, depth, player, alpha, beta):
 		s = get_score(board, player, player)
 		return s, None
 	
-	possible = [] # deprecate
 	best_score = alpha
 	best_moves = []
 	for move in legal_moves(board, player):
@@ -215,8 +214,6 @@ def tree_search(board, depth, player, alpha, beta):
 			best_moves = [move]
 		elif possible_score == best_score:
 			best_moves.append(move)
-			
-		possible.append((possible_score, move))
 		
 	if not best_moves:
 		raise ValueError("game is over")
