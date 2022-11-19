@@ -176,12 +176,17 @@ def invert_move(move):
 		return None
 	return tuple(len(START) - 1 - i for i in move)
 	
-def tree_search(board, depth, player, alpha, beta):
+def tree_search(board, depth, player, alpha, beta, cache={}):
 	"""
 	Return (score, move) for the player to move.
 	Positive scores are better.
-	Score can be truncated to the (alpha, beta) range
+	Score can be truncated to the (alpha, beta) range.
+	cache maps (board, player) to a score when we have exhausted the game tree.
 	"""
+	key = (board, player)
+	if key in cache:
+		return cache[key]
+		
 	w = winner(board)
 	if w:
 		if w == player:
@@ -240,6 +245,7 @@ def play_game():
 		if winner(board):
 			print("black wins")
 			return BLACK
+
 
 def test():
 	# Black to move should win
