@@ -212,6 +212,8 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 			possible_score -= 1
 			
 		if possible_score >= beta:
+			if abs(possible_score) > 100:
+				cache[key] = possible_score, move
 			return possible_score, move
 			
 		if possible_score > best_score:
@@ -231,7 +233,7 @@ def play_game():
 	depth = 3
 	print()
 	for i in range(100):
-		score, move = tree_search(board, depth, WHITE, -MAX_SCORE, MAX_SCORE)
+		score, move = tree_search(board, depth, WHITE, -50, 50)
 		print("white score:", score, "move:", move)
 		board = make_move(board, move)
 		print("board:", board)
