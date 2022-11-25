@@ -199,7 +199,8 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 	
 	best_score = alpha
 	best_moves = []
-	for move in legal_moves(board, player):
+	legal = legal_moves(board, player)
+	for move in legal:
 		new_board = make_move(board, move)
 		subdepth = depth - 1
 		if is_capture(board, move):
