@@ -224,7 +224,7 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 			best_moves.append(move)
 		
 	if not best_moves:
-		print "legal:", legal
+		print("legal:", legal)
 		raise ValueError("game is over")
 
 	return best_score, random.choice(best_moves)
