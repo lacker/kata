@@ -220,6 +220,7 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 		if possible_score > best_score:
 			best_score = possible_score
 			best_moves = [move]
+			print("new best moves:", best_moves)
 		elif possible_score == best_score:
 			best_moves.append(move)
 		
