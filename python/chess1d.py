@@ -181,6 +181,7 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 	Return (score, move) for the player to move.
 	Positive scores are better.
 	Score can be truncated to the (alpha, beta) range.
+	If we can't find any move that even achieves alpha, return (alpha, None).
 	cache maps (board, player) to a score when we have exhausted the game tree.
 	"""
 	key = (board, player)
@@ -201,7 +202,7 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 	best_score = alpha
 	best_moves = []
 	legal = legal_moves(board, player)
-	print("start loop", legal)
+	print("\nstart loop", legal)
 	for move in legal:
 		new_board = make_move(board, move)
 		subdepth = depth - 1
@@ -222,13 +223,12 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 		if possible_score > best_score:
 			best_score = possible_score
 			best_moves = [move]
-			print("new best moves:", best_moves)
 		elif possible_score == best_score:
 			best_moves.append(move)
+		print("new best moves:", best_moves)
 		
 	if not best_moves:
-		print("legal:", legal)
-		raise ValueError("game is over")
+		return alpha, None
 
 	return best_score, random.choice(best_moves)
 	
