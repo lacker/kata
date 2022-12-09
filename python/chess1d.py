@@ -202,7 +202,7 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 	best_score = alpha
 	best_moves = []
 	legal = legal_moves(board, player)
-	print("\nstart loop", legal)
+	
 	for move in legal:
 		new_board = make_move(board, move)
 		subdepth = depth - 1
@@ -225,7 +225,6 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 			best_moves = [move]
 		elif possible_score == best_score:
 			best_moves.append(move)
-		print("new best moves:", best_moves)
 		
 	if not best_moves:
 		return alpha, None
@@ -236,8 +235,9 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 def play_game():
 	board = START
 	depth = 3
+	turn = WHITE
 	print()
-	for i in range(100):
+	while True:
 		score, move = tree_search(board, depth, WHITE, -50, 50)
 		print("white score:", score, "move:", move)
 		board = make_move(board, move)
