@@ -238,13 +238,15 @@ def play_game():
 	turn = WHITE
 	print()
 	while True:
-		score, move = tree_search(board, depth, WHITE, -50, 50)
+		score, move = tree_search(board, depth, turn, -50, 50)
 		print("white score:", score, "move:", move)
 		board = make_move(board, move)
 		print("board:", board)
 		if winner(board):
 			print("white wins")
 			return WHITE
+			
+		turn = BLACK
 		score, move = tree_search(board, depth, BLACK, -MAX_SCORE, MAX_SCORE)
 		print("black score:", score, "move:", move)
 		board = make_move(board, move)
