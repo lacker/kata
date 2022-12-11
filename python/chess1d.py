@@ -245,16 +245,8 @@ def play_game():
 		if winner(board):
 			print("white wins")
 			return WHITE
-			
-		turn = BLACK
-		score, move = tree_search(board, depth, BLACK, -MAX_SCORE, MAX_SCORE)
-		print("black score:", score, "move:", move)
-		board = make_move(board, move)
-		print("board:", board)
-		if winner(board):
-			print("black wins")
-			return BLACK
-
+		turn = opposite_color(turn)
+		
 
 def test():
 	# Black to move should win
