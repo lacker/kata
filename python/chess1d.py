@@ -176,12 +176,18 @@ def invert_move(move):
 		return None
 	return tuple(len(START) - 1 - i for i in move)
 	
-def tree_search(board, depth, player, alpha, beta):
+def tree_search(board, depth, player, alpha, beta, cache={}):
 	"""
 	Return (score, move) for the player to move.
 	Positive scores are better.
-	Score can be truncated to the (alpha, beta) range
+	Score can be truncated to the (alpha, beta) range.
+	If we can't find any move that even achieves alpha, return (alpha, None).
+	cache maps (board, player) to a score when we have exhausted the game tree.
 	"""
+	key = (board, player)
+	if key in cache:
+		return cache[key]
+		
 	w = winner(board)
 	if w:
 		if w == player:
@@ -192,10 +198,12 @@ def tree_search(board, depth, player, alpha, beta):
 		s = get_score(board, player, player)
 		return s, None
 	
-	possible = [] # deprecate
+	
 	best_score = alpha
 	best_moves = []
-	for move in legal_moves(board, player):
+	legal = legal_moves(board, player)
+	
+	for move in legal:
 		new_board = make_move(board, move)
 		subdepth = depth - 1
 		if is_capture(board, move):
@@ -208,45 +216,37 @@ def tree_search(board, depth, player, alpha, beta):
 			possible_score -= 1
 			
 		if possible_score >= beta:
+			if abs(possible_score) > 100:
+				cache[key] = possible_score, move
 			return possible_score, move
 			
 		if possible_score > best_score:
 			best_score = possible_score
 			best_moves = [move]
 		elif possible_score == best_score:
-			#
-			
-		possible.append((possible_score, move))
+			best_moves.append(move)
 		
-	if not possible:
-		raise ValueError("game is over")
-		
-	best_score = max(s for s, _ in possible)
-	candidates = [move for s, move in possible
-								if s == best_score]
+	if not best_moves:
+		return alpha, None
 
-	return best_score, random.choice(candidates)
+	return best_score, random.choice(best_moves)
 	
 	
 def play_game():
 	board = START
 	depth = 3
+	turn = WHITE
 	print()
-	for i in range(100):
-		score, move = tree_search(board, depth, WHITE, -MAX_SCORE, MAX_SCORE)
+	while True:
+		score, move = tree_search(board, depth, turn, -50, 50)
 		print("white score:", score, "move:", move)
 		board = make_move(board, move)
 		print("board:", board)
 		if winner(board):
 			print("white wins")
 			return WHITE
-		score, move = tree_search(board, depth, BLACK, -MAX_SCORE, MAX_SCORE)
-		print("black score:", score, "move:", move)
-		board = make_move(board, move)
-		print("board:", board)
-		if winner(board):
-			print("black wins")
-			return BLACK
+		turn = opposite_color(turn)
+		
 
 def test():
 	# Black to move should win
