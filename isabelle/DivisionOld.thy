@@ -65,42 +65,51 @@ fun lt :: "cnat \<Rightarrow> cnat \<Rightarrow> bool" where
 
 lemma lt_not_ref: "~ lt x x"
   apply(induction x)
-  apply(auto)
+   apply(auto)
   done
 
 lemma lt_not_symm: "lt a b \<Longrightarrow> ~ lt b a"
   apply(induction a arbitrary: b)
-  apply(auto)
+   apply(auto)
   by (metis lt.elims(2) lt.simps(3))
 
 lemma lt_trans: "lt a b \<Longrightarrow> lt b c \<Longrightarrow> lt a c"
   apply(induction c arbitrary: a b)
-  apply(auto)
+   apply(auto)
   by (metis cnat.distinct(1) cnat.inject lt.elims(1) lt.simps(3))
 
 lemma lt_to_sub: "lt a b \<Longrightarrow> \<exists> c. b = add a c"
   apply(induction a arbitrary: b)
-  apply(auto)
+   apply(auto)
   by (metis cnat.distinct(2) cnat.inject lt.elims(2))
 
 lemma lt_add_suc: "lt a (add a (Suc b))"
   apply(induction a arbitrary: b)
-  apply(auto)
+   apply(auto)
   done
 
 lemma add_cancels_left: "add a b = add a c \<Longrightarrow> b = c"
   apply(induction a arbitrary: b c)
-  apply(auto)
+   apply(auto)
   done
 
 lemma add_cancels_right: "add a c = add b c \<Longrightarrow> a = b"
   using add_cancels_left add_comm by presburger
 
-(*
 lemma division_theorem: "lt Zero n \<Longrightarrow> \<exists> q r. lt r n \<and> m = add (mul q n) r"
   apply(induction m)
-  apply(auto)
-  apply (metis add_zero_right mul.simps(1))
-*)
+   apply(auto)
+   apply(metis add_zero_right mul.simps(1))
+  apply(case_tac "Suc r = n")
+   apply (metis add.simps(2) add_comm add_zero_right mul_comm mul_suc_right)
+  apply(subgoal_tac "lt (Suc r) n \<and> cnat.Suc (add (mul q n) r) = add (mul q n) (Suc r)")
+   apply blast
+  by (smt (verit) add.elims add_comm cnat.inject lt.elims(1) lt_add_suc lt_not_ref lt_to_sub)
+
+definition divides :: "cnat \<Rightarrow> cnat \<Rightarrow> bool" where
+"divides a b \<longleftrightarrow> (\<exists> m. (mul a m) = b)"
+
+definition prime :: "cnat \<Rightarrow> bool" where
+"prime p \<longleftrightarrow> lt (Suc Zero) p \<and> (\<forall> d. divides d p \<longrightarrow> d = (Suc Zero) \<or> d = p)"
 
 end
