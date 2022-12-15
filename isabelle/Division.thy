@@ -182,6 +182,9 @@ qed
 lemma add_cancels_right: "add a c = add b c \<Longrightarrow> a = b"
   using add_cancels_left add_comm by presburger
 
+lemma lt_suc: "lt a b \<Longrightarrow> (Suc a) = b \<or> lt (Suc a) b"
+  by (smt (verit, ccfv_threshold) add.elims add_comm add_zero_right cnat.inject lt.elims(1) lt_add_suc lt_not_ref lt_to_sub)
+
 lemma division_theorem: "lt Zero n \<Longrightarrow> \<exists> q r. lt r n \<and> m = add (mul q n) r"
 proof (induct m)
   case Zero
@@ -189,14 +192,23 @@ proof (induct m)
     by (metis add_zero_right mul.simps(1)) 
 next
   case (Suc m)
-  then show ?case
+  obtain q and r where "lt r n \<and> m = add (mul q n) r"
+    using Suc.hyps Suc.prems by blast
+  show ?case
   proof (cases "Suc r = n")
     case True
-    then show ?thesis sorry
+    then show ?thesis
+      by (metis Suc.prems \<open>lt r n \<and> m = add (mul q n) r\<close> add.simps(2) add_comm add_zero_right mul_comm mul_suc_right) 
   next
     case False
-    then show ?thesis sorry
+    have "Suc m = add (mul q n) (Suc r)"
+      by (simp add: \<open>lt r n \<and> m = add (mul q n) r\<close>)
+    have "lt (Suc r) n"
+      using False \<open>lt r n \<and> m = add (mul q n) r\<close> lt_suc by blast 
+    then show ?thesis
+      using \<open>cnat.Suc m = add (mul q n) (cnat.Suc r)\<close> by blast 
   qed
+
 qed
 
 
