@@ -8,8 +8,8 @@ import sys
 
 START = "KQRBNP....pnbrqk"
 
-WHITE = "WHITE"
-BLACK = "BLACK"
+WHITE = "white"
+BLACK = "black"
 
 def get_color(char):
 	if "A" <= char <= "Z":
@@ -239,12 +239,12 @@ def play_game():
 	print()
 	while True:
 		score, move = tree_search(board, depth, turn, -50, 50)
-		print("white score:", score, "move:", move)
+		print(f"{turn} score:", score, "move:", move)
 		board = make_move(board, move)
 		print("board:", board)
 		if winner(board):
-			print("white wins")
-			return WHITE
+			print(f"{turn} wins")
+			return turn
 		turn = opposite_color(turn)
 		
 
