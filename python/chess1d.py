@@ -240,6 +240,9 @@ def play_game():
 	while True:
 		score, move = tree_search(board, depth, turn, -50, 50)
 		print(f"{turn} score:", score, "move:", move)
+		if move is None:
+			print(f"{turn} resigns")
+			return opposite_color(turn)
 		board = make_move(board, move)
 		print("board:", board)
 		if winner(board):
