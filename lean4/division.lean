@@ -7,5 +7,9 @@ def add (a b : Cnat) : Cnat :=
   | Cnat.zero => b
   | Cnat.succ c => Cnat.succ (add c b)
 
-theorem add_zero_right (x : Cnat) : add x Cnat.zero = x :=
-  sorry
+theorem add_zero_right (x : Cnat) : add x Cnat.zero = x := by
+  induction x
+  case zero => rfl
+  case succ x' ih => simp [*, add]
+
+  
