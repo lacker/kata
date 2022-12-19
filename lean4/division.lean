@@ -53,3 +53,45 @@ theorem distrib (x y z : Cnat) : mul x (add y z) = add (mul x y) (mul x z) := by
   case succ x' ih => rw [mul, mul, mul, add_assoc, ih, add_assoc,
                          <- add_assoc (mul x' y), <- add_assoc z, add_comm z]
 
+theorem mul_assoc (x y z : Cnat) : mul (mul x y) z = mul x (mul y z) := by
+  induction x
+  case zero => simp [mul]
+  case succ x' ih => simp [mul, mul_comm, distrib, <- ih]
+
+def lt (a b : Cnat) : Prop :=
+  match b with
+  | Cnat.zero => False
+  | Cnat.succ d => match a with
+                   | Cnat.zero => True
+                   | Cnat.succ c => lt c d
+
+theorem lt_not_ref (x : Cnat) : ¬ lt x x := by
+  induction x
+  case zero => simp [lt]
+  case succ x' ih => simp [lt, ih]
+
+theorem lt_not_symm (a b : Cnat) : lt a b → ¬ lt b a := by
+  induction a generalizing b
+  case zero => simp [lt]
+  case succ a' ih => match b with
+    | Cnat.zero => simp [lt]
+    | Cnat.succ b' => simp [lt]; apply ih
+
+theorem lt_trans (a b c : Cnat) : lt a b ∧ lt b c → lt a c := by
+  induction c generalizing a b
+  case zero => simp [lt]
+  case succ c' ih => match a with
+    | Cnat.zero => simp [lt]
+    | Cnat.succ a' => match b with
+      | Cnat.zero => simp [lt]
+      | Cnat.succ b' => simp [lt]; apply ih
+
+theorem lt_to_sub (a b : Cnat) : lt a b → ∃ c, b = add a c := by
+  induction a generalizing b
+  case zero => simp [add]; intro; apply Exists.intro b; rfl
+  case succ a ih =>
+    simp [add]
+    match b with
+      | Cnat.zero => simp [lt]
+      | Cnat.succ b' => simp [lt]; apply ih 
+
