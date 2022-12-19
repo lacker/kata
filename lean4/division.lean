@@ -50,4 +50,6 @@ theorem mul_comm (x y : Cnat) : mul x y = mul y x := by
 theorem distrib (x y z : Cnat) : mul x (add y z) = add (mul x y) (mul x z) := by
   induction x
   case zero => simp [mul, add]
-  case succ x' ih => sorry
+  case succ x' ih => rw [mul, mul, mul, add_assoc, ih, add_assoc,
+                         <- add_assoc (mul x' y), <- add_assoc z, add_comm z]
+
