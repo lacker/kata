@@ -1,3 +1,5 @@
+open Classical
+
 inductive Cnat where
   | zero : Cnat
   | succ : Cnat → Cnat
@@ -95,3 +97,71 @@ theorem lt_to_sub (a b : Cnat) : lt a b → ∃ c, b = add a c := by
       | Cnat.zero => simp [lt]
       | Cnat.succ b' => simp [lt]; apply ih 
 
+theorem lt_add_suc (a b : Cnat) : lt a (add a b.succ) := by
+  induction a generalizing b
+  case zero => simp [add, lt]
+  case succ a ih => simp [add, lt]; apply ih
+
+theorem add_cancels_left (a b c : Cnat) : add a b = add a c → b = c := by
+  induction a generalizing b
+  case zero => simp [add]; intro h; exact h
+  case succ a ih => simp [add]; apply ih
+
+theorem add_cancels_right (a b c : Cnat) : add a c = add b c → a = b := by
+  induction c
+  case zero => simp [add_zero_right]; intro h; exact h
+  case succ c ih => simp [add_suc_right]; exact ih
+
+theorem lt_suc (a b : Cnat) (h1: lt a b) : a.succ = b ∨ lt a.succ b := by
+  let ⟨c, h2⟩ := lt_to_sub a b h1
+  match c with
+    | Cnat.zero => {
+      simp [add_zero_right] at h2; rw [h2] at h1; simp [lt_not_ref] at h1
+    }
+    | Cnat.succ c' => match c' with
+      | Cnat.zero => {
+        simp [add_suc_right, add_zero_right] at h2
+        simp [h2]
+      }
+      | Cnat.succ c'' => {
+        apply Or.inr
+        rw [add_suc_right] at h2
+        rw [h2]
+        simp [lt]
+        exact lt_add_suc _ _
+      }
+
+theorem division_theorem (m n : Cnat) (h1: lt Cnat.zero n) :
+  ∃ q r, lt r n ∧ m = add (mul q n) r := by
+  induction m
+  case zero => {
+    apply Exists.intro Cnat.zero
+    apply Exists.intro Cnat.zero
+    simp [h1, mul, add] 
+  }
+  case succ m ih => {
+    let ⟨q, r, h2, h3⟩ := ih
+    apply Or.elim (em (r.succ = n))
+    case left => {
+      intro h4
+      apply Exists.intro q.succ
+      apply Exists.intro Cnat.zero
+      simp [h1, add_zero_right, h3, mul]
+      rw [<- h4, add, add_comm]
+    }
+    case right => {
+      intro h5
+      apply Exists.intro q
+      apply Exists.intro r.succ
+      apply And.intro
+      case left => {
+        apply Or.elim (lt_suc r n h2)
+        case left => simp [h5]
+        case right => intro h6; exact h6  
+      }
+      case right => {
+        rw [h3]
+        simp [add_suc_right]
+      }
+    }
+  }
