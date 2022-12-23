@@ -176,7 +176,7 @@ def invert_move(move):
 		return None
 	return tuple(len(START) - 1 - i for i in move)
 	
-def tree_search(board, depth, player, alpha, beta, cache={}):
+def tree_search(board, depth, player, alpha, beta, cache=None):
 	"""
 	Return (score, move) for the player to move.
 	Positive scores are better.
@@ -184,6 +184,8 @@ def tree_search(board, depth, player, alpha, beta, cache={}):
 	If we can't find any move that even achieves alpha, return (alpha, None).
 	cache maps (board, player) to a score when we have exhausted the game tree.
 	"""
+	if cache is None:
+		cache = {}
 	key = (board, player)
 	if key in cache:
 		return cache[key]
