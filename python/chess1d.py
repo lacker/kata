@@ -236,7 +236,8 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 	
 def play_game():
 	board = START
-	depth = 3
+	# todo: use n positions not depth
+	depth = 4
 	turn = WHITE
 	print()
 	while True:
