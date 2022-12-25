@@ -178,7 +178,7 @@ def invert_move(move):
 	
 def tree_search(board, depth, player, alpha, beta, cache=None):
 	"""
-	Return (score, move) for the player to move.
+	Return (score, move, positions searched) for the player to move.
 	Positive scores are better.
 	Score can be truncated to the (alpha, beta) range.
 	If we can't find any move that even achieves alpha, return (alpha, None).
@@ -188,17 +188,18 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 		cache = {}
 	key = (board, player)
 	if key in cache:
-		return cache[key]
+		b, p = cache[key]
+		return b, p, 1
 		
 	w = winner(board)
 	if w:
 		if w == player:
 			return 1000, None
-		return -1000, None
+		return -1000, None, 1
 	
 	if depth == 0:		
 		s = get_score(board, player, player)
-		return s, None
+		return s, None, 1
 	
 	
 	best_score = alpha
