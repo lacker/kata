@@ -194,7 +194,7 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 	w = winner(board)
 	if w:
 		if w == player:
-			return 1000, None
+			return 1000, None, 1
 		return -1000, None, 1
 	
 	if depth == 0:		
