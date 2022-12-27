@@ -205,6 +205,7 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 	best_score = alpha
 	best_moves = []
 	legal = legal_moves(board, player)
+	position_count = 1
 	
 	for move in legal:
 		new_board = make_move(board, move)
@@ -212,7 +213,7 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 		if is_capture(board, move):
 			subdepth += 1
 			
-		subscore, submove = tree_search(new_board, subdepth, opposite_color(player), -beta, -alpha)
+		subscore, submove, subcount = tree_search(new_board, subdepth, opposite_color(player), -beta, -alpha)
 		possible_score = -subscore
 		# Incentivize not stalling forever
 		if possible_score > 900:
