@@ -215,6 +215,8 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 			
 		subscore, submove, subcount = tree_search(new_board, subdepth, opposite_color(player), -beta, -alpha)
 		possible_score = -subscore
+		position_count += subcount
+		
 		# Incentivize not stalling forever
 		if possible_score > 900:
 			possible_score -= 1
