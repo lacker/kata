@@ -224,7 +224,7 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 		if possible_score >= beta:
 			if abs(possible_score) > 100:
 				cache[key] = possible_score, move
-			return possible_score, move
+			return possible_score, move, position_count
 			
 		if possible_score > best_score:
 			best_score = possible_score
