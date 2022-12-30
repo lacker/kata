@@ -233,7 +233,7 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 			best_moves.append(move)
 		
 	if not best_moves:
-		return alpha, None
+		return alpha, None, position_count
 
 	return best_score, random.choice(best_moves)
 	
