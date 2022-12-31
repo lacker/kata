@@ -235,7 +235,7 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 	if not best_moves:
 		return alpha, None, position_count
 
-	return best_score, random.choice(best_moves)
+	return best_score, random.choice(best_moves), position_count
 	
 	
 def play_game():
