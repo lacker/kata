@@ -176,7 +176,7 @@ def invert_move(move):
 		return None
 	return tuple(len(START) - 1 - i for i in move)
 	
-def tree_search(board, depth, player, alpha, beta, cache=None):
+def tree_search(board, player, alpha, beta, cache=None):
 	"""
 	Return (score, move, positions searched) for the player to move.
 	Positive scores are better.
@@ -209,11 +209,8 @@ def tree_search(board, depth, player, alpha, beta, cache=None):
 	
 	for move in legal:
 		new_board = make_move(board, move)
-		subdepth = depth - 1
-		if is_capture(board, move):
-			subdepth += 1
 			
-		subscore, submove, subcount = tree_search(new_board, subdepth, opposite_color(player), -beta, -alpha)
+		subscore, submove, subcount = tree_search(new_board, opposite_color(player), -beta, -alpha)
 		possible_score = -subscore
 		position_count += subcount
 		
@@ -245,7 +242,7 @@ def play_game():
 	turn = WHITE
 	print()
 	while True:
-		score, move = tree_search(board, depth, turn, -50, 50)
+		score, move = tree_search(board, turn, -50, 50)
 		print(f"{turn} score:", score, "move:", move)
 		if move is None:
 			print(f"{turn} resigns")
