@@ -174,7 +174,7 @@ def get_score(board, player, to_move):
 def invert_move(move):
 	if move is None:
 		return None
-	return tuple(len(START) - 1 - i for i in move)
+	return tuple(len(START) - 1 - i for i in move)	
 	
 def tree_search(board, player, alpha, beta, cache=None):
 	"""
@@ -197,9 +197,11 @@ def tree_search(board, player, alpha, beta, cache=None):
 			return 1000, None, 1
 		return -1000, None, 1
 	
+	"""
 	if depth == 0:		
 		s = get_score(board, player, player)
 		return s, None, 1
+	"""
 	
 	
 	best_score = alpha
