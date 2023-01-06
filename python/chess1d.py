@@ -196,13 +196,10 @@ def tree_search(board, player, alpha, beta, depth, cache=None):
 		if w == player:
 			return 1000, None, 1
 		return -1000, None, 1
-	
-	"""
-	if depth == 0:		
+
+	if depth <= 0:		
 		s = get_score(board, player, player)
 		return s, None, 1
-	"""
-	
 	
 	best_score = alpha
 	best_moves = []
@@ -212,7 +209,7 @@ def tree_search(board, player, alpha, beta, depth, cache=None):
 	for move in legal:
 		new_board = make_move(board, move)
 			
-		subscore, submove, subcount = tree_search(new_board, opposite_color(player), -beta, -alpha)
+		subscore, submove, subcount = tree_search(new_board, opposite_color(player), -beta, -alpha, depth - 1)
 		possible_score = -subscore
 		position_count += subcount
 		
