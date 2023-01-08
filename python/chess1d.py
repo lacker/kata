@@ -232,7 +232,10 @@ def tree_search(board, player, alpha, beta, depth, cache=None):
 		return alpha, None, position_count
 
 	return best_score, random.choice(best_moves), position_count
-	
+
+
+def deepen_search(board, turn):
+	pass
 	
 def play_game():
 	board = START
