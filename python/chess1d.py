@@ -200,6 +200,7 @@ def tree_search(board, player, alpha, beta, depth, cache=None):
 	if depth <= 0:		
 		s = get_score(board, player, player)
 		return s, None, 1
+	subdepth = depth - 1
 	
 	best_score = alpha
 	best_moves = []
