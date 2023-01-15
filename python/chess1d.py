@@ -210,7 +210,7 @@ def tree_search(board, player, alpha, beta, depth, cache=None):
 	for move in legal:
 		new_board = make_move(board, move)
 			
-		subscore, submove, subcount = tree_search(new_board, opposite_color(player), -beta, -alpha, depth - 1)
+		subscore, submove, subcount = tree_search(new_board, opposite_color(player), -beta, -alpha, subdepth)
 		possible_score = -subscore
 		position_count += subcount
 		
