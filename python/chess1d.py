@@ -245,7 +245,7 @@ def play_game():
 	turn = WHITE
 	print()
 	while True:
-		score, move, count = tree_search(board, turn, -50, 50)
+		score, move, count = tree_search(board, turn, -50, 50, depth)
 		print(f"{turn} score:", score, "move:", move)
 		if move is None:
 			print(f"{turn} resigns")
