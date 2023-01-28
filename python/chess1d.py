@@ -275,7 +275,10 @@ def test():
 
 	score, move = tree_search(board, 1, BLACK)
 	print("best move:", move, "with score", score)
-						
+	
+def test2():
+	bord = "K........R.P.rk."
+																
 play_game()
 # test()
 	
