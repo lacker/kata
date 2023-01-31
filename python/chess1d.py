@@ -176,7 +176,7 @@ def invert_move(move):
 		return None
 	return tuple(len(START) - 1 - i for i in move)	
 	
-def tree_search(board, player, alpha=MAX_SCORE, beta, depth=4, cache=None):
+def tree_search(board, player, alpha=MAX_SCORE, beta=-MAX_SCORE, depth=4, cache=None):
 	"""
 	Return (score, move, positions searched) for the player to move.
 	Positive scores are better.
