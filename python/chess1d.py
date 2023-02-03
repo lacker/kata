@@ -237,9 +237,9 @@ def tree_search(board, player, alpha=MAX_SCORE, beta=-MAX_SCORE, depth=4, cache=
 
 def deepen_search(board, turn):
 	depth = 4
-	time = time
+	time = time()
 	while True:
-		score, move, count = tree_search(board, turn, -MAX_SCORE, MAX_SCORE, depth)
+		score, move, count = tree_search(board, turn, depth=depth)
 	
 	
 def play_game():
