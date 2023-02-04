@@ -165,3 +165,5 @@ theorem division_theorem (m n : Cnat) (h1: lt Cnat.zero n) :
       }
     }
   }
+
+def is_prime (p : Cnat) : Prop := sorry
