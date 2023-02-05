@@ -240,6 +240,8 @@ def deepen_search(board, turn):
 	time = time()
 	while True:
 		score, move, count = tree_search(board, turn, depth=depth)
+		if abs(score) > 100:
+			return score, move, count
 	
 	
 def play_game():
