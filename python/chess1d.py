@@ -243,6 +243,8 @@ def deepen_search(board, turn):
 		if abs(score) > 100:
 			return score, move, count
 		elapsed = time() - start
+		if elapsed > 5:
+			return score, move, count
 	
 	
 def play_game():
