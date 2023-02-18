@@ -5,6 +5,7 @@ One-dimensional chess. See https://gumroad.com/l/1DChess
 
 import random
 import sys
+import time
 
 START = "KQRBNP....pnbrqk"
 
