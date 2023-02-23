@@ -243,7 +243,7 @@ def deepen_search(board, turn):
 		score, move, count = tree_search(board, turn, depth=depth)
 		if abs(score) > 100:
 			return score, move, count
-		elapsed = time() - start
+		elapsed = time.time() - start
 		if elapsed > 5:
 			return score, move, count
 		depth += 1
