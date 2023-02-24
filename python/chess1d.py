@@ -242,6 +242,7 @@ def deepen_search(board, turn):
 	while True:
 		score, move, count = tree_search(board, turn, depth=depth)
 		if abs(score) > 100:
+			print("hit bottom at depth", depth)
 			return score, move, count
 		elapsed = time.time() - start
 		if elapsed > 5:
