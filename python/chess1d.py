@@ -211,7 +211,7 @@ def tree_search(board, player, alpha=MAX_SCORE, beta=-MAX_SCORE, depth=4, cache=
 	for move in legal:
 		new_board = make_move(board, move)
 			
-		subscore, submove, subcount = tree_search(new_board, opposite_color(player), -beta, -alpha, subdepth)
+		subscore, submove, subcount = tree_search(new_board, opposite_color(player), -beta, -alpha, depth=subdepth)
 		possible_score = -subscore
 		position_count += subcount
 		
@@ -237,7 +237,7 @@ def tree_search(board, player, alpha=MAX_SCORE, beta=-MAX_SCORE, depth=4, cache=
 
 
 def deepen_search(board, turn):
-	depth = 4
+	depth = 1
 	start = time.time()
 	while True:
 		score, move, count = tree_search(board, turn, depth=depth)
