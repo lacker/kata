@@ -7,4 +7,4 @@ class Atom:
         self.token = token
         
     def __eq__(self, other):
-        pass 
+        return self.token == other.token
