@@ -10,4 +10,5 @@ class Token:
         return self.token == other.token
         
 class Variable:
-    pass
+    def __init__(self):
+        pass
