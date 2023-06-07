@@ -12,3 +12,6 @@ class Token:
 class Variable:
     def __init__(self, number):
         self.number = number
+        
+class Application:
+    pass
