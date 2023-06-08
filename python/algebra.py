@@ -14,4 +14,5 @@ class Variable:
         self.number = number
         
 class Application:
-    pass
+    def __init__(self, left, roght):
+        pass
