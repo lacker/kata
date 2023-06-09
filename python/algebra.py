@@ -14,5 +14,5 @@ class Variable:
         self.number = number
         
 class Application:
-    def __init__(self, left, roght):
-        pass
+    def __init__(self, left, right):
+        self.left = left
