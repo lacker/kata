@@ -9,6 +9,9 @@ class Token:
     def __eq__(self, other):
         return self.token == other.token
         
+    def __str__(self):
+        return self.token
+        
 class Variable:
     def __init__(self, number):
         self.number = number
