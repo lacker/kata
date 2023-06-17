@@ -20,3 +20,6 @@ class Application:
     def __init__(self, left, right):
         self.left = left
         self.right = right
+        
+def unify(left, right):
+    pass
