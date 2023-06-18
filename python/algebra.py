@@ -21,5 +21,5 @@ class Application:
         self.left = left
         self.right = right
         
-def unify(left, right):
+def unify(left, right, left_map=None):
     pass
