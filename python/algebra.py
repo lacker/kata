@@ -2,15 +2,15 @@ class Formula:
     def __init__(self):
         pass
         
-class Token:
-    def __init__(self, token):
-        self.token = token
+class Atom:
+    def __init__(self, atom):
+        self.atom = atom
         
     def __eq__(self, other):
-        return self.token == other.token
+        return self.atom == other.atom
         
     def __str__(self):
-        return self.token
+        return str(self.atom)
         
 class Variable:
     def __init__(self, number):
