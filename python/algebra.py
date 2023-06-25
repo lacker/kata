@@ -16,10 +16,10 @@ class Variable:
     def __init__(self, number):
         self.number = number
         
-class Application:
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
+class Term:
+    def __init__(self, head, args):
+        self.head = head
+        self.args = args
         
 def unify(left, right, left_map=None):
     pass
