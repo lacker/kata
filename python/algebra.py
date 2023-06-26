@@ -21,5 +21,5 @@ class Term:
         self.head = head
         self.args = args
         
-def unify(left, right, left_map=None):
+def unify(left, right, left_map=None, right_map=None):
     pass
