@@ -21,5 +21,9 @@ class Term:
         self.head = head
         self.args = args
         
+class Replaced:
+    def __init__(self, term, mapping):
+        pass
+        
 def unify(left, right, left_map=None, right_map=None):
     pass
