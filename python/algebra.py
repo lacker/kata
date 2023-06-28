@@ -23,7 +23,7 @@ class Term:
         
 class Replaced:
     def __init__(self, term, mapping):
-        pass
+        self.term = term
         
 def unify(left, right, left_map=None, right_map=None):
     pass
