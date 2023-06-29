@@ -24,6 +24,7 @@ class Term:
 class Replaced:
     def __init__(self, term, mapping):
         self.term = term
+        self.mapping = mapping
         
 def unify(left, right, left_map=None, right_map=None):
     pass
