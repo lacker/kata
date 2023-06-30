@@ -16,6 +16,9 @@ class Variable:
     def __init__(self, number):
         self.number = number
         
+    def map(self, mapping):
+        pass
+        
 class Term:
     def __init__(self, head, args):
         self.head = head
