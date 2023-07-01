@@ -17,7 +17,7 @@ class Variable:
         self.number = number
         
     def map(self, mapping):
-        pass
+        return mapping.get(self.number, self)
         
 class Term:
     def __init__(self, head, args):
