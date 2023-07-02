@@ -1,4 +1,4 @@
-class Formula:
+class Term(object):
     def __init__(self):
         pass
         
