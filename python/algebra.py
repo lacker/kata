@@ -2,6 +2,9 @@ class Term(object):
     def __init__(self):
         pass
         
+    def map(self, mapping):
+        return self
+        
 class Atom:
     def __init__(self, atom):
         self.atom = atom
