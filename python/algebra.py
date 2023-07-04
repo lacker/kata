@@ -5,7 +5,7 @@ class Term(object):
     def map(self, mapping):
         return self
         
-class Atom:
+class Atom(Term):
     def __init__(self, atom):
         self.atom = atom
         
