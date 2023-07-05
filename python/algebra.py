@@ -15,7 +15,7 @@ class Atom(Term):
     def __str__(self):
         return str(self.atom)
         
-class Variable:
+class Variable(Term):
     def __init__(self, number):
         self.number = number
         
