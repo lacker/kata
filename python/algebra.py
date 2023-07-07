@@ -22,7 +22,7 @@ class Variable(Term):
     def map(self, mapping):
         return mapping.get(self.number, self)
         
-class Composite:
+class Composite(Term):
     def __init__(self, head, args):
         self.head = head
         self.args = args
