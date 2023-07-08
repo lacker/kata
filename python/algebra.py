@@ -26,6 +26,9 @@ class Composite(Term):
     def __init__(self, head, args):
         self.head = head
         self.args = args
+    
+    def map(self, mapping):
+        pass
         
 class Replaced:
     def __init__(self, term, mapping):
