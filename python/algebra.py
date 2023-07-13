@@ -5,15 +5,18 @@ class Term(object):
     def map(self, mapping):
         return self
         
-class Atom(Term):
-    def __init__(self, atom):
-        self.atom = atom
+class Constant(Term):
+    def __init__(self, token):
+        self.token = token
         
     def __eq__(self, other):
-        return self.atom == other.atom
+        return self.token == other.token
         
     def __str__(self):
-        return str(self.atom)
+        return str(self.token)
+        
+    def is_constant(self):
+        return True
         
 class Variable(Term):
     def __init__(self, number):
@@ -30,11 +33,6 @@ class Composite(Term):
     def map(self, mapping):
         head = self.head.map(mapping)
         args = [arg.map(mapping) for arg in self.args]
-        
-class Replaced:
-    def __init__(self, term, mapping):
-        self.term = term
-        self.mapping = mapping
         
 def unify(left, right, left_map=None, right_map=None):
     pass
