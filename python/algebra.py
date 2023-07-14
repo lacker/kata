@@ -5,6 +5,9 @@ class Term(object):
     def map(self, mapping):
         return self
         
+    def is_constant(self):
+        return False
+        
 class Constant(Term):
     def __init__(self, token):
         self.token = token
