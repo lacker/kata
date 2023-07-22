@@ -44,5 +44,7 @@ class Composite(Term):
         args = [arg.map(mapping) for arg in self.args]
         
 def unify(left, right, left_map=None, right_map=None):
+    if left_map is None:
+        left_map = {}
     if left.is_variable():
         pass
