@@ -46,5 +46,7 @@ class Composite(Term):
 def unify(left, right, left_map=None, right_map=None):
     if left_map is None:
         left_map = {}
+    if right_map is None:
+        right_map = {}
     if left.is_variable():
         pass
