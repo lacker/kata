@@ -49,4 +49,4 @@ def unify(left, right, left_map=None, right_map=None):
     if right_map is None:
         right_map = {}
     if left.is_variable():
-        pass
+        left_map[left.number] = right
