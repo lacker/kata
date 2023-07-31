@@ -50,4 +50,6 @@ def unify(left, right, left_map=None, right_map=None):
         right_map = {}
     if left.is_variable():
         existing = left_map.get(left.number)
+        if existing is not None:
+            pass
         left_map[left.number] = right
