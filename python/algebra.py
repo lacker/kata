@@ -51,5 +51,6 @@ def unify(left, right, left_map=None, right_map=None):
     if left.is_variable():
         existing = left_map.get(left.number)
         if existing is not None:
-            pass
+            if existing == right:
+                return left_map, right_map
         left_map[left.number] = right
