@@ -55,3 +55,4 @@ def unify(left, right, left_map=None, right_map=None):
                 return left_map, right_map
             raise ValueError("cannot unify")
         left_map[left.number] = right
+        return left_map, right_map
