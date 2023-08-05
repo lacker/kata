@@ -43,11 +43,10 @@ class Composite(Term):
         head = self.head.map(mapping)
         args = [arg.map(mapping) for arg in self.args]
         
-def unify(left, right, left_map=None, right_map=None):
-    if left_map is None:
-        left_map = {}
-    if right_map is None:
-        right_map = {}
+def unify_var(n, term, var_map, term_map):
+    pass
+
+def unify(left, right, left_map, right_map):
     if left.is_variable():
         existing = left_map.get(left.number)
         if existing is not None:
