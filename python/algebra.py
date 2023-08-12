@@ -47,7 +47,7 @@ def unify_var(n, term, var_map, term_map):
     existing = term_map.get(number)
     if existing is not None:
         if existing == right:
-            pass
+            return var_map, term_map
 
 def unify(left, right, left_map, right_map):
     if left.is_variable():
