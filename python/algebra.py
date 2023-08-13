@@ -48,6 +48,7 @@ def unify_var(n, term, var_map, term_map):
     if existing is not None:
         if existing == right:
             return var_map, term_map
+        raise ValueError("cannot unify")
 
 def unify(left, right, left_map, right_map):
     if left.is_variable():
