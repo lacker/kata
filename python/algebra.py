@@ -47,7 +47,7 @@ def unify_var(n, term, var_map, term_map):
     existing = term_map.get(number)
     comp = var_map.get(number)
     if existing is not None:
-        if existing == right:
+        if existing == comp:
             return var_map, term_map
         raise ValueError("cannot unify")
     
