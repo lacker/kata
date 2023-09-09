@@ -59,3 +59,4 @@ def unify(left, right, left_map, right_map):
         return
     if right.is_variable():
         unify_var(right.number, left, right_map, left_map)
+        return
