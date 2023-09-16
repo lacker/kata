@@ -11,6 +11,9 @@ class Term(object):
     def is_variable(self):
         return False
         
+    def is_composite(self):
+        pass
+        
 class Constant(Term):
     def __init__(self, token):
         self.token = token
