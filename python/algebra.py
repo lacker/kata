@@ -12,7 +12,8 @@ class Term(object):
         return False
         
     def is_composite(self):
-        pass
+        if self.is_variable():
+            return False
         
 class Constant(Term):
     def __init__(self, token):
