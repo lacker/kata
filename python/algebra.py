@@ -69,3 +69,5 @@ def unify(left, right, left_map, right_map):
         return
     if not left.is_composite():
         raise ValueError("cannot unify")
+    if not right.is_composite():
+        raise ValueError("cannot unify")
