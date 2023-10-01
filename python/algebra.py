@@ -19,6 +19,7 @@ class Term(object):
 class Constant(Term):
     def __init__(self, token):
         self.token = token
+      
         
     def __eq__(self, other):
         return self.token == other.token
@@ -71,3 +72,5 @@ def unify(left, right, left_map, right_map):
         raise ValueError("cannot unify")
     if not right.is_composite():
         raise ValueError("cannot unify")
+    if len(left.args) != len(right.args):
+        raise ValueError("arg len mismatch")
