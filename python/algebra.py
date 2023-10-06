@@ -74,3 +74,4 @@ def unify(left, right, left_map, right_map):
         raise ValueError("cannot unify")
     if len(left.args) != len(right.args):
         raise ValueError("arg len mismatch")
+    unify(left.head, right.head, left_map, right_map)
