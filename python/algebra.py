@@ -76,4 +76,4 @@ def unify(left, right, left_map, right_map):
         raise ValueError("arg len mismatch")
     unify(left.head, right.head, left_map, right_map)
     for left_arg, right_arg in zip(left.args, right.args):
-        pass
+        unify(left_arg, right_arg, left_map, right_map)
