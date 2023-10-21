@@ -80,4 +80,4 @@ def unify(left, right, left_map, right_map):
         
 def sparse(string):
     "Parse an s expression into lists."
-    parts = string.split()
+    components = []
