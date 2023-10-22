@@ -78,6 +78,9 @@ def unify(left, right, left_map, right_map):
     for left_arg, right_arg in zip(left.args, right.args):
         unify(left_arg, right_arg, left_map, right_map)
         
+def split_on_char(s, ch):
+    parts = []
+
 def sparse(string):
     "Parse an s expression into lists."
     components = []
