@@ -80,6 +80,9 @@ def unify(left, right, left_map, right_map):
         
 def split_on_char(s, ch):
     parts = []
+    for i, part in enumerate(s.split(ch)):
+        pass
+        
 
 def sparse(string):
     "Parse an s expression into lists."
