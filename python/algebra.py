@@ -81,7 +81,8 @@ def unify(left, right, left_map, right_map):
 def split_on_char(s, ch):
     parts = []
     for i, part in enumerate(s.split(ch)):
-        pass
+        if i > 0:
+            pass
         
 
 def sparse(string):
