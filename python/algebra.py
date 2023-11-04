@@ -82,7 +82,8 @@ def split_on_char(s, ch):
     parts = []
     for i, part in enumerate(s.split(ch)):
         if i > 0:
-            pass
+            parts.append(ch)
+            #
         
 
 def sparse(string):
