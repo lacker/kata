@@ -86,6 +86,8 @@ def split_on_char(s, ch):
         parts.append(part)
     return parts
         
+def split_on_chars(s, chRs):
+    pass
 
 def sparse(string):
     "Parse an s expression into lists."
