@@ -90,7 +90,8 @@ def split_on_chars(s, chars):
     answer = [s]
     for ch in chars:
         new_answer = []
-        #
+        for part in answer:
+            pass
 
 def sparse(string):
     "Parse an s expression into lists."
