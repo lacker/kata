@@ -94,7 +94,7 @@ def split_on_chars(s, chars):
             new_parts = split_on_char(s, part)
             new_answer += new_parts
         answer = new_answer
-    #
+    return answer
 
 def sparse(string):
     "Parse an s expression into lists."
