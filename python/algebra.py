@@ -98,4 +98,4 @@ def split_on_chars(s, chars):
 
 def sparse(string):
     "Parse an s expression into lists."
-    components = []
+    tokens = split_on_chars(string, "() ")
