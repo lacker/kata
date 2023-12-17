@@ -97,7 +97,18 @@ def split_on_chars(s, chars):
     return answer
 
 def sparse(string):
-    "Parse an s expression into lists."
+    """
+    Parse an s expression into lists.
+    """
     tokens = split_on_chars(string, "() ")
     for token in tokens:
         pass
+        
+def nest(tokens):
+    """
+    Turn the first parenthesized section
+    into nested lists.
+    Return a tuple of the nested
+    section, then the rest of the tokens.
+    """
+    pass
