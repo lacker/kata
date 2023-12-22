@@ -111,4 +111,5 @@ def nest(tokens):
     Return a tuple of the nested
     section, then the rest of the tokens.
     """
-    pass
+    assert tokens
+    first = tokens[0]
