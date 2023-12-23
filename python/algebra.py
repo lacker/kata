@@ -113,3 +113,5 @@ def nest(tokens):
     """
     assert tokens
     first = tokens[0]
+    if first == ")":
+        raise ValueError("bad )")
