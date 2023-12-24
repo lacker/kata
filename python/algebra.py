@@ -115,3 +115,5 @@ def nest(tokens):
     first = tokens[0]
     if first == ")":
         raise ValueError("bad )")
+    if first != "(":
+        pass
