@@ -120,4 +120,7 @@ def nest(tokens):
         return first, rest
     if not rest or rest[-1] != ")":
         raise ValueError("missing )")
+        
+    # The whole thing is parenthesized
     inner = rest[:-1]
+    answer = []
