@@ -122,5 +122,8 @@ def nest(tokens):
         raise ValueError("missing )")
         
     # The whole thing is parenthesized
-    inner = rest[:-1]
+    pending = rest[:-1]
     answer = []
+    while pending:
+        item, pending = nest(pending)
+    #
