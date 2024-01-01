@@ -126,4 +126,5 @@ def nest(tokens):
     answer = []
     while pending:
         item, pending = nest(pending)
+        answer.append(item)
     #
