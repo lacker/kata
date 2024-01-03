@@ -101,8 +101,7 @@ def sparse(string):
     Parse an s expression into lists.
     """
     tokens = split_on_chars(string, "() ")
-    for token in tokens:
-        pass
+    answer, rest = nest(tokens)
         
 def nest(tokens):
     """
