@@ -103,6 +103,7 @@ def sparse(string):
     tokens = split_on_chars(string, "() ")
     answer, rest = nest(tokens)
     assert not rest
+    return answer
         
 def nest(tokens):
     """
