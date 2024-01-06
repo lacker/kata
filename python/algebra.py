@@ -129,3 +129,7 @@ def nest(tokens):
         item, pending = nest(pending)
         answer.append(item)
     return answer
+    
+def parse(string):
+    "Parse an s expression into a Term."
+    pass
