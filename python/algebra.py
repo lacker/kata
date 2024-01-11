@@ -133,3 +133,4 @@ def nest(tokens):
 def parse(string):
     "Parse an s expression into a Term."
     lists = sparse(string)
+    return make_term(lists)
