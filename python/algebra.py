@@ -134,3 +134,6 @@ def parse(string):
     "Parse an s expression into a Term."
     lists = sparse(string)
     return make_term(lists)
+    
+def make_term(lists):
+    pass
