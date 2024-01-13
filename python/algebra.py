@@ -135,5 +135,6 @@ def parse(string):
     lists = sparse(string)
     return make_term(lists)
     
-def make_term(lists):
-    pass
+def make_term(expr):
+    if type(expr) is list:
+        pass
