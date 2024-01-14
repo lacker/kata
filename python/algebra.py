@@ -137,4 +137,6 @@ def parse(string):
     
 def make_term(expr):
     if type(expr) is list:
+        if not(expr):
+            pass
         pass
