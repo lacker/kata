@@ -139,4 +139,5 @@ def make_term(expr):
     if type(expr) is list:
         if not(expr):
             raise ValueError("empty list")
-        pass
+        for sub in expr:
+            pass
