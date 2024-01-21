@@ -140,4 +140,4 @@ def make_term(expr):
         if not(expr):
             raise ValueError("empty list")
         subs = [make_term(sub) for sub in expr]
-        
+        head = subs[0]
