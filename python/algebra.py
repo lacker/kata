@@ -141,3 +141,4 @@ def make_term(expr):
             raise ValueError("empty list")
         subs = [make_term(sub) for sub in expr]
         head = subs[0]
+        tail = subs[1:]
