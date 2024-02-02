@@ -144,4 +144,5 @@ def make_term(expr):
         args = subs[1:]
         return Composite(head, args)
     if type(expr) is str:
-        pass
+        if not expr:
+            pass
