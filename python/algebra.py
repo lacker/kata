@@ -146,3 +146,5 @@ def make_term(expr):
     if type(expr) is str:
         if not expr:
             raise ValueError("empty string")
+        if expr.startswith("x"):
+            pass
