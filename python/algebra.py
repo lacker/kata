@@ -145,4 +145,4 @@ def make_term(expr):
         return Composite(head, args)
     if type(expr) is str:
         if not expr:
-            pass
+            raise ValueError("empty string")
