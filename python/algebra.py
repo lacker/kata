@@ -147,4 +147,4 @@ def make_term(expr):
         if not expr:
             raise ValueError("empty string")
         if expr.startswith("x"):
-            pass
+            num_str = expr[1:]
