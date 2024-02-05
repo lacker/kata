@@ -148,3 +148,4 @@ def make_term(expr):
             raise ValueError("empty string")
         if expr.startswith("x"):
             num_str = expr[1:]
+            number = int(num_str)
