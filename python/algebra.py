@@ -150,3 +150,5 @@ def make_term(expr):
             num_str = expr[1:]
             number = int(num_str)
             return Variable(number)
+        if expr.startswith("c"):
+            pass
