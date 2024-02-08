@@ -151,4 +151,4 @@ def make_term(expr):
             number = int(num_str)
             return Variable(number)
         if expr.startswith("c"):
-            pass
+            num_str = expr[1:]
