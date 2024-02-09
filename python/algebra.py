@@ -152,3 +152,4 @@ def make_term(expr):
             return Variable(number)
         if expr.startswith("c"):
             num_str = expr[1:]
+            number = int(num_str)
