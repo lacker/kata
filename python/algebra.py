@@ -153,3 +153,4 @@ def make_term(expr):
         if expr.startswith("c"):
             num_str = expr[1:]
             number = int(num_str)
+            return Constant(number)
