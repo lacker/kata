@@ -154,3 +154,4 @@ def make_term(expr):
             num_str = expr[1:]
             number = int(num_str)
             return Constant(number)
+        raise ValueError(f"unexpected expr: {expr}")
