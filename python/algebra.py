@@ -19,7 +19,6 @@ class Term(object):
 class Constant(Term):
     def __init__(self, token):
         self.token = token
-      
         
     def __eq__(self, other):
         return self.token == other.token
@@ -39,6 +38,9 @@ class Variable(Term):
         
     def is_variable(self):
         return True
+        
+    def __str__(self):
+        return f"x{number}"
         
 class Composite(Term):
     def __init__(self, head, args):
