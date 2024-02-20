@@ -48,7 +48,7 @@ class Composite(Term):
         self.args = args
     
     def __str__(self):
-        pass
+        arg_str = " ".join(map(str, self.args))
     
     def map(self, mapping):
         head = self.head.map(mapping)
