@@ -49,6 +49,7 @@ class Composite(Term):
     
     def __str__(self):
         arg_str = " ".join(map(str, self.args))
+        return f"({head} {args})"
     
     def map(self, mapping):
         head = self.head.map(mapping)
