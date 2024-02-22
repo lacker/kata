@@ -162,3 +162,6 @@ def make_term(expr):
             return Constant(number)
         raise ValueError(f"unexpected expr: {expr}")
     raise ValueError(f"unexpected expr: {repr(expr)}")
+
+def check(s):
+    pass
