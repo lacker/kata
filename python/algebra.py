@@ -164,4 +164,4 @@ def make_term(expr):
     raise ValueError(f"unexpected expr: {repr(expr)}")
 
 def check(s):
-    pass
+    term = make_term(s)
