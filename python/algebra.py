@@ -165,3 +165,4 @@ def make_term(expr):
 
 def check(s):
     term = make_term(s)
+    output = str(term)
