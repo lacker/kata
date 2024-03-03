@@ -170,3 +170,5 @@ def check(s):
     
 def test():
     check("x2")
+    
+test()
