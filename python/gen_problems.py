@@ -5,7 +5,7 @@ def generate():
     right = random.randrange(0, MAX)
     symbol = "+"
     answer = left + right
-    return f"{left} {symbol} {right}"
+    s = f"{left} {symbol} {right}"
     
 
 def main():
