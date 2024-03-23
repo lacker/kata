@@ -10,3 +10,18 @@ def generate():
 
 def main():
     pass
+    
+"""
+xxxxxxxxx
+xxxxxxxxx
+xxxx xxxy
+xxxx xxxy
+xxxy xxyy
+xxxy xxyy
+xxyy xyyy
+xxyy xyyy
+xyyy yyyy
+xyyy yyyy
+yyyyyyyyy
+yyyyyyyyy
+"""
