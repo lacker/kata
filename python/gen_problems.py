@@ -8,6 +8,11 @@ def generate():
     s = f"{left} {symbol} {right}"
     return (s, answer)
     
+class Tokenizer:
+    def __init__(self):
+        self.n_to_ch = []
+        self.ch_to_n = {}
+    
 
 def main():
     pass
