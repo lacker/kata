@@ -1,4 +1,4 @@
-MAX = 100
+MAX = 10000
 
 def generate():
     left = random.randrange(0, MAX)
