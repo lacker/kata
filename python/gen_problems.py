@@ -13,6 +13,9 @@ class Tokenizer:
         self.n_to_ch = []
         self.ch_to_n = {}
     
+    def to_token(ch):
+        pass
+    
 
 def main():
     pass
