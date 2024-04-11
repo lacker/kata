@@ -16,6 +16,7 @@ class Tokenizer:
     def to_token(ch):
         if ch in self.ch_to_n:
             return self.ch_to_n[ch]
+        n = len(self.ch_to_n)
     
 
 def main():
