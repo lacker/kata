@@ -18,6 +18,7 @@ class Tokenizer:
             return self.ch_to_n[ch]
         n = len(self.ch_to_n)
         self.ch_to_n[ch] = n
+        return n
     
 
 def main():
