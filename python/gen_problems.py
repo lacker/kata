@@ -13,12 +13,15 @@ class Tokenizer:
         self.n_to_ch = []
         self.ch_to_n = {}
     
-    def to_token(ch):
+    def to_token(self, ch):
         if ch in self.ch_to_n:
             return self.ch_to_n[ch]
         n = len(self.ch_to_n)
         self.ch_to_n[ch] = n
         return n
+        
+    def to_char(self, n):
+        pass
     
 
 def main():
