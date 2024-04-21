@@ -21,7 +21,7 @@ class Tokenizer:
         return n
         
     def to_char(self, n):
-        return self.n_to_ch(n)
+        return self.n_to_ch[n]
     
 
 def main():
