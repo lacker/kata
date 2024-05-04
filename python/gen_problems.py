@@ -1,6 +1,6 @@
 MAX = 10000
 
-def generate():
+def generate_strs():
     left = random.randrange(0, MAX)
     right = random.randrange(0, MAX)
     symbol = "+"
@@ -23,6 +23,8 @@ class Tokenizer:
     def to_char(self, n):
         return self.n_to_ch[n]
     
+def generate_tokens():
+    pass
 
 def main():
     pass
