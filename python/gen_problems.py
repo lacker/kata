@@ -4,7 +4,7 @@ def generate_strs():
     left = random.randrange(0, MAX)
     right = random.randrange(0, MAX)
     symbol = "+"
-    answer = left + right
+    answer = str(left + right)
     s = f"{left} {symbol} {right}"
     return (s, answer)
     
