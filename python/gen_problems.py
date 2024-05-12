@@ -25,6 +25,7 @@ class Tokenizer:
     
     def generate_token_pair():
         in_str, out_str = generate_str_pair()
+        in_tokens = [self.to_token(ch) for ch in in_str]
 
 def main():
     pass
