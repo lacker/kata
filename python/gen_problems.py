@@ -13,6 +13,9 @@ class Tokenizer:
         self.n_to_ch = []
         self.ch_to_n = {}
     
+    def __len__(self):
+        pass
+    
     def to_token(self, ch):
         if ch in self.ch_to_n:
             return self.ch_to_n[ch]
