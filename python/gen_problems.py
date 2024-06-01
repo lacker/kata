@@ -14,7 +14,7 @@ class Tokenizer:
         self.ch_to_n = {}
     
     def __len__(self):
-        pass
+        len1 = len(self.n_to_ch)
     
     def to_token(self, ch):
         if ch in self.ch_to_n:
