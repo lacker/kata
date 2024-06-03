@@ -16,6 +16,7 @@ class Tokenizer:
     def __len__(self):
         len1 = len(self.n_to_ch)
         len2 = len(self.ch_to_n)
+        assert len1 == len2
     
     def to_token(self, ch):
         if ch in self.ch_to_n:
