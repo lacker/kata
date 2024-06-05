@@ -59,6 +59,9 @@ def add(*args):
 def mul(*args):
 	answer = 1
 	
+def cons(first, rest):
+	pass
+	
 def monolamb(expr):
 	raise Exception("TODO")
 	
