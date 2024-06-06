@@ -59,6 +59,7 @@ def add(*args):
 def mul(*args):
 	answer = 1
 	
+@expose
 def cons(first, rest):
 	pass
 	
