@@ -63,6 +63,7 @@ def mul(*args):
 def cons(first, rest):
 	answer = [first]
 	answer.extend(rest)
+	return answer
 	
 def monolamb(expr):
 	raise Exception("TODO")
