@@ -65,6 +65,9 @@ def cons(first, rest):
 	answer.extend(rest)
 	return answer
 	
+def car(x):
+	pass
+	
 def monolamb(expr):
 	raise Exception("TODO")
 	
