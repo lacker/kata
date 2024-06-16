@@ -65,6 +65,7 @@ def cons(first, rest):
 	answer.extend(rest)
 	return answer
 	
+@expose
 def car(x):
 	pass
 	
