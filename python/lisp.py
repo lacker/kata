@@ -58,6 +58,8 @@ def add(*args):
 @expose
 def mul(*args):
 	answer = 1
+	for arg in args:
+		answer *= arg
 	
 @expose
 def cons(first, rest):
