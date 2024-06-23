@@ -60,6 +60,7 @@ def mul(*args):
 	answer = 1
 	for arg in args:
 		answer *= arg
+	return answer
 	
 @expose
 def cons(first, rest):
