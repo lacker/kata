@@ -70,7 +70,7 @@ def cons(first, rest):
 	
 @expose
 def car(x):
-	pass
+	return x[0]
 	
 def monolamb(expr):
 	raise Exception("TODO")
