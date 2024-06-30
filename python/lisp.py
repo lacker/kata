@@ -72,6 +72,9 @@ def cons(first, rest):
 def car(x):
 	return x[0]
 	
+def cdr(x):
+	pass
+	
 def monolamb(expr):
 	raise Exception("TODO")
 	
