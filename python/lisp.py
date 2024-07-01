@@ -73,7 +73,7 @@ def car(x):
 	return x[0]
 	
 def cdr(x):
-	pass
+	return x[1:]
 	
 def monolamb(expr):
 	raise Exception("TODO")
