@@ -72,6 +72,7 @@ def cons(first, rest):
 def car(x):
 	return x[0]
 	
+@expose
 def cdr(x):
 	return x[1:]
 	
