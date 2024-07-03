@@ -76,6 +76,9 @@ def car(x):
 def cdr(x):
 	return x[1:]
 	
+def xmap(f, items):
+	pass
+	
 def monolamb(expr):
 	raise Exception("TODO")
 	
