@@ -77,7 +77,7 @@ def cdr(x):
 	return x[1:]
 	
 def xmap(f, items):
-	pass
+	return map(f, items)
 	
 def monolamb(expr):
 	raise Exception("TODO")
