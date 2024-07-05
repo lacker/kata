@@ -76,6 +76,7 @@ def car(x):
 def cdr(x):
 	return x[1:]
 	
+@expose
 def xmap(f, items):
 	return map(f, items)
 	
