@@ -78,7 +78,7 @@ def cdr(x):
 	
 @expose
 def xmap(f, items):
-	return map(f, items)
+	return list(map(f, items))
 	
 def monolamb(expr):
 	raise Exception("TODO")
