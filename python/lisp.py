@@ -80,6 +80,9 @@ def cdr(x):
 def xmap(f, items):
 	return list(map(f, items))
 	
+def xfilter(f, items):
+	pass
+	
 def monolamb(expr):
 	raise Exception("TODO")
 	
