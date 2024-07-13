@@ -81,7 +81,7 @@ def xmap(f, items):
 	return list(map(f, items))
 	
 def xfilter(f, items):
-	pass
+	return list(filter(f, items))
 	
 def monolamb(expr):
 	raise Exception("TODO")
