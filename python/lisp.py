@@ -80,6 +80,7 @@ def cdr(x):
 def xmap(f, items):
 	return list(map(f, items))
 	
+@expose
 def xfilter(f, items):
 	return list(filter(f, items))
 	
