@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 class Expression:
-    pass
+    def __str__(self):
+        pass
 
 class Equals:
     def __init__(self, left, right):
