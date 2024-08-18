@@ -36,5 +36,5 @@ class Tokenizer:
         return in_tokens, out_tokens
 
 def main():
-    pass
+    print(generate_str_pair())
     
