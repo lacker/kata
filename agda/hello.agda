@@ -3,3 +3,8 @@ data Greeting : Set where
 
 greet : Greeting
 greet = hello
+
+
+data Nat : Set where
+  zero : Nat
+  suc : Nat -> Nat
