@@ -10,4 +10,4 @@ class Equals(Expression):
         self.right = right
 
     def __str__(self):
-        pass
+        left = str(self.left)
