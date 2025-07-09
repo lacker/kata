@@ -7,6 +7,10 @@ const fetchUrl = (url: string) =>
     catch: (error) => new Error(`Failed to fetch: ${error}`)
   });
 
+function countBytes(html) {
+  return new TextEncoder().encode(html).length;
+}
+
 // Example program that fetches example.com and counts bytes
 const program = Effect.gen(function* () {
   yield* Console.log("Fetching example.com...");
