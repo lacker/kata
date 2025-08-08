@@ -10,5 +10,5 @@ fn printLine(msg: []const u8) !void {
 
 pub fn main() !void {
     const msg = greet("world"); // evaluated entirely at compile time
-    printLine(msg);
+    try printLine(msg);
 }
