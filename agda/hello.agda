@@ -19,3 +19,14 @@ infixl 6 _+_
 
 _+_ : Nat -> Nat -> Nat
 x + y = add x y
+
+
+mul : Nat -> Nat -> Nat
+mul zero y = zero
+mul (suc x) y = y + mul x y
+
+
+infixl 7 _*_
+
+_*_ : Nat -> Nat -> Nat
+x * y = mul x y
